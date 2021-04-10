@@ -22,6 +22,9 @@
         >
           GitHub
         </a>
+        <a-button type="primary ">
+          <nuxt-link to="/chachang">Cha Change</nuxt-link>
+        </a-button>
       </div>
     </div>
   </div>

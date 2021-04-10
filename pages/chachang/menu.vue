@@ -1,27 +1,14 @@
 <template>
-  <b-container>
-    <b-card
-      title="Main"
-    >
-      <b-card-text>
-        <b-row>
-          <b-col cols="4">
-            <ChachangMenuList />
-          </b-col>
-          <b-col cols="4">
-            <table>
-              <thead>
-                <tr>
-                  <th>Title</th>
-                  <th>Price</th>
-                </tr>
-              </thead>
-            </table>
-          </b-col>
-        </b-row>
-      </b-card-text>
-    </b-card>
-  </b-container>
+  <div class="container">
+    <a-row>
+      <a-col :span="12">
+          <ChachangMenuList />
+      </a-col>
+      <a-col :span="12">
+
+      </a-col>
+    </a-row>
+  </div>
 </template>
 
 <script>
@@ -30,11 +17,10 @@ import ChachangMenuList from '@/components/chachang/menu_list'
 export default {
   name: 'Menu',
   components: {
-    ChachangMenuList
-  }
+    ChachangMenuList,
+  },
 }
 </script>
 
 <style scoped>
-
 </style>
