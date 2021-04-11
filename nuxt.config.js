@@ -18,11 +18,11 @@ export default {
     'ant-design-vue/dist/antd.css',
     // '@/assets/css/index',
     // '~/assets/css/variables.less',
-    // {
-    //   src: 'ant-design-vue/dist/antd.less',
-    //   lang: 'less'
-    // }
-    // { src: '@/assets/css/main.less', lang: 'less' },
+    {
+      src: '~/assets/css/variables.less',
+      lang: 'less'
+    },
+    { src: '@/assets/css/main.less', lang: 'less' },
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins

@@ -1,7 +1,7 @@
 <template>
-  <a-table :columns="columns" :data-source="menuList" bordered>
+  <a-table :columns="columns" :data-source="data" bordered>
     <template
-      v-for="col in ['name', 'age', 'address']"
+      v-for="col in ['name', 'name_th', 'price']"
       :slot="col"
       slot-scope="text, record, index"
     >
@@ -10,7 +10,7 @@
           v-if="record.editable"
           style="margin: -5px 0"
           :value="text"
-          @change="(e) => handleChange(e.target.value, record.key, col)"
+          @change="e => handleChange(e.target.value, record.key, col, index)"
         />
         <template v-else>
           {{ text }}
@@ -21,23 +21,17 @@
       <div class="editable-row-operations">
         <span v-if="record.editable">
           <a @click="() => save(record.key)">Save</a>
-          <a-popconfirm
-            title="Sure to cancel?"
-            @confirm="() => cancel(record.key)"
-          >
+          <a-popconfirm title="Sure to cancel?" @confirm="() => cancel(record.key, index)">
             <a>Cancel</a>
           </a-popconfirm>
         </span>
         <span v-else>
-          <a :disabled="editingKey !== ''" @click="() => edit(record.key)"
-            >Edit</a
-          >
+          <a :disabled="editingKey !== ''" @click="() => edit(record.key, index)">Edit</a>
         </span>
       </div>
     </template>
   </a-table>
 </template>
-
 <script>
 const columns = [
   {
@@ -63,9 +57,8 @@ const columns = [
     dataIndex: 'operation',
     scopedSlots: { customRender: 'operation' },
   },
-]
+];
 
-const data = []
 export default {
   name: 'MenuList',
   computed: {
@@ -74,74 +67,71 @@ export default {
       return this.$store.getters['chachang/getMenuList']
     },
   },
-  created() {
-    // eslint-disable-next-line no-console
-    this.$store.dispatch('chachang/fetchMenu')
+  beforeCreate() {
+    console.log("beforeCreate");
+    this.$store.dispatch('chachang/fetchMenu')    
   },
-  data() {
-    this.cacheData = data.map((item) => ({ ...menuList }))
-    return {
-      data,
-      columns,
-      editingKey: '',
-      // menuList : [],
+  watch: {
+    menuList: function() {
+      this.data = this.$store.getters['chachang/getMenuList'];
+      this.cacheData = this.data
     }
   },
-  mounted () {
-    // this.fetchData()
+  data() {
+    return {
+      data : [],
+      columns,
+      cacheData: [],
+      editingKey: '',
+    };
   },
   methods: {
     // async fetchData () {
-    //   this.menuList = await this.$store.getters['chachang/getMenuList']
+    //   this.data = await this.$store.dispatch('chachang/fetchMenu')    
     // },
     handleChange(value, key, column) {
-      const newData = [...this.menuList]
-      const target = newData.filter((item) => key === item.key)[0]
+      const newData = [...this.data];
+      const target = newData.filter(item => key === item.key)[0];
       if (target) {
-        target[column] = value
-        this.data = newData
+        target[column] = value;
+        this.data = newData;
       }
     },
     edit(key) {
-      const newData = [...this.menuList]
-      const target = newData.filter((item) => key === item.key)[0]
-      this.editingKey = key
-      console.log(target)
+      const newData = [...this.data];
+      const target = newData.filter(item => key === item.key)[0];
+      this.editingKey = key;
       if (target) {
-        target.editable = true
-        this.data = newData
+        target.editable = true;
+        this.data = newData;
       }
     },
     save(key) {
-      const newData = [...this.menuList]
-      const newCacheData = [...this.cacheData]
-      const target = newData.filter((item) => key === item.key)[0]
-      const targetCache = newCacheData.filter((item) => key === item.key)[0]
+      const newData = [...this.data];
+      const newCacheData = [...this.cacheData];
+      const target = newData.filter(item => key === item.key)[0];
+      const targetCache = newCacheData.filter(item => key === item.key)[0];
       if (target && targetCache) {
-        delete target.editable
-        this.data = newData
-        Object.assign(targetCache, target)
-        this.cacheData = newCacheData
+        delete target.editable;
+        this.data = newData;
+        Object.assign(targetCache, target);
+        this.cacheData = newCacheData;
       }
-      this.editingKey = ''
+      this.editingKey = '';
     },
     cancel(key) {
-      const newData = [...this.menuList]
-      const target = newData.filter((item) => key === item.key)[0]
-      this.editingKey = ''
+      const newData = [...this.data];
+      const target = newData.filter(item => key === item.key)[0];
+      this.editingKey = '';
       if (target) {
-        Object.assign(
-          target,
-          this.cacheData.filter((item) => key === item.key)[0]
-        )
-        delete target.editable
-        this.menuList = newData
+        Object.assign(target, this.cacheData.filter(item => key === item.key)[0]);
+        delete target.editable;
+        this.data = newData;
       }
     },
   },
-}
+};
 </script>
-
 <style scoped>
 .editable-row-operations a {
   margin-right: 8px;
