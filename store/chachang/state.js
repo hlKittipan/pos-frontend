@@ -1,3 +1,4 @@
 export default () => ({
-  menuList: []
+  menuList: [],
+  paymentType: []
 })

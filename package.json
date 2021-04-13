@@ -30,9 +30,9 @@
     "prettier": "^2.2.1",
     "vue-jest": "^3.0.4"
   },
-  "eslintConfig": { 
+  "eslintConfig": {
     "rules": {
-      "no-unused-vars": "off" 
+      "no-unused-vars": "off"
     }
   }
 }
