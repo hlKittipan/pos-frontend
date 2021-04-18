@@ -1,20 +1,12 @@
 <template>
-  <b-container>
-    <b-card
-      title="Main"
-    >
-      <b-card-text>
-        <b-row>
-          <b-col cols="4">
-            <ChachangMenuList />
-          </b-col>
-          <b-col cols="4">
-            <ChachangAddOrder />
-          </b-col>
-        </b-row>
-      </b-card-text>
-    </b-card>
-  </b-container>
+  <a-row>
+    <a-col :xs="{ span: 24 }" :lg="{ span: 14}">
+      <ChachangMenuList />
+    </a-col>
+    <a-col  :xs="{ span: 24 }" :lg="{ span: 10}">
+      <ChachangAddMenu />
+    </a-col>
+  </a-row>
 </template>
 
 <script>
@@ -22,6 +14,7 @@ import ChachangAddOrder from '@/components/chachang/add_order'
 import ChachangMenuList from '@/components/chachang/menu_list'
 
 export default {
+  layout: 'chachang',
   name: 'Order',
   components: {
     ChachangAddOrder,

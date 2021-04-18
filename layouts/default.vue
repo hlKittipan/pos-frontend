@@ -3,7 +3,22 @@
     <Nuxt />
   </div>
 </template>
+<script>
 
+export default {
+  beforeCreate() {
+    this.$nextTick(() => {
+      this.$nuxt.$loading.start()
+      console.log( this.$nuxt.$loading)
+    })
+  },
+  mounted() {
+    this.$nextTick(() => {
+      this.$nuxt.$loading.finish()
+    })
+  },
+}
+</script>
 <style>
 html {
   font-family:

@@ -25,10 +25,28 @@ import Slider from '@/layouts/slider/chachang'
 import Footer from '@/layouts/footer/chachang'
 
 export default {
+  name: 'ChaChangLayout',
   components: {
     Header,
     Slider,
     Footer,
+  },
+  beforeCreate() {
+    this.$nextTick(() => {
+      this.$nuxt.$loading.start()
+      console.log(this.$nuxt.$loading)
+    })
+  },
+  create() {
+    this.$nextTick(() => {
+      this.$nuxt.$loading.finish()
+      console.log(this.$nuxt.$loading)
+    })
+  },
+  mounted() {
+    this.$nextTick(() => {
+      this.$nuxt.$loading.finish()
+    })
   },
 }
 </script>

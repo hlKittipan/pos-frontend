@@ -3,3 +3,8 @@
     KS ©2021 Created KS
   </a-layout-footer>
 </template>
+<script>
+export default {
+  name: 'ChaChangFooter',
+}
+</script>

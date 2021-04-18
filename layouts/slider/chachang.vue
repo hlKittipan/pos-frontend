@@ -20,14 +20,19 @@
         <span><nuxt-link to="/chachang/order">Order</nuxt-link></span>
       </a-menu-item>
       <a-menu-item key="3">
-        <a-icon type="upload" />
-        <span>nav 3</span>
+        <a-icon type="video-camera" />
+        <span><nuxt-link to="/chachang/order">Payment type</nuxt-link></span>
       </a-menu-item>
+      <a-menu-item key="4">
+        <a-icon type="video-camera" />
+        <span><nuxt-link to="/chachang/order">Payment type</nuxt-link></span>
+      </a-menu-item>     
     </a-menu>
   </a-layout-sider>
 </template>
 <script>
 export default {
+  name: 'ChaChangSlider',
   computed: {
     sliderChaChang() {
       return this.$store.getters['chachang/getSliderChaChang']

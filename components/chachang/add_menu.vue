@@ -37,6 +37,17 @@
     >
       <a-input-group compact>
         <a-select style="width: 30%" v-decorator="[`paymentType[${k}]`]">
+          <div slot="dropdownRender" slot-scope="menu">
+            <v-nodes :vnodes="menu" />
+            <a-divider style="margin: 4px 0" />
+            <div
+              style="padding: 4px 8px; cursor: pointer"
+              @mousedown="(e) => e.preventDefault()"
+              @click="addItem"
+            >
+              <a-icon type="plus" /> Add item
+            </div>
+          </div>
           <a-select-option
             v-for="(value, paymentIndex) in paymentType"
             :key="paymentIndex"
@@ -84,6 +95,12 @@
 <script>
 export default {
   name: 'AddMenu',
+  components: {
+    VNodes: {
+      functional: true,
+      render: (h, ctx) => ctx.props.vnodes,
+    },
+  },
   data() {
     return {
       paymentType: [],
@@ -155,6 +172,10 @@ export default {
       form.setFieldsValue({
         keys: nextKeys,
       })
+    },
+    addItem() {
+      console.log('addItem');
+      this.paymentType.push({"_id":"606bd1490b1662006ceabab3","name":"OKDSOKAS","updatedAt":"2021-04-06T03:52:14.479Z","createdAt":"2021-04-06T03:11:05.425Z","__v":0,"deleted_at":"2021-04-06T03:44:56.345Z"});
     },
   },
 }

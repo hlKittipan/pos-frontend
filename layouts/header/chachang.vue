@@ -10,6 +10,7 @@
 
 <script>
 export default {
+  name: 'ChaChangHeader',
   computed: {
     sliderChaChang() {
       return this.$store.getters['chachang/getSliderChaChang']
