@@ -6,7 +6,7 @@ export default {
         key: key,
         name: state.menuList[key].name,
         name_th: state.menuList[key].name_th,
-        price: state.menuList[key].price_iced,
+        price: state.menuList[key].price,
       });
     }
     return data
@@ -21,5 +21,8 @@ export default {
       });
     }
     return data
+  },
+  getSliderChaChang: (state) => {
+    return state.sliderChaChang
   }
 }

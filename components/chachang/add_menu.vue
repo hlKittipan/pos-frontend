@@ -5,11 +5,7 @@
     :wrapper-col="{ span: 12 }"
     @submit="handleSubmit"
   >
-    <a-form-item
-      label="Name"
-      has-feedback
-      :validate-status="validateStatusName"
-    >
+    <a-form-item label="Name" has-feedback>
       <a-input
         v-decorator="[
           'name',
@@ -19,11 +15,7 @@
         @change="handleChange"
       />
     </a-form-item>
-    <a-form-item
-      label="Name thai"
-      has-feedback
-      :validate-status="validateStatusNameTh"
-    >
+    <a-form-item label="Name thai" has-feedback>
       <a-input
         v-decorator="[
           'nameTh',
@@ -44,31 +36,28 @@
       :required="false"
     >
       <a-input-group compact>
-         <a-select
-          style="width: 30%"
-          v-decorator="[
-            `names[${k}]`,
-          ]"
-        >
-          <a-select-option v-for="(value, paymentIndex) in paymentType" :key="paymentIndex" :value="value.id">{{value.name}}</a-select-option>
+        <a-select style="width: 30%" v-decorator="[`paymentType[${k}]`]">
+          <a-select-option
+            v-for="(value, paymentIndex) in paymentType"
+            :key="paymentIndex"
+            :value="value.id"
+            >{{ value.name }}</a-select-option
+          >
         </a-select>
         <a-input
           style="width: 30%"
           v-decorator="[
-            `names[${k}]`,
+            `prices[${k}]`,
             {
               validateTrigger: ['change', 'blur'],
               rules: [
                 {
                   required: true,
                   whitespace: true,
-                  message:
-                    'Please input passenger\'s name or delete this field.',
                 },
               ],
             },
           ]"
-          placeholder="passenger name"
         />
         <a-icon
           style="width: 10%"
@@ -97,7 +86,7 @@ export default {
   name: 'AddMenu',
   data() {
     return {
-      paymentType:[],
+      paymentType: [],
       formItemLayout: {
         labelCol: {
           xs: { span: 24 },
@@ -108,8 +97,6 @@ export default {
           sm: { span: 20 },
         },
       },
-      validateStatusNameTh: 'error',
-      validateStatusName: 'error',
       id: 0,
       formItemLayoutWithOutLabel: {
         wrapperCol: {
@@ -123,13 +110,13 @@ export default {
     this.form = this.$form.createForm(this, { name: 'add_menu' })
     this.form.getFieldDecorator('keys', { initialValue: [], preserve: true })
     await this.$store.dispatch('chachang/fetchPaymentType')
-    this.paymentType = this.$store.getters['chachang/getPaymentTypeList'];
+    this.paymentType = this.$store.getters['chachang/getPaymentTypeList']
   },
   watch: {
-   paymentTypeList: function() {
-      this.paymentType = this.$store.getters['chachang/getPaymentTypeList'];
-       console.log(this.$store.getters['chachang/getPaymentTypeList'])
-    }
+    paymentTypeList: function () {
+      this.paymentType = this.$store.getters['chachang/getPaymentTypeList']
+      console.log(this.$store.getters['chachang/getPaymentTypeList'])
+    },
   },
   methods: {
     handleSubmit(e) {

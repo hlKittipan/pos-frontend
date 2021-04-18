@@ -5,4 +5,7 @@ export default {
   SET_PAYMENT_TYPE(state, paymentType) {
     state.paymentType = paymentType
   },
+  SET_SLIDER_CHA_CHANG(state, sliderChaChang) {
+    sliderChaChang === null ? state.sliderChaChang = !state.sliderChaChang : state.sliderChaChang = sliderChaChang
+  },
 }

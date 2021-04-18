@@ -1,4 +1,5 @@
 export default () => ({
   menuList: [],
-  paymentType: []
+  paymentType: [],
+  sliderChaChang: false,
 })
