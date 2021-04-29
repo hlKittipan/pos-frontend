@@ -1,18 +1,26 @@
 <template>
-  <div v-if="loading" class="loading-page">
+  <div v-if="loadingChaChang" class="loading-page">
     <a-spin>
       <a-icon slot="indicator" type="loading" style="font-size: 100px" spin />
     </a-spin>
-
-    <a-progress :percent="percent" status="active" />
+    <!-- <a-progress :percent="percent" /> -->
   </div>
 </template>
 <script>
 export default {
   data: () => ({
-    loading: true,
     percent: 0,
   }),
+  computed: {
+    loadingChaChang() {
+      return this.$store.getters['chachang/getLoadingChaChang']
+    },
+  },
+  watch: {
+    loadingChaChang() {
+      return this.$store.getters['chachang/getLoadingChaChang']
+    },
+  },
   methods: {
     increase() {
       let percent = this.percent + 10
@@ -22,7 +30,8 @@ export default {
       this.percent = percent
     },
     start() {
-      this.loading = true
+      this.$store.dispatch('chachang/setLoadingChaChang', true)
+      console.log('start')
       window.setInterval(() => {
         if (this.percent === 100) {
           window.clearInterval()
@@ -33,7 +42,10 @@ export default {
     },
     finish() {
       this.percent = 100
-      this.loading = false
+      setTimeout(
+        () => this.$store.dispatch('chachang/setLoadingChaChang', false),
+        500
+      )
     },
   },
 }

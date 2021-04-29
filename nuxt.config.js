@@ -15,7 +15,7 @@ export default {
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
-    'ant-design-vue/dist/antd.css',
+    // 'ant-design-vue/dist/antd.css',
     // '@/assets/css/index',
     // '~/assets/css/variables.less',
     {
@@ -26,7 +26,7 @@ export default {
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: ['@/plugins/antd-ui'],
+  plugins: ['@/plugins/antd-ui','@/plugins/lodash'],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -46,8 +46,29 @@ export default {
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
-  axios: {},
+  axios: {
+    baseURL: process.env.BASE_API_URL || 'http://localhost:4000/',
+    retry: { retries: 3 },
+    proxy: true
+  },
+  proxy: {
+    '/api/': { target: process.env.BASE_API_URL || 'http://localhost:4000/',changeOrigin: true, pathRewrite: { "^/api/": "" } },
+  },
+  publicRuntimeConfig: {
+    axios: {
+      browserBaseURL: process.env.BROWSER_BASE_URL
+    }
+  },
 
+  privateRuntimeConfig: {
+    axios: {
+      baseURL: process.env.BASE_URL
+    }
+  },
+
+  env: {
+    baseUrl: process.env.NODE_ENV === 'dev' ? 'http://localhost:3000' : 'https://my-domain.com',
+  },
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
     loaders: {

@@ -31,18 +31,6 @@ export default {
     Slider,
     Footer,
   },
-  beforeCreate() {
-    this.$nextTick(() => {
-      this.$nuxt.$loading.start()
-      console.log(this.$nuxt.$loading)
-    })
-  },
-  create() {
-    this.$nextTick(() => {
-      this.$nuxt.$loading.finish()
-      console.log(this.$nuxt.$loading)
-    })
-  },
   mounted() {
     this.$nextTick(() => {
       this.$nuxt.$loading.finish()

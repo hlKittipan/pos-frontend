@@ -3,7 +3,7 @@
     <a-row>
       <a-col :span="12">
         <a-space>
-          <a-button type="primary" >
+          <a-button type="primary">
             <nuxt-link to="/chachang/menu">Menu</nuxt-link>
           </a-button>
           <a-button type="primary">
@@ -31,6 +31,7 @@
 import Dashboard from '@/components/chachang/dashboard'
 
 export default {
+  layout: 'chachang',
   name: 'Index',
   components: {
     Dashboard,

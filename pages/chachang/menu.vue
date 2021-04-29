@@ -1,9 +1,9 @@
 <template>
   <a-row>
-    <a-col :xs="{ span: 24 }" :lg="{ span: 14}">
+    <a-col :xs="{ span: 24 }" :lg="{ span: 16}">
       <ChachangMenuList />
     </a-col>
-    <a-col  :xs="{ span: 24 }" :lg="{ span: 10}">
+    <a-col  :xs="{ span: 24 }" :lg="{ span: 8}">
       <ChachangAddMenu />
     </a-col>
   </a-row>

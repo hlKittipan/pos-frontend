@@ -5,7 +5,6 @@
       :data-source="data"
       bordered
       size="small"
-      :scroll="{ x: 'calc(700px + 50%)', y: '600' }"
       :loading="loadings"
       :pagination="pagination"
     >
@@ -55,6 +54,9 @@
         type="search"
         :style="{ color: filtered ? '#108ee9' : undefined }"
       />
+      <template slot="id" slot-scope="text">
+        {{ text }}
+      </template>
       <template slot="name" slot-scope="text, record, index, column">
         <span v-if="searchText && searchedColumn === column.dataIndex">
           <template
@@ -72,63 +74,16 @@
           </template>
         </span>
         <a-input
-            v-else-if="record.editable"
-            style="margin: -5px 0"
-            :value="text"
-            @change="
-              (e) => handleChange(e.target.value, record.key, 'name', index)
-            "
-          />
+          v-else-if="record.editable"
+          style="margin: -5px 0"
+          :value="text"
+          @change="
+            (e) => handleChange(e.target.value, record.key, 'name', index)
+          "
+        />
         <template v-else>
           {{ text }}
         </template>
-      </template>
-      <template slot="name_th" slot-scope="text, record, index, column">
-        <span v-if="searchText && searchedColumn === column.dataIndex">
-          <template
-            v-for="(fragment, i) in text
-              .toString()
-              .split(new RegExp(`(?<=${searchText})|(?=${searchText})`, 'i'))"
-          >
-            <mark
-              v-if="fragment.toLowerCase() === searchText.toLowerCase()"
-              :key="i"
-              class="highlight"
-              >{{ fragment }}</mark
-            >
-            <template v-else>{{ fragment }}</template>
-          </template>
-        </span>
-        <a-input
-            v-else-if="record.editable"
-            style="margin: -5px 0"
-            :value="text"
-            @change="
-              (e) => handleChange(e.target.value, record.key, 'name_th', index)
-            "
-          />
-        <template v-else>
-          {{ text }}
-        </template>
-      </template>
-      <template
-        v-for="col in priceType"
-        :slot="col"
-        slot-scope="text, record, index"
-      >
-        <div :key="col">
-          <a-input
-            v-if="record.editable"
-            style="margin: -5px 0"
-            :value="text"
-            @change="
-              (e) => handleChange(e.target.value, record.key, col, index)
-            "
-          />
-          <template v-else>
-            {{ text }}
-          </template>
-        </div>
       </template>
       <template slot="action" slot-scope="text, record, index">
         <div class="editable-row-action">
@@ -153,7 +108,7 @@
           <a-popconfirm
             v-if="data.length"
             title="Sure to delete?"
-            @confirm="() => onDelete(record._id)"
+            @confirm="() => onDelete(record.id)"
           >
             <a href="javascript:;">Delete</a>
           </a-popconfirm>
@@ -164,16 +119,10 @@
 </template>
 <script>
 export default {
-  name: 'MenuList',
-  computed: {
-    menuList() {
-      // eslint-disable-next-line no-console
-      return this.$store.getters['chachang/getMenuList']
-    },
-  },
+  name: 'PriceTypeList',
   async beforeCreate() {
-    await this.$store.dispatch('chachang/fetchMenu')
-    this.data = this.$store.getters['chachang/getMenuList']
+    await this.$store.dispatch('chachang/fetchPriceType')
+    this.data = this.$store.getters['chachang/getPriceTypeList']
     this.cacheData = this.data
     this.loadings = false
   },
@@ -182,11 +131,16 @@ export default {
       data: [],
       columns: [
         {
+          title: 'ID',
+          width: 120,
+          dataIndex: 'id',
+          key: 'id',
+        },
+        {
           title: 'Name',
           width: 120,
           dataIndex: 'name',
           key: 'name',
-          fixed: 'left',
           scopedSlots: {
             filterDropdown: 'filterDropdown',
             filterIcon: 'filterIcon',
@@ -205,41 +159,10 @@ export default {
           },
         },
         {
-          title: 'Name TH',
-          width: 120,
-          dataIndex: 'name_th',
-          key: 'name_th',
-          fixed: 'left',
-          scopedSlots: {
-            filterDropdown: 'filterDropdown',
-            filterIcon: 'filterIcon',
-            customRender: 'name_th',
-          },
-          sorter: (a, b) => a.name_th.length - b.name_th.length,
-          sortDirections: ['descend', 'ascend'],
-          onFilter: (value, record) =>
-            record.name_th
-              .toString()
-              .toLowerCase()
-              .includes(value.toLowerCase()),
-          onFilterDropdownVisibleChange: (visible) => {
-            if (visible) {
-              setTimeout(() => {
-                this.searchInput.focus()
-              }, 0)
-            }
-          },
-        },
-        {
-          title: 'Price',
-          children: [],
-        },
-        {
           title: 'Action',
           width: 150,
           dataIndex: 'action',
           key: 'action',
-          fixed: 'right',
           scopedSlots: { customRender: 'action' },
         },
       ],
@@ -258,47 +181,20 @@ export default {
         showSizeChange: (current, pageSize) => (this.pageSize = pageSize),
         showQuickJumper: true,
       },
-      priceType: [],
     }
   },
   watch:{
     getPriceTypeList: function (value) {
-      const tmp = value.map(b => {
-        return {
-          title: this._.upperFirst(b.name),
-          dataIndex: b.name,
-          key: b.name,
-          sorter: (a, b) => a[b.name] - b[b.name],
-          scopedSlots: { customRender: b.name },
-        }
-      })
-      this._.findIndex(this.columns,(o) => {
-        if(o.title === 'Price'){
-          o.children = tmp
-        }
-      })
-      const cachePriceType = []
-      for (const key in value){
-        cachePriceType.push(value[key].name)
-      }
-      this.priceType = cachePriceType
-    },
-    getMenuList: function (value) {
       this.data = value
-      this.cacheData = value
     },
   },
   computed: {
     getPriceTypeList(){
       return this.$store.getters['chachang/getPriceTypeList']
-    },
-    getMenuList(){
-      return this.$store.getters['chachang/getMenuList']
     }
   },
   methods: {
     handleChange(value, key, column) {
-      console.log(value);
       const newData = [...this.data]
       const target = newData.filter((item) => key === item.key)[0]
       if (target) {
@@ -330,7 +226,6 @@ export default {
       const newCacheData = [...this.cacheData]
       const target = newData.filter((item) => key === item.key)[0]
       const targetCache = newCacheData.filter((item) => key === item.key)[0]
-      console.log(target);
       if (target && targetCache) {
         delete target.editable
         this.data = newData
@@ -354,14 +249,14 @@ export default {
     },
     async onDelete(id) {
       const newData = [...this.data]
-      const response = await this.$store.dispatch('chachang/deleteMenu',id)
+      const response = await this.$store.dispatch('chachang/deletePriceType',id)
       if (response) {
         this.$notification.open({
           message: 'Deleted '+response.statusText,
           description: response.statusText,
           icon: <a-icon type="smile" style="color: #108ee9" />,
         });
-        this.data = newData.filter((item) => item._id !== id)
+        this.data = newData.filter((item) => item.id !== id)
       }
     },
     onShowSizeChange(current, pageSize) {
