@@ -160,8 +160,10 @@ export default {
   async beforeCreate() {
     this.form = this.$form.createForm(this, { name: 'add_menu' })
     this.form.getFieldDecorator('keys', { initialValue: [], preserve: true })
-    await this.$store.dispatch('chachang/fetchPriceType')
-    this.priceType = this.$store.getters['chachang/getPriceTypeList']
+    const response = await this.$store.dispatch('chachang/fetchPriceType')
+    if (response) {
+      this.priceType = this.$store.getters['chachang/getPriceTypeList']
+    }
   },
   watch: {
     priceType: function () {

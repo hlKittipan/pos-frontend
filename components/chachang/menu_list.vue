@@ -5,7 +5,7 @@
       :data-source="data"
       bordered
       size="small"
-      :scroll="{ x: 'calc(700px + 50%)', y: '600' }"
+      :scroll="{ x: 'calc(700px + 50%)', y: '600px' }"
       :loading="loadings"
       :pagination="pagination"
     >
@@ -133,7 +133,7 @@
       <template slot="action" slot-scope="text, record, index">
         <div class="editable-row-action">
           <span v-if="record.editable">
-            <a @click="() => save(record.key)">Save</a>
+            <a @click="() => save(record.id)">Save</a>
             <a-popconfirm
               title="Sure to cancel?"
               @confirm="() => cancel(record.key, index)"
@@ -153,7 +153,7 @@
           <a-popconfirm
             v-if="data.length"
             title="Sure to delete?"
-            @confirm="() => onDelete(record._id)"
+            @confirm="() => onDelete(record.id)"
           >
             <a href="javascript:;">Delete</a>
           </a-popconfirm>
@@ -172,10 +172,12 @@ export default {
     },
   },
   async beforeCreate() {
-    await this.$store.dispatch('chachang/fetchMenu')
-    this.data = this.$store.getters['chachang/getMenuList']
-    this.cacheData = this.data
-    this.loadings = false
+    const response = await this.$store.dispatch('chachang/fetchMenu')
+    if (response) {
+      this.data = this.$store.getters['chachang/getMenuList']
+      this.cacheData = this.data
+      this.loadings = false
+    }
   },
   data() {
     return {
@@ -325,17 +327,33 @@ export default {
         this.data = newData
       }
     },
-    save(key) {
+    async save(id) {
       const newData = [...this.data]
       const newCacheData = [...this.cacheData]
-      const target = newData.filter((item) => key === item.key)[0]
-      const targetCache = newCacheData.filter((item) => key === item.key)[0]
-      console.log(target);
-      if (target && targetCache) {
-        delete target.editable
-        this.data = newData
-        Object.assign(targetCache, target)
-        this.cacheData = newCacheData
+      const target = newData.filter((item) => id === item.id)[0]
+      const targetCache = newCacheData.filter((item) => id === item.id)[0]
+      console.log(target)
+      const price = []
+      this._.forIn(target,(value, key)=>{
+        const index = key.indexOf('_id');
+        if(index>-1){
+          price.push({_id:value,price:target[key.replace('_id','')]})
+        }
+      })
+      target.price = price
+      const response = await this.$store.dispatch('chachang/updateMenu',target)
+      if (response) {
+        this.$notification.open({
+          message: 'Updated '+response.statusText,
+          description: response.statusText,
+          icon: <a-icon type="smile" style="color: #108ee9" />,
+        });
+        if (target && targetCache) {
+          delete target.editable
+          this.data = newData
+          Object.assign(targetCache, target)
+          this.cacheData = newCacheData
+        }
       }
       this.editingKey = ''
     },

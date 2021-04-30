@@ -49,14 +49,11 @@ export default {
   axios: {
     baseURL: process.env.BASE_API_URL || 'http://localhost:4000/',
     retry: { retries: 3 },
-    proxy: true
-  },
-  proxy: {
-    '/api/': { target: process.env.BASE_API_URL || 'http://localhost:4000/',changeOrigin: true, pathRewrite: { "^/api/": "" } },
   },
   publicRuntimeConfig: {
     axios: {
-      browserBaseURL: process.env.BROWSER_BASE_URL
+      browserBaseURL: process.env.BROWSER_BASE_URL,
+      BASE_API_URL: process.env.BASE_API_URL
     }
   },
 

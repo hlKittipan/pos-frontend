@@ -1,4 +1,13 @@
 export default {
+  getSliderChaChang: (state) => {
+    return state.sliderChaChang
+  },
+  getLoadingChaChang: (state) => {
+    return state.loadingChaChang
+  },
+  getSelectedKey: (state) => {
+    return state.setSelectedKey
+  },
   getMenuList: (state) => {
     const data = [];
     for (const key in state.menuList) {
@@ -7,9 +16,12 @@ export default {
       for (const keyItem in item){
         price[item[keyItem].name] = item[keyItem].price
       }
+      for (const keyItem in item){
+        price[item[keyItem].name+'_id'] = item[keyItem]._id
+      }
       data.push({
         key: key,
-        _id: state.menuList[key]._id,
+        id: state.menuList[key]._id,
         name: state.menuList[key].name,
         name_th: state.menuList[key].name_th,
         ...price
@@ -39,10 +51,4 @@ export default {
     }
     return data
   },
-  getSliderChaChang: (state) => {
-    return state.sliderChaChang
-  },
-  getLoadingChaChang: (state) => {
-    return state.loadingChaChang
-  }
 }

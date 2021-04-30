@@ -10,22 +10,26 @@
     :style="{ left: 0 }"
   >
     <div class="logo" />
-    <a-menu theme="dark" mode="inline" :default-selected-keys="['1']" >
+    <a-menu mode="inline" :default-selected-keys="['1']" @click="handleClick" :theme="theme" :selected-keys="[current]">
       <a-menu-item key="1">
-        <nuxt-link to="/chachang/menu"><a-icon type="user" />
-        <span>Menu</span></nuxt-link>
+        <nuxt-link to="/chachang/menu">
+          <a-icon type="user" /> <span>Menu</span>
+        </nuxt-link>
       </a-menu-item>
       <a-menu-item key="2">
-        <a-icon type="video-camera" />
-        <span><nuxt-link to="/chachang/order">Order</nuxt-link></span>
+        <nuxt-link to="/chachang/order">
+          <a-icon type="video-camera" /> <span>Order</span>
+        </nuxt-link>
       </a-menu-item>
       <a-menu-item key="3">
-        <a-icon type="video-camera" />
-        <span><nuxt-link to="/chachang/price_type">Price type</nuxt-link></span>
+        <nuxt-link to="/chachang/price_type">
+          <a-icon type="video-camera" /> <span>Price type</span>
+        </nuxt-link>
       </a-menu-item>
       <a-menu-item key="4">
-        <a-icon type="video-camera" />
-        <span><nuxt-link to="/chachang/order">Payment type</nuxt-link></span>
+        <nuxt-link to="/chachang/payment_type">
+          <a-icon type="video-camera" /> <span>Payment type</span>
+        </nuxt-link>
       </a-menu-item>
     </a-menu>
   </a-layout-sider>
@@ -33,6 +37,12 @@
 <script>
 export default {
   name: 'ChaChangSlider',
+  data() {
+    return {
+      current: '1',
+      theme: 'dark',
+    };
+  },
   computed: {
     sliderChaChang() {
       return this.$store.getters['chachang/getSliderChaChang']
@@ -44,6 +54,10 @@ export default {
     },
   },
   methods: {
+    handleClick(e) {
+      console.log('click ', e);
+      this.current = e.key;
+    },
     onCollapse(collapsed, type) {
       this.$store.dispatch('chachang/setSliderChaChang', collapsed)
       console.log(collapsed, type)

@@ -5,10 +5,12 @@
       <Header />
       <a-layout-content :style="{ padding: '0 50px', marginTop: '64px' }">
         <a-breadcrumb style="margin: 16px 10px">
-          <a-breadcrumb-item>Home</a-breadcrumb-item>
-          <a-breadcrumb-item>List</a-breadcrumb-item>
-          <a-breadcrumb-item>App</a-breadcrumb-item>
-        </a-breadcrumb>
+          <a-breadcrumb-item
+            v-for="(crumb, index) in crumbs"
+            :key="index"
+            >{{ $route.fullPath === crumb.path && title !== null ? title : crumb.title}}</a-breadcrumb-item
+          >
+          </a-breadcrumb>
         <div
           :style="{ background: '#fff', padding: '24px', minHeight: '380px' }"
         >
@@ -30,6 +32,37 @@ export default {
     Header,
     Slider,
     Footer,
+  },
+  props: {
+    title: {
+      type: String,
+      default: null,
+    },
+  },
+  computed: {
+    crumbs() {
+      const fullPath = this.$route.fullPath
+      const params = fullPath.startsWith('/')
+        ? fullPath.substring(1).split('/')
+        : fullPath.split('/')
+      const crumbs = []
+
+      let path = ''
+
+      params.forEach((param, index) => {
+        path = `${path}/${param}`
+        const match = this.$router.match(path)
+        console.log(param)
+        if (match.name !== null) {
+          crumbs.push({
+            title: param,
+            ...match,
+          })
+        }
+      })
+
+      return crumbs
+    },
   },
   mounted() {
     this.$nextTick(() => {

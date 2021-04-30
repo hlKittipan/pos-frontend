@@ -119,12 +119,13 @@
 </template>
 <script>
 export default {
-  name: 'PriceTypeList',
+  name: 'PaymentTypeList',
   async beforeCreate() {
-    await this.$store.dispatch('chachang/fetchPriceType')
-    this.data = this.$store.getters['chachang/getPriceTypeList']
+    await this.$store.dispatch('chachang/fetchPaymentType')
+    this.data = this.$store.getters['chachang/getPaymentTypeList']
     this.cacheData = this.data
     this.loadings = false
+    console.log($nuxt.$route)
   },
   data() {
     return {
@@ -184,13 +185,13 @@ export default {
     }
   },
   watch:{
-    getPriceTypeList: function (value) {
+    getPaymentTypeList: function (value) {
       this.data = value
     },
   },
   computed: {
-    getPriceTypeList(){
-      return this.$store.getters['chachang/getPriceTypeList']
+    getPaymentTypeList(){
+      return this.$store.getters['chachang/getPaymentTypeList']
     }
   },
   methods: {
@@ -226,8 +227,7 @@ export default {
       const newCacheData = [...this.cacheData]
       const target = newData.filter((item) => id === item.id)[0]
       const targetCache = newCacheData.filter((item) => id === item.id)[0]
-      console.log(target)
-      const response = await this.$store.dispatch('chachang/updatePriceType',target)
+      const response = await this.$store.dispatch('chachang/updatePaymentType',target)
       if (response) {
         this.$notification.open({
           message: 'Updated '+response.statusText,
@@ -258,7 +258,7 @@ export default {
     },
     async onDelete(id) {
       const newData = [...this.data]
-      const response = await this.$store.dispatch('chachang/deletePriceType',id)
+      const response = await this.$store.dispatch('chachang/deletePaymentType',id)
       if (response) {
         this.$notification.open({
           message: 'Deleted '+response.statusText,

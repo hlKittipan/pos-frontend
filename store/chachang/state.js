@@ -4,4 +4,5 @@ export default () => ({
   priceType: [],
   sliderChaChang: false,
   loadingChaChang: true,
+  selectedKeys: "1",
 })
