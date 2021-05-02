@@ -1,5 +1,5 @@
 <template>
-  <a-row>
+  <a-row type="flex"  justify="center">
     <a-col :xs="{ span: 24 }" :lg="{ span: 16}">
       <ChachangMenuList />
     </a-col>

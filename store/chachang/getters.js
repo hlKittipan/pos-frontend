@@ -51,4 +51,15 @@ export default {
     }
     return data
   },
+  getMenuTypeList: (state) => {
+    const data = [];
+    for (const key in state.menuType) {
+      data.push({
+        key: key,
+        name: state.menuType[key].name,
+        id: state.menuType[key]._id,
+      });
+    }
+    return data
+  },
 }

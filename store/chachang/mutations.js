@@ -66,4 +66,21 @@ export default {
     }
   },
   // End menu
+
+  // Start menu type
+  SET_MENU_TYPE(state, menuType) {
+    state.menuType = menuType
+  },
+  ADD_MENU_TYPE(state, title){
+    state.menuType.push(title)
+  },
+  UPDATE_MENU_TYPE(state, value){
+    const index = state.menuType.findIndex(item => item._id == value._id)
+    state.menuType[index].name = value.name
+  },
+  DELETE_MENU_TYPE(state, id){
+    const index = state.menuType.findIndex(item => item.id == id)
+    state.menuType.splice(index, 1)
+  },
+  // End menu type
 }

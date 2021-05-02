@@ -121,11 +121,12 @@
 export default {
   name: 'PaymentTypeList',
   async beforeCreate() {
-    await this.$store.dispatch('chachang/fetchPaymentType')
-    this.data = this.$store.getters['chachang/getPaymentTypeList']
-    this.cacheData = this.data
-    this.loadings = false
-    console.log($nuxt.$route)
+    const paymentType = await this.$store.dispatch('chachang/fetchPaymentType')
+    if (paymentType){
+      this.data = this.$store.getters['chachang/getPaymentTypeList']
+      this.cacheData = this.data
+      this.loadings = false
+    }
   },
   data() {
     return {

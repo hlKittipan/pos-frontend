@@ -111,6 +111,34 @@
           {{ text }}
         </template>
       </template>
+      <template slot="category" slot-scope="text, record, index, column">
+        <span v-if="searchText && searchedColumn === column.dataIndex">
+          <template
+            v-for="(fragment, i) in text
+              .toString()
+              .split(new RegExp(`(?<=${searchText})|(?=${searchText})`, 'i'))"
+          >
+            <mark
+              v-if="fragment.toLowerCase() === searchText.toLowerCase()"
+              :key="i"
+              class="highlight"
+              >{{ fragment }}</mark
+            >
+            <template v-else>{{ fragment }}</template>
+          </template>
+        </span>
+        <a-input
+            v-else-if="record.editable"
+            style="margin: -5px 0"
+            :value="text"
+            @change="
+              (e) => handleChange(e.target.value, record.key, 'category', index)
+            "
+          />
+        <template v-else>
+          {{ text }}
+        </template>
+      </template>
       <template
         v-for="col in priceType"
         :slot="col"
@@ -208,7 +236,7 @@ export default {
         },
         {
           title: 'Name TH',
-          width: 120,
+          width: 100,
           dataIndex: 'name_th',
           key: 'name_th',
           fixed: 'left',
@@ -233,12 +261,38 @@ export default {
           },
         },
         {
+          title: 'Category',
+          width: 100,
+          dataIndex: 'category',
+          key: 'category',
+          fixed: 'left',
+          scopedSlots: {
+            filterDropdown: 'filterDropdown',
+            filterIcon: 'filterIcon',
+            customRender: 'category',
+          },
+          sorter: (a, b) => a.category.length - b.category.length,
+          sortDirections: ['descend', 'ascend'],
+          onFilter: (value, record) =>
+            record.category
+              .toString()
+              .toLowerCase()
+              .includes(value.toLowerCase()),
+          onFilterDropdownVisibleChange: (visible) => {
+            if (visible) {
+              setTimeout(() => {
+                this.searchInput.focus()
+              }, 0)
+            }
+          },
+        },
+        {
           title: 'Price',
           children: [],
         },
         {
           title: 'Action',
-          width: 150,
+          width: 80,
           dataIndex: 'action',
           key: 'action',
           fixed: 'right',

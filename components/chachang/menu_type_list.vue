@@ -119,14 +119,12 @@
 </template>
 <script>
 export default {
-  name: 'PriceTypeList',
+  name: 'MenuTypeList',
   async beforeCreate() {
-    const pricetype = await this.$store.dispatch('chachang/fetchPriceType')
-    if(pricetype) {
-      this.data = this.$store.getters['chachang/getPriceTypeList']
-      this.cacheData = this.data
-      this.loadings = false
-    }
+    await this.$store.dispatch('chachang/fetchMenuType')
+    this.data = this.$store.getters['chachang/getMenuTypeList']
+    this.cacheData = this.data
+    this.loadings = false
   },
   data() {
     return {
@@ -186,13 +184,13 @@ export default {
     }
   },
   watch:{
-    getPriceTypeList: function (value) {
+    getMenuTypeList: function (value) {
       this.data = value
     },
   },
   computed: {
-    getPriceTypeList(){
-      return this.$store.getters['chachang/getPriceTypeList']
+    getMenuTypeList(){
+      return this.$store.getters['chachang/getMenuTypeList']
     }
   },
   methods: {
@@ -229,7 +227,7 @@ export default {
       const target = newData.filter((item) => id === item.id)[0]
       const targetCache = newCacheData.filter((item) => id === item.id)[0]
       console.log(target)
-      const response = await this.$store.dispatch('chachang/updatePriceType',target)
+      const response = await this.$store.dispatch('chachang/updateMenuType',target)
       if (response) {
         this.$notification.open({
           message: 'Updated '+response.statusText,
@@ -260,7 +258,7 @@ export default {
     },
     async onDelete(id) {
       const newData = [...this.data]
-      const response = await this.$store.dispatch('chachang/deletePriceType',id)
+      const response = await this.$store.dispatch('chachang/deleteMenuType',id)
       if (response) {
         this.$notification.open({
           message: 'Deleted '+response.statusText,

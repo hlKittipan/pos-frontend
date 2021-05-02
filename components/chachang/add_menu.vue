@@ -6,7 +6,7 @@
       :wrapper-col="{ span: 12 }"
       @submit="handleSubmit"
     >
-      <a-form-item label="Name" has-feedback>
+      <a-form-item v-bind="formItemLayout" label="Name" has-feedback>
         <a-input
           v-decorator="[
             'name',
@@ -16,7 +16,7 @@
           @change="handleChange"
         />
       </a-form-item>
-      <a-form-item label="Name thai" has-feedback>
+      <a-form-item v-bind="formItemLayout" label="Name thai" has-feedback>
         <a-input
           v-decorator="[
             'name_th',
@@ -29,6 +29,41 @@
           placeholder="Please input your name thai"
         />
       </a-form-item>
+      <a-form-item v-bind="formItemLayout" label="Category" has-feedback>        
+        <a-select
+            v-decorator="[
+              `category`,
+              {
+                validateTrigger: ['change', 'blur'],
+                rules: [
+                  {
+                    required: true,
+                    whitespace: true,
+                    message: 'Please input !',
+                  },
+                ],
+              },
+            ]"
+          >
+            <div slot="dropdownRender" slot-scope="menu">
+              <v-nodes :vnodes="menu" />
+              <a-divider style="margin: 4px 0" />
+              <div
+                style="padding: 4px 8px; cursor: pointer"
+                @mousedown="(e) => e.preventDefault()"
+                @click="addItem('addMenuType')"
+              >
+                <a-icon type="plus" /> Add item
+              </div>
+            </div>
+            <a-select-option
+              v-for="(value, menuIndex) in menuType"
+              :key="menuIndex"
+              :value="value.id"
+              >{{ value.name }}</a-select-option
+            >
+          </a-select>
+        </a-form-item>
       <a-form-item
         v-for="(k, index) in form.getFieldValue('keys')"
         :key="k"
@@ -59,7 +94,7 @@
               <div
                 style="padding: 4px 8px; cursor: pointer"
                 @mousedown="(e) => e.preventDefault()"
-                @click="addItem"
+                @click="addItem('addPriceType')"
               >
                 <a-icon type="plus" /> Add item
               </div>
@@ -135,14 +170,15 @@ export default {
   data() {
     return {
       priceType: [],
+      menuType: [],
       formItemLayout: {
         labelCol: {
           xs: { span: 24 },
-          sm: { span: 4 },
+          sm: { span: 8 },
         },
         wrapperCol: {
           xs: { span: 24 },
-          sm: { span: 20 },
+          sm: { span: 16 },
         },
       },
       id: 0,
@@ -155,19 +191,27 @@ export default {
       visible: false,
       loading: false,
       title: '',
+      addType: '',
     }
   },
   async beforeCreate() {
     this.form = this.$form.createForm(this, { name: 'add_menu' })
     this.form.getFieldDecorator('keys', { initialValue: [], preserve: true })
-    const response = await this.$store.dispatch('chachang/fetchPriceType')
-    if (response) {
+    const priceTye = await this.$store.dispatch('chachang/fetchPriceType')
+    if (priceTye) {
       this.priceType = this.$store.getters['chachang/getPriceTypeList']
+    }
+    const menuType = await this.$store.dispatch('chachang/fetchMenuType')
+    if (menuType) {
+      this.menuType = this.$store.getters['chachang/getMenuTypeList']
     }
   },
   watch: {
     priceType: function () {
       this.priceType = this.$store.getters['chachang/getPriceTypeList']
+    },
+    menuType: function () {
+      this.menuType = this.$store.getters['chachang/getMenuTypeList']
     },
   },
   methods: {
@@ -221,25 +265,29 @@ export default {
       const lastArray = this._.last(nextKeys)
       form.getFieldDecorator(`prices[${lastArray}]`,{initialValue:0})
     },
-    addItem() {
-      console.log('addItem')
+    addItem(value) {
       this.visible = true
+      this.addType = value
     },
     async handleOk(e) {
       this.loading = true
-      console.log(this.title)
-      const response = await this.$store.dispatch('chachang/addPriceType',{name : this.title})
+      const response = await this.$store.dispatch('chachang/'+this.addType,{name : this.title})
       console.log(response)
       if (response) {
-        this.$store.dispatch('chachang/addDefaultPriceNewAfterAddPriceType',response.data)
-        this.priceType = this.$store.getters['chachang/getPriceTypeList']
-        console.log(this.$store.getters['chachang/getPriceTypeList'])
+        if (this.addType == 'addPriceType'){
+          this.$store.dispatch('chachang/addDefaultPriceNewAfterAddPriceType',response.data)
+          this.priceType = this.$store.getters['chachang/getPriceTypeList']
+        }else {
+          this.menuType = this.$store.getters['chachang/getMenuTypeList']
+        }
         this.visible = false
         this.loading = false
+        this.addType = ''
       }
     },
     handleCancel(e) {
       this.visible = false
+      this.addType = ''
     },
   },
 }

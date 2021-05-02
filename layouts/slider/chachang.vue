@@ -10,7 +10,12 @@
     :style="{ left: 0 }"
   >
     <div class="logo" />
-    <a-menu mode="inline" :default-selected-keys="['1']" @click="handleClick" :theme="theme" :selected-keys="[current]">
+    <a-menu mode="inline" :default-selected-keys="['0']" @click="handleClick" :theme="theme" :selected-keys="[current]">
+      <a-menu-item key="0">
+        <nuxt-link to="/chachang">
+          <a-icon type="user" /> <span>Dashboard</span>
+        </nuxt-link>
+      </a-menu-item>
       <a-menu-item key="1">
         <nuxt-link to="/chachang/menu">
           <a-icon type="user" /> <span>Menu</span>
@@ -21,16 +26,24 @@
           <a-icon type="video-camera" /> <span>Order</span>
         </nuxt-link>
       </a-menu-item>
-      <a-menu-item key="3">
-        <nuxt-link to="/chachang/price_type">
-          <a-icon type="video-camera" /> <span>Price type</span>
-        </nuxt-link>
-      </a-menu-item>
-      <a-menu-item key="4">
-        <nuxt-link to="/chachang/payment_type">
-          <a-icon type="video-camera" /> <span>Payment type</span>
-        </nuxt-link>
-      </a-menu-item>
+      <a-sub-menu key="sub1">
+        <span slot="title"><a-icon type="mail" /><span>Menagement</span></span>
+        <a-menu-item key="3">
+          <nuxt-link to="/chachang/menu_type">
+            <a-icon type="video-camera" /> <span>Menu type</span>
+          </nuxt-link>
+        </a-menu-item>
+        <a-menu-item key="4">
+          <nuxt-link to="/chachang/price_type">
+            <a-icon type="video-camera" /> <span>Payment type</span>
+          </nuxt-link>
+        </a-menu-item>
+        <a-menu-item key="5">
+          <nuxt-link to="/chachang/payment_type">
+            <a-icon type="video-camera" /> <span>Payment type</span>
+          </nuxt-link>
+        </a-menu-item>
+      </a-sub-menu>      
     </a-menu>
   </a-layout-sider>
 </template>
