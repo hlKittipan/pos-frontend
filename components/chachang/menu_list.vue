@@ -111,7 +111,7 @@
           {{ text }}
         </template>
       </template>
-      <template slot="category" slot-scope="text, record, index, column">
+      <template slot="type_name" slot-scope="text, record, index, column">
         <span v-if="searchText && searchedColumn === column.dataIndex">
           <template
             v-for="(fragment, i) in text
@@ -127,14 +127,20 @@
             <template v-else>{{ fragment }}</template>
           </template>
         </span>
-        <a-input
-            v-else-if="record.editable"
-            style="margin: -5px 0"
-            :value="text"
-            @change="
-              (e) => handleChange(e.target.value, record.key, 'category', index)
-            "
-          />
+         <a-select
+            v-if="record.editable"
+            style="margin: -5px 0;width: 100%"
+            :default-value="record.type_name"
+            @change="(e) => handleChange(e, record.key, 'type', index)"
+            v-decorator="[`type_name`]"
+          >
+            <a-select-option
+              v-for="(value, menuIndex) in menuType"
+              :key="menuIndex"
+              :value="value.id"
+              >{{ value.name }}</a-select-option
+            >
+          </a-select>
         <template v-else>
           {{ text }}
         </template>
@@ -261,20 +267,20 @@ export default {
           },
         },
         {
-          title: 'Category',
+          title: 'Type',
           width: 100,
-          dataIndex: 'category',
-          key: 'category',
+          dataIndex: 'type_name',
+          key: 'type_name',
           fixed: 'left',
           scopedSlots: {
             filterDropdown: 'filterDropdown',
             filterIcon: 'filterIcon',
-            customRender: 'category',
+            customRender: 'type_name',
           },
-          sorter: (a, b) => a.category.length - b.category.length,
+          sorter: (a, b) => a.type_name.length - b.type_name.length,
           sortDirections: ['descend', 'ascend'],
           onFilter: (value, record) =>
-            record.category
+            record.type_name
               .toString()
               .toLowerCase()
               .includes(value.toLowerCase()),
@@ -315,6 +321,7 @@ export default {
         showQuickJumper: true,
       },
       priceType: [],
+      menuType: [],
     }
   },
   watch:{
@@ -343,6 +350,9 @@ export default {
       this.data = value
       this.cacheData = value
     },
+    getMenuTypeList: function (value) {
+      this.menuType = value
+    },
   },
   computed: {
     getPriceTypeList(){
@@ -350,15 +360,24 @@ export default {
     },
     getMenuList(){
       return this.$store.getters['chachang/getMenuList']
+    },
+    getMenuTypeList(){
+      return this.$store.getters['chachang/getMenuTypeList']
     }
   },
   methods: {
-    handleChange(value, key, column) {
+    handleChange(value, key, column, index) {
       console.log(value);
+      console.log(key);
+      console.log(this.menuType);
+      console.log(column);
       const newData = [...this.data]
       const target = newData.filter((item) => key === item.key)[0]
       if (target) {
         target[column] = value
+        if (column === 'type'){
+          target['type_name'] = this.menuType[index].name
+        }
         this.data = newData
       }
     },
@@ -395,6 +414,7 @@ export default {
         }
       })
       target.price = price
+      target.type_name = this.menuType[this._.findIndex(this.menuType, { 'id': target.type })].name;
       const response = await this.$store.dispatch('chachang/updateMenu',target)
       if (response) {
         this.$notification.open({

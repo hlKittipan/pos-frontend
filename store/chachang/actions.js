@@ -33,7 +33,6 @@ export default {
 
   // Start payment type
   async fetchPaymentType ({ commit }) {
-    console.log(this.$config.axios.BASE_API_URL+'/chachang/payment-type')
     const response = await this.$axios.get(this.$config.axios.BASE_API_URL+'/chachang/payment-type')
     commit('SET_PAYMENT_TYPE', response.data)
     return response
@@ -59,7 +58,6 @@ export default {
 
   // Start Menu
   async fetchMenu ({ commit }) {
-    console.log(this.$config.axios.BASE_API_URL+'/chachang/menu')
     const response = await this.$axios.get(this.$config.axios.BASE_API_URL+'/chachang/menu')
     commit('SET_MENU', response.data)
     return response

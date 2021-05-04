@@ -24,7 +24,9 @@ export default {
         id: state.menuList[key]._id,
         name: state.menuList[key].name,
         name_th: state.menuList[key].name_th,
-        ...price
+        ...price,
+        type: state.menuList[key].type ? state.menuList[key].type._id : '',
+        type_name: state.menuList[key].type ? state.menuList[key].type.name : '',
       });
     }
     return data
