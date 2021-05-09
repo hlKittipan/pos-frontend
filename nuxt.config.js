@@ -43,6 +43,7 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
+    'nuxt-i18n',
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
@@ -66,6 +67,29 @@ export default {
   env: {
     baseUrl: process.env.NODE_ENV === 'dev' ? 'http://localhost:3000' : 'https://my-domain.com',
   },
+
+  i18n: {
+    locales: ['en', 'th', 'fr', 'es'],
+    defaultLocale: 'en',
+    vueI18n: {
+      fallbackLocale: 'en',
+      messages: {
+        en: {
+          welcome: 'Welcome'
+        },
+        fr: {
+          welcome: 'ยินดีต้อนรับ'
+        },
+        fr: {
+          welcome: 'Bienvenue'
+        },
+        es: {
+          welcome: 'Bienvenido'
+        }
+      }
+    }
+  },
+
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
     loaders: {
