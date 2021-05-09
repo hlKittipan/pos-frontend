@@ -62,12 +62,6 @@ export default {
     const index = state.productList.findIndex(item => item._id == id)
     state.productList.splice(index, 1)
   },
-  ADD_DEFAULT_PRICE_AFTER_ADD_PRICE_TYPE(state, value){
-    const item = state.productList
-    for (const keyItem in item) {
-      item[keyItem].price.push({price: 0.0, ...value})
-    }
-  },
   // End product
 
   // Start product type

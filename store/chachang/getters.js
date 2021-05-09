@@ -9,7 +9,7 @@ export default {
     return state.setSelectedKey
   },  
   getLanguageCode: (state) => {
-    return state.setLanguageCode
+    return state.languageCode
   },
   getProductList: (state) => {
     const data = [];

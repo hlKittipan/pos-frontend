@@ -16,18 +16,77 @@
           @change="handleChange"
         />
       </a-form-item>
-      <a-form-item v-bind="formItemLayout" label="Name thai" has-feedback>
-        <a-input
-          v-decorator="[
-            'name_th',
-            {
-              rules: [
-                { required: true, message: 'Please input your name thai!' },
-              ],
-            },
-          ]"
-          placeholder="Please input your name thai"
-        />
+       <a-form-item
+        v-for="(k, index) in form.getFieldValue('keys')"
+        :key="k"
+        v-bind="index === 0 ? formItemLayout : formItemLayoutWithOutLabel"
+        :label="index === 0 ? 'Multi Language' : ''"
+        :required="false"
+      >
+        <a-input-group compact>
+          <a-select
+            style="width: 40%"
+            v-decorator="[
+              `languages[${k}]`,
+              {
+                validateTrigger: ['change', 'blur'],
+                rules: [
+                  {
+                    required: true,
+                    whitespace: true,
+                    message: 'Please input !',
+                  },
+                ],
+              },
+            ]"
+          >
+            <!-- <div slot="dropdownRender" slot-scope="product">
+              <v-nodes :vnodes="product" />
+              <a-divider style="margin: 4px 0" />
+              <div
+                style="padding: 4px 8px; cursor: pointer"
+                @mousedown="(e) => e.preventDefault()"
+                @click="addItem('addLanguage')"
+              >
+                <a-icon type="plus" /> Add item
+              </div>
+            </div> -->
+            <a-select-option
+              v-for="(value, lang) in LanguageCode"
+              :key="lang"
+              :value="value.code"
+              >{{ value.name }}</a-select-option
+            >
+          </a-select>
+          <a-input
+            style="width: 50%"
+            v-decorator="[
+              `languages_value[${k}]`,
+              {
+                validateTrigger: ['change', 'blur'],
+                rules: [
+                  {
+                    required: true,
+                    whitespace: true,
+                  },
+                ],
+              },
+            ]"
+          />
+          <a-icon
+            style="width: 10%"
+            v-if="form.getFieldValue('keys').length > 1"
+            class="dynamic-delete-button"
+            type="minus-circle-o"
+            :disabled="form.getFieldValue('keys').length === 1"
+            @click="() => remove(k)"
+          />
+        </a-input-group>
+      </a-form-item>
+       <a-form-item v-bind="formItemLayoutWithOutLabel">
+        <a-button type="dashed" style="width: 60%" @click="add">
+          <a-icon type="plus" /> Add Language
+        </a-button>
       </a-form-item>
       <a-form-item v-bind="formItemLayout" label="Category" has-feedback>        
         <a-select
@@ -63,15 +122,15 @@
               >{{ value.name }}</a-select-option
             >
           </a-select>
-        </a-form-item>
+      </a-form-item>
       <a-form-item
-        v-for="(k, index) in LanguageCode"
+        v-for="(k, index) in priceType"
         :key="index"
         v-bind=" formItemLayout "
         :label="k.name"
         :required="false"
       >
-        <input type="hidden" :name="'LanguageCode['+index+']'" :value="k.id" />
+        <input type="hidden" :name="'priceType['+index+']'" :value="k.id" />
          <a-input-number
           v-decorator="[
             `prices[${index}]`,
@@ -79,78 +138,8 @@
           ]"
         />
       </a-form-item>
-      <a-form-item
-        v-for="(k, index) in form.getFieldValue('keys')"
-        :key="k"
-        v-bind="index === 0 ? formItemLayout : formItemLayoutWithOutLabel"
-        :label="index === 0 ? 'Multi Language' : ''"
-        :required="false"
-      >
-        <a-input-group compact>
-          <a-select
-            style="width: 30%"
-            v-decorator="[
-              `languages[${k}]`,
-              {
-                validateTrigger: ['change', 'blur'],
-                rules: [
-                  {
-                    required: true,
-                    whitespace: true,
-                    message: 'Please input !',
-                  },
-                ],
-              },
-            ]"
-          >
-            <div slot="dropdownRender" slot-scope="product">
-              <v-nodes :vnodes="product" />
-              <a-divider style="margin: 4px 0" />
-              <div
-                style="padding: 4px 8px; cursor: pointer"
-                @mousedown="(e) => e.preventDefault()"
-                @click="addItem('addLanguage')"
-              >
-                <a-icon type="plus" /> Add item
-              </div>
-            </div>
-            <a-select-option
-              v-for="(value, lang) in LanguageCode"
-              :key="lang"
-              :value="value.id"
-              >{{ value.name }}</a-select-option
-            >
-          </a-select>
-          <a-input
-            style="width: 30%"
-            v-decorator="[
-              `languages_value[${k}]`,
-              {
-                validateTrigger: ['change', 'blur'],
-                rules: [
-                  {
-                    required: true,
-                    whitespace: true,
-                  },
-                ],
-              },
-            ]"
-          />
-          <a-icon
-            style="width: 10%"
-            v-if="form.getFieldValue('keys').length > 1"
-            class="dynamic-delete-button"
-            type="minus-circle-o"
-            :disabled="form.getFieldValue('keys').length === 1"
-            @click="() => remove(k)"
-          />
-        </a-input-group>
-      </a-form-item>
-      <a-form-item v-bind="formItemLayoutWithOutLabel">
-        <a-button type="dashed" style="width: 60%" @click="add">
-          <a-icon type="plus" /> Add field
-        </a-button>
-      </a-form-item>
+     
+     
 
       <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
         <a-button type="primary" html-type="submit"> Submit </a-button>
@@ -185,6 +174,7 @@ export default {
   data() {
     return {
       LanguageCode: [],
+      priceType: [],
       productType: [],
       formItemLayout: {
         labelCol: {
@@ -216,6 +206,10 @@ export default {
     if (LanguageCode) {
       this.LanguageCode = this.$store.getters['chachang/getLanguageCode']
     }
+    const PriceType = await this.$store.dispatch('chachang/fetchPriceType')
+    if (PriceType) {
+      this.priceType = this.$store.getters['chachang/getPriceTypeList']
+    }
     const productType = await this.$store.dispatch('chachang/fetchProductType')
     if (productType) {
       this.productType = this.$store.getters['chachang/getProductTypeList']
@@ -224,6 +218,9 @@ export default {
   watch: {
     LanguageCode: function () {
       this.LanguageCode = this.$store.getters['chachang/getLanguageCode']
+    },
+    priceType: function () {
+      this.priceType = this.$store.getters['chachang/getPriceTypeList']
     },
     productType: function () {
       this.productType = this.$store.getters['chachang/getProductTypeList']
@@ -236,16 +233,16 @@ export default {
         if (!err) {
           // console.log('Received values of form: ', values)
           const response = await this.$store.dispatch('chachang/addProduct',values)
-          this.loading = false
-          this.form.resetFields();
-          this.id = 0
-          if( response.status == 200) {
-            this.$notification.open({
-              message: 'Insert '+response.statusText,
-              description: response.statusText,
-              icon: <a-icon type="smile" style="color: #108ee9" />,
-            });
-          }
+          // this.loading = false
+          // this.form.resetFields();
+          // this.id = 0
+          // if( response.status == 200) {
+          //   this.$notification.open({
+          //     message: 'Insert '+response.statusText,
+          //     description: response.statusText,
+          //     icon: <a-icon type="smile" style="color: #108ee9" />,
+          //   });
+          // }
         }
       })
     },

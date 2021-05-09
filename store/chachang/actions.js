@@ -69,6 +69,7 @@ export default {
     return response
   },
   async addProduct ({ commit }, value) {
+    value.title = value.name
     if(value.prices && value.priceType){
       const price = []
       for(const key in value.prices){
@@ -76,7 +77,14 @@ export default {
       }
       value.price= price
     }
-    const response = await this.$axios.post(this.$config.axios.BASE_API_URL+'chachang/product',value)
+    if(value.languages && value.languages_value){
+      for(const key in value.languages){
+        price.push({_id:value.priceType[key],price:value.prices[key]})
+        value.language[value.languages[key]]= value.languages_value[key]
+      }
+    }
+    console.log(value)
+    // const response = await this.$axios.post(this.$config.axios.BASE_API_URL+'chachang/product',value)
     if(response){commit('ADD_PRODUCT',response.data)}
     return response
   },
@@ -91,9 +99,6 @@ export default {
       commit('DELETE_PRODUCT',id)
     }
     return response
-  },
-  addDefaultPriceNewAfterAddPriceType ({ commit }, value) {
-    commit('ADD_DEFAULT_PRICE_AFTER_ADD_PRICE_TYPE',value)
   },
   // End Product
 
