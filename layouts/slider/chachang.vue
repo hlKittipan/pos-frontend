@@ -13,34 +13,39 @@
     <a-menu mode="inline" :default-selected-keys="['0']" @click="handleClick" :theme="theme" :selected-keys="[current]">
       <a-menu-item key="0">
         <nuxt-link to="/chachang">
-          <a-icon type="user" /> <span>Dashboard</span>
+          <a-icon type="dashboard" /> <span>Dashboard</span>
         </nuxt-link>
       </a-menu-item>
       <a-menu-item key="1">
-        <nuxt-link to="/chachang/menu">
-          <a-icon type="user" /> <span>Menu</span>
+        <nuxt-link to="/chachang/product">
+          <a-icon type="experiment" /> <span>Product</span>
         </nuxt-link>
       </a-menu-item>
       <a-menu-item key="2">
         <nuxt-link to="/chachang/order">
-          <a-icon type="video-camera" /> <span>Order</span>
+          <a-icon type="container" /> <span>Order</span>
         </nuxt-link>
       </a-menu-item>
       <a-sub-menu key="sub1">
-        <span slot="title"><a-icon type="mail" /><span>Menagement</span></span>
+        <span slot="title"><a-icon type="database" /><span>Menagement</span></span>
         <a-menu-item key="3">
-          <nuxt-link to="/chachang/menu_type">
-            <a-icon type="video-camera" /> <span>Menu type</span>
+          <nuxt-link to="/chachang/product_type">
+            <a-icon type="experiment" /> <span>Product type</span>
           </nuxt-link>
         </a-menu-item>
         <a-menu-item key="4">
           <nuxt-link to="/chachang/price_type">
-            <a-icon type="video-camera" /> <span>Payment type</span>
+            <a-icon type="dollar" /> <span>Price type</span>
           </nuxt-link>
         </a-menu-item>
         <a-menu-item key="5">
           <nuxt-link to="/chachang/payment_type">
-            <a-icon type="video-camera" /> <span>Payment type</span>
+            <a-icon type="wallet" /> <span>Payment type</span>
+          </nuxt-link>
+        </a-menu-item>
+        <a-menu-item key="6">
+          <nuxt-link to="/chachang/language">
+            <a-icon type="solution" /> <span>Language</span>
           </nuxt-link>
         </a-menu-item>
       </a-sub-menu>      

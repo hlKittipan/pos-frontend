@@ -1,8 +1,9 @@
 export default () => ({
-  menuList: [],
-  menuType: [],
+  productList: [],
+  productType: [],
   paymentType: [],
   priceType: [],
+  languageCode: [],
   sliderChaChang: false,
   loadingChaChang: true,
   selectedKeys: "1",

@@ -8,6 +8,9 @@ export default {
   SET_SELECTED_KEY(state, key) {
     state.selectedKeys = key
   },
+  SET_LANGUAGE(state, value) {
+    state.languageCode = value
+  },
 
   // Start price type
   SET_PRICE_TYPE(state, priceType) {
@@ -43,44 +46,44 @@ export default {
   },
   // End payment type
 
-  // Start menu
-  SET_MENU(state, menu) {
-    state.menuList = menu
+  // Start product
+  SET_PRODUCT(state, product) {
+    state.productList = product
   },
-  ADD_MENU(state, menu){
-    console.log(menu)
-    state.menuList.push(menu)
+  ADD_PRODUCT(state, product){
+    console.log(product)
+    state.productList.push(product)
   },
-  UPDATE_MENU(state, value){
-    const index = state.menuList.findIndex(item => item._id == value._id)
-    state.menuList[index] = value
+  UPDATE_PRODUCT(state, value){
+    const index = state.productList.findIndex(item => item._id == value._id)
+    state.productList[index] = value
   },
-  DELETE_MENU(state, id){
-    const index = state.menuList.findIndex(item => item._id == id)
-    state.menuList.splice(index, 1)
+  DELETE_PRODUCT(state, id){
+    const index = state.productList.findIndex(item => item._id == id)
+    state.productList.splice(index, 1)
   },
   ADD_DEFAULT_PRICE_AFTER_ADD_PRICE_TYPE(state, value){
-    const item = state.menuList
+    const item = state.productList
     for (const keyItem in item) {
       item[keyItem].price.push({price: 0.0, ...value})
     }
   },
-  // End menu
+  // End product
 
-  // Start menu type
-  SET_MENU_TYPE(state, menuType) {
-    state.menuType = menuType
+  // Start product type
+  SET_PRODUCT_TYPE(state, productType) {
+    state.productType = productType
   },
-  ADD_MENU_TYPE(state, title){
-    state.menuType.push(title)
+  ADD_PRODUCT_TYPE(state, title){
+    state.productType.push(title)
   },
-  UPDATE_MENU_TYPE(state, value){
-    const index = state.menuType.findIndex(item => item._id == value._id)
-    state.menuType[index].name = value.name
+  UPDATE_PRODUCT_TYPE(state, value){
+    const index = state.productType.findIndex(item => item._id == value._id)
+    state.productType[index].name = value.name
   },
-  DELETE_MENU_TYPE(state, id){
-    const index = state.menuType.findIndex(item => item.id == id)
-    state.menuType.splice(index, 1)
+  DELETE_PRODUCT_TYPE(state, id){
+    const index = state.productType.findIndex(item => item.id == id)
+    state.productType.splice(index, 1)
   },
-  // End menu type
+  // End product type
 }

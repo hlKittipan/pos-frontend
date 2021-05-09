@@ -82,35 +82,7 @@
         <template v-else>
           {{ text }}
         </template>
-      </template>
-      <template slot="name_th" slot-scope="text, record, index, column">
-        <span v-if="searchText && searchedColumn === column.dataIndex">
-          <template
-            v-for="(fragment, i) in text
-              .toString()
-              .split(new RegExp(`(?<=${searchText})|(?=${searchText})`, 'i'))"
-          >
-            <mark
-              v-if="fragment.toLowerCase() === searchText.toLowerCase()"
-              :key="i"
-              class="highlight"
-              >{{ fragment }}</mark
-            >
-            <template v-else>{{ fragment }}</template>
-          </template>
-        </span>
-        <a-input
-            v-else-if="record.editable"
-            style="margin: -5px 0"
-            :value="text"
-            @change="
-              (e) => handleChange(e.target.value, record.key, 'name_th', index)
-            "
-          />
-        <template v-else>
-          {{ text }}
-        </template>
-      </template>
+      </template>     
       <template slot="type_name" slot-scope="text, record, index, column">
         <span v-if="searchText && searchedColumn === column.dataIndex">
           <template
@@ -135,8 +107,8 @@
             v-decorator="[`type_name`]"
           >
             <a-select-option
-              v-for="(value, menuIndex) in menuType"
-              :key="menuIndex"
+              v-for="(value, productIndex) in productType"
+              :key="productIndex"
               :value="value.id"
               >{{ value.name }}</a-select-option
             >
@@ -166,21 +138,28 @@
       </template>
       <template slot="action" slot-scope="text, record, index">
         <div class="editable-row-action">
+          <span>
+            <a
+              @click="() => view(record.key, index)"
+              ><a-icon type="eye" /></a
+            >
+          </span>
+          <a-divider type="vertical" />
           <span v-if="record.editable">
-            <a @click="() => save(record.id)">Save</a>
+            <a @click="() => save(record.id)"><a-icon type="save" /></a>
             <a-popconfirm
               title="Sure to cancel?"
               @confirm="() => cancel(record.key, index)"
             >
               <a-divider type="vertical" />
-              <a>Cancel</a>
+              <a><a-icon type="eye-invisible" /></a>
             </a-popconfirm>
           </span>
           <span v-else>
             <a
               :disabled="editingKey !== ''"
               @click="() => edit(record.key, index)"
-              >Edit</a
+              ><a-icon type="edit" /></a
             >
           </span>
           <a-divider type="vertical" />
@@ -189,8 +168,9 @@
             title="Sure to delete?"
             @confirm="() => onDelete(record.id)"
           >
-            <a href="javascript:;">Delete</a>
+            <a href="javascript:;"><a-icon type="delete" /></a>
           </a-popconfirm>
+          
         </div>
       </template>
     </a-table>
@@ -198,17 +178,17 @@
 </template>
 <script>
 export default {
-  name: 'MenuList',
+  name: 'ProductList',
   computed: {
-    menuList() {
+    productList() {
       // eslint-disable-next-line no-console
-      return this.$store.getters['chachang/getMenuList']
+      return this.$store.getters['chachang/getProductList']
     },
   },
   async beforeCreate() {
-    const response = await this.$store.dispatch('chachang/fetchMenu')
+    const response = await this.$store.dispatch('chachang/fetchProduct')
     if (response) {
-      this.data = this.$store.getters['chachang/getMenuList']
+      this.data = this.$store.getters['chachang/getProductList']
       this.cacheData = this.data
       this.loadings = false
     }
@@ -240,33 +220,7 @@ export default {
             }
           },
         },
-        {
-          title: 'Name TH',
-          width: 100,
-          dataIndex: 'name_th',
-          key: 'name_th',
-          fixed: 'left',
-          scopedSlots: {
-            filterDropdown: 'filterDropdown',
-            filterIcon: 'filterIcon',
-            customRender: 'name_th',
-          },
-          sorter: (a, b) => a.name_th.length - b.name_th.length,
-          sortDirections: ['descend', 'ascend'],
-          onFilter: (value, record) =>
-            record.name_th
-              .toString()
-              .toLowerCase()
-              .includes(value.toLowerCase()),
-          onFilterDropdownVisibleChange: (visible) => {
-            if (visible) {
-              setTimeout(() => {
-                this.searchInput.focus()
-              }, 0)
-            }
-          },
-        },
-        {
+                {
           title: 'Type',
           width: 100,
           dataIndex: 'type_name',
@@ -298,7 +252,7 @@ export default {
         },
         {
           title: 'Action',
-          width: 80,
+          width: 100,
           dataIndex: 'action',
           key: 'action',
           fixed: 'right',
@@ -321,7 +275,7 @@ export default {
         showQuickJumper: true,
       },
       priceType: [],
-      menuType: [],
+      productType: [],
     }
   },
   watch:{
@@ -346,37 +300,37 @@ export default {
       }
       this.priceType = cachePriceType
     },
-    getMenuList: function (value) {
+    getProductList: function (value) {
       this.data = value
       this.cacheData = value
     },
-    getMenuTypeList: function (value) {
-      this.menuType = value
+    getProductTypeList: function (value) {
+      this.productType = value
     },
   },
   computed: {
     getPriceTypeList(){
       return this.$store.getters['chachang/getPriceTypeList']
     },
-    getMenuList(){
-      return this.$store.getters['chachang/getMenuList']
+    getProductList(){
+      return this.$store.getters['chachang/getProductList']
     },
-    getMenuTypeList(){
-      return this.$store.getters['chachang/getMenuTypeList']
+    getProductTypeList(){
+      return this.$store.getters['chachang/getProductTypeList']
     }
   },
   methods: {
     handleChange(value, key, column, index) {
       console.log(value);
       console.log(key);
-      console.log(this.menuType);
+      console.log(this.productType);
       console.log(column);
       const newData = [...this.data]
       const target = newData.filter((item) => key === item.key)[0]
       if (target) {
         target[column] = value
         if (column === 'type'){
-          target['type_name'] = this.menuType[index].name
+          target['type_name'] = this.productType[index].name
         }
         this.data = newData
       }
@@ -390,6 +344,11 @@ export default {
     handleReset(clearFilters) {
       clearFilters()
       this.searchText = ''
+    },
+    view(key) {
+      const newData = [...this.data]
+      const target = newData.filter((item) => key === item.key)[0]
+      console.log(target)
     },
     edit(key) {
       const newData = [...this.data]
@@ -414,8 +373,8 @@ export default {
         }
       })
       target.price = price
-      target.type_name = this.menuType[this._.findIndex(this.menuType, { 'id': target.type })].name;
-      const response = await this.$store.dispatch('chachang/updateMenu',target)
+      target.type_name = this.productType[this._.findIndex(this.productType, { 'id': target.type })].name;
+      const response = await this.$store.dispatch('chachang/updateProduct',target)
       if (response) {
         this.$notification.open({
           message: 'Updated '+response.statusText,
@@ -446,7 +405,7 @@ export default {
     },
     async onDelete(id) {
       const newData = [...this.data]
-      const response = await this.$store.dispatch('chachang/deleteMenu',id)
+      const response = await this.$store.dispatch('chachang/deleteProduct',id)
       if (response) {
         this.$notification.open({
           message: 'Deleted '+response.statusText,

@@ -25,7 +25,7 @@
 
 <script>
 export default {
-  name: 'MenuTypeAdd',
+  name: 'ProductTypeAdd',
   components: {
     VNodes: {
       functional: true,
@@ -33,7 +33,7 @@ export default {
     },
   },
   beforeCreate() {
-    this.form = this.$form.createForm(this, { name: 'menu_type_add' })
+    this.form = this.$form.createForm(this, { name: 'product_type_add' })
   },
   data() {
     return {
@@ -66,7 +66,7 @@ export default {
       this.form.validateFields(async (err, values) => {
         if (!err) {
           console.log('Received values of form: ', values)
-          const response = await this.$store.dispatch('chachang/addMenuType',values)
+          const response = await this.$store.dispatch('chachang/addProductType',values)
           console.log(response)
           this.loading = false
           this.form.resetFields();

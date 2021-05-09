@@ -9,8 +9,8 @@
             </b-button>
           </b-col>
           <b-col lg="4" class="pb-2">
-            <b-button href="/chachang/menu" variant="success" size="lg">
-              Add Menu
+            <b-button href="/chachang/product" variant="success" size="lg">
+              Add product
             </b-button>
           </b-col>
         </b-row>

@@ -45,37 +45,52 @@
               },
             ]"
           >
-            <div slot="dropdownRender" slot-scope="menu">
-              <v-nodes :vnodes="menu" />
+            <div slot="dropdownRender" slot-scope="product">
+              <v-nodes :vnodes="product" />
               <a-divider style="margin: 4px 0" />
               <div
                 style="padding: 4px 8px; cursor: pointer"
                 @mousedown="(e) => e.preventDefault()"
-                @click="addItem('addMenuType')"
+                @click="addItem('addProductType')"
               >
                 <a-icon type="plus" /> Add item
               </div>
             </div>
             <a-select-option
-              v-for="(value, menuIndex) in menuType"
-              :key="menuIndex"
+              v-for="(value, productIndex) in productType"
+              :key="productIndex"
               :value="value.id"
               >{{ value.name }}</a-select-option
             >
           </a-select>
         </a-form-item>
       <a-form-item
+        v-for="(k, index) in LanguageCode"
+        :key="index"
+        v-bind=" formItemLayout "
+        :label="k.name"
+        :required="false"
+      >
+        <input type="hidden" :name="'LanguageCode['+index+']'" :value="k.id" />
+         <a-input-number
+          v-decorator="[
+            `prices[${index}]`,
+            { initialValue: 0 },
+          ]"
+        />
+      </a-form-item>
+      <a-form-item
         v-for="(k, index) in form.getFieldValue('keys')"
         :key="k"
         v-bind="index === 0 ? formItemLayout : formItemLayoutWithOutLabel"
-        :label="index === 0 ? 'Price type' : ''"
+        :label="index === 0 ? 'Multi Language' : ''"
         :required="false"
       >
         <a-input-group compact>
           <a-select
             style="width: 30%"
             v-decorator="[
-              `priceType[${k}]`,
+              `languages[${k}]`,
               {
                 validateTrigger: ['change', 'blur'],
                 rules: [
@@ -88,28 +103,28 @@
               },
             ]"
           >
-            <div slot="dropdownRender" slot-scope="menu">
-              <v-nodes :vnodes="menu" />
+            <div slot="dropdownRender" slot-scope="product">
+              <v-nodes :vnodes="product" />
               <a-divider style="margin: 4px 0" />
               <div
                 style="padding: 4px 8px; cursor: pointer"
                 @mousedown="(e) => e.preventDefault()"
-                @click="addItem('addPriceType')"
+                @click="addItem('addLanguage')"
               >
                 <a-icon type="plus" /> Add item
               </div>
             </div>
             <a-select-option
-              v-for="(value, priceIndex) in priceType"
-              :key="priceIndex"
+              v-for="(value, lang) in LanguageCode"
+              :key="lang"
               :value="value.id"
               >{{ value.name }}</a-select-option
             >
           </a-select>
-          <a-input-number
+          <a-input
             style="width: 30%"
             v-decorator="[
-              `prices[${k}]`,
+              `languages_value[${k}]`,
               {
                 validateTrigger: ['change', 'blur'],
                 rules: [
@@ -160,7 +175,7 @@
 
 <script>
 export default {
-  name: 'AddMenu',
+  name: 'AddProduct',
   components: {
     VNodes: {
       functional: true,
@@ -169,8 +184,8 @@ export default {
   },
   data() {
     return {
-      priceType: [],
-      menuType: [],
+      LanguageCode: [],
+      productType: [],
       formItemLayout: {
         labelCol: {
           xs: { span: 24 },
@@ -195,23 +210,23 @@ export default {
     }
   },
   async beforeCreate() {
-    this.form = this.$form.createForm(this, { name: 'add_menu' })
+    this.form = this.$form.createForm(this, { name: 'product_add' })
     this.form.getFieldDecorator('keys', { initialValue: [], preserve: true })
-    const priceTye = await this.$store.dispatch('chachang/fetchPriceType')
-    if (priceTye) {
-      this.priceType = this.$store.getters['chachang/getPriceTypeList']
+    const LanguageCode = await this.$store.dispatch('chachang/fetchLanguage')
+    if (LanguageCode) {
+      this.LanguageCode = this.$store.getters['chachang/getLanguageCode']
     }
-    const menuType = await this.$store.dispatch('chachang/fetchMenuType')
-    if (menuType) {
-      this.menuType = this.$store.getters['chachang/getMenuTypeList']
+    const productType = await this.$store.dispatch('chachang/fetchProductType')
+    if (productType) {
+      this.productType = this.$store.getters['chachang/getProductTypeList']
     }
   },
   watch: {
-    priceType: function () {
-      this.priceType = this.$store.getters['chachang/getPriceTypeList']
+    LanguageCode: function () {
+      this.LanguageCode = this.$store.getters['chachang/getLanguageCode']
     },
-    menuType: function () {
-      this.menuType = this.$store.getters['chachang/getMenuTypeList']
+    productType: function () {
+      this.productType = this.$store.getters['chachang/getProductTypeList']
     },
   },
   methods: {
@@ -220,7 +235,7 @@ export default {
       this.form.validateFields( async (err, values) => {
         if (!err) {
           // console.log('Received values of form: ', values)
-          const response = await this.$store.dispatch('chachang/addMenu',values)
+          const response = await this.$store.dispatch('chachang/addProduct',values)
           this.loading = false
           this.form.resetFields();
           this.id = 0
@@ -263,7 +278,6 @@ export default {
         keys: nextKeys,
       })
       const lastArray = this._.last(nextKeys)
-      form.getFieldDecorator(`prices[${lastArray}]`,{initialValue:0})
     },
     addItem(value) {
       this.visible = true
@@ -274,11 +288,10 @@ export default {
       const response = await this.$store.dispatch('chachang/'+this.addType,{name : this.title})
       console.log(response)
       if (response) {
-        if (this.addType == 'addPriceType'){
-          this.$store.dispatch('chachang/addDefaultPriceNewAfterAddPriceType',response.data)
-          this.priceType = this.$store.getters['chachang/getPriceTypeList']
+        if (this.addType == 'addLanguage'){
+          this.LanguageCode = this.$store.getters['chachang/getLanguageCode']
         }else {
-          this.menuType = this.$store.getters['chachang/getMenuTypeList']
+          this.productType = this.$store.getters['chachang/getProductTypeList']
         }
         this.visible = false
         this.loading = false

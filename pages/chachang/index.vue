@@ -4,7 +4,7 @@
       <a-col :span="12">
         <a-space>
           <a-button type="primary">
-            <nuxt-link to="/chachang/menu">Menu</nuxt-link>
+            <nuxt-link to="/chachang/product">Product</nuxt-link>
           </a-button>
           <a-button type="primary">
             <nuxt-link to="/chachang/order">Order</nuxt-link>

@@ -7,11 +7,14 @@ export default {
   },
   getSelectedKey: (state) => {
     return state.setSelectedKey
+  },  
+  getLanguageCode: (state) => {
+    return state.setLanguageCode
   },
-  getMenuList: (state) => {
+  getProductList: (state) => {
     const data = [];
-    for (const key in state.menuList) {
-      const item = state.menuList[key].price
+    for (const key in state.productList) {
+      const item = state.productList[key].price
       let price = {}
       for (const keyItem in item){
         price[item[keyItem].name] = item[keyItem].price
@@ -21,12 +24,11 @@ export default {
       }
       data.push({
         key: key,
-        id: state.menuList[key]._id,
-        name: state.menuList[key].name,
-        name_th: state.menuList[key].name_th,
+        id: state.productList[key]._id,
+        name: state.productList[key].title,
         ...price,
-        type: state.menuList[key].type ? state.menuList[key].type._id : '',
-        type_name: state.menuList[key].type ? state.menuList[key].type.name : '',
+        type: state.productList[key].type ? state.productList[key].type._id : '',
+        type_name: state.productList[key].type ? state.productList[key].type.name : '',
       });
     }
     return data
@@ -53,13 +55,13 @@ export default {
     }
     return data
   },
-  getMenuTypeList: (state) => {
+  getProductTypeList: (state) => {
     const data = [];
-    for (const key in state.menuType) {
+    for (const key in state.productType) {
       data.push({
         key: key,
-        name: state.menuType[key].name,
-        id: state.menuType[key]._id,
+        name: state.productType[key].name,
+        id: state.productType[key]._id,
       });
     }
     return data

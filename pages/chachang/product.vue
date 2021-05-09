@@ -1,24 +1,24 @@
 <template>
   <a-row type="flex"  justify="center">
     <a-col :xs="{ span: 24 }" :lg="{ span: 16}">
-      <ChachangMenuList />
+      <ChachangProductList />
     </a-col>
     <a-col  :xs="{ span: 24 }" :lg="{ span: 8}">
-      <ChachangAddMenu />
+      <ChachangAddProduct />
     </a-col>
   </a-row>
 </template>
 
 <script>
-import ChachangMenuList from '@/components/chachang/menu_list'
-import ChachangAddMenu from '@/components/chachang/add_menu'
+import ChachangProductList from '@/components/chachang/product_list'
+import ChachangAddProduct from '@/components/chachang/product_add'
 
 export default {
   layout: 'chachang',
-  name: 'Menu',
+  name: 'Product',
   components: {
-    ChachangMenuList,
-    ChachangAddMenu,
+    ChachangProductList,
+    ChachangAddProduct,
   },
 }
 </script>
