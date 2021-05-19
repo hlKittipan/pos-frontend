@@ -3,6 +3,7 @@ export default () => ({
   productType: [],
   paymentType: [],
   priceType: [],
+  priceTemplate: [],
   languageCode: [],
   sliderChaChang: false,
   loadingChaChang: true,

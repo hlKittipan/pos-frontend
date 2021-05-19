@@ -29,6 +29,23 @@ export default {
   },
   // End price type
 
+  // Start price template
+  SET_PRICE_TEMPLATE(state, priceTemplate) {
+    state.priceTemplate = priceTemplate
+  },
+  ADD_PRICE_TEMPLATE(state, title){
+    state.priceTemplate.push(title)
+  },
+  UPDATE_PRICE_TEMPLATE(state, value){
+    const index = state.priceTemplate.findIndex(item => item._id == value._id)
+    state.priceTemplate[index].name = value.name
+  },
+  DELETE_PRICE_TEMPLATE(state, id){
+    const index = state.priceTemplate.findIndex(item => item.id == id)
+    state.priceTemplate.splice(index, 1)
+  },
+  // End price template
+
   // Start payment type
   SET_PAYMENT_TYPE(state, paymentType) {
     state.paymentType = paymentType

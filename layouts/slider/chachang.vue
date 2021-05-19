@@ -39,16 +39,26 @@
           </nuxt-link>
         </a-menu-item>
         <a-menu-item key="5">
+          <nuxt-link to="/chachang/price_template">
+            <a-icon type="dollar" /> <span>Price template</span>
+          </nuxt-link>
+        </a-menu-item>
+        <a-menu-item key="6">
           <nuxt-link to="/chachang/payment_type">
             <a-icon type="wallet" /> <span>Payment type</span>
           </nuxt-link>
         </a-menu-item>
-        <a-menu-item key="6">
+        <a-menu-item key="7">
           <nuxt-link to="/chachang/language">
-            <a-icon type="solution" /> <span>Language</span>
+            <a-icon type="global" /> <span>Language</span>
           </nuxt-link>
         </a-menu-item>
-      </a-sub-menu>      
+        <a-menu-item key="8">
+          <nuxt-link to="/chachang/setting">
+            <a-icon type="setting" /> <span>Setting</span>
+          </nuxt-link>
+        </a-menu-item>
+      </a-sub-menu>
     </a-menu>
   </a-layout-sider>
 </template>
@@ -57,7 +67,7 @@ export default {
   name: 'ChaChangSlider',
   data() {
     return {
-      current: '1',
+      current: '0',
       theme: 'dark',
     };
   },

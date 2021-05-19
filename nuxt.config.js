@@ -16,7 +16,7 @@ export default {
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
     // 'ant-design-vue/dist/antd.css',
-    // '@/assets/css/index',
+    '@/assets/css/index',
     // '~/assets/css/variables.less',
     {
       src: '~/assets/css/variables.less',
@@ -48,7 +48,8 @@ export default {
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
-    baseURL: process.env.BASE_API_URL || 'http://localhost:4000',
+    baseURL: process.env.BASE_API_URL || 'http://localhost:4000/',
+    BASE_API_URL: process.env.BASE_API_URL || 'http://localhost:4000/',
     retry: { retries: 3 },
   },
   publicRuntimeConfig: {
@@ -65,7 +66,7 @@ export default {
   },
 
   env: {
-    baseUrl: process.env.NODE_ENV === 'dev' ? 'http://localhost:3000' : 'https://my-domain.com',
+    baseUrl: process.env.NODE_ENV === 'dev' ? 'http://localhost:3000/' : 'https://my-domain.com/',
   },
 
   i18n: {

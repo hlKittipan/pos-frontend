@@ -83,40 +83,7 @@
           {{ text }}
         </template>
       </template>
-      <template slot="type_name" slot-scope="text, record, index, column">
-        <span v-if="searchText && searchedColumn === column.dataIndex">
-          <template
-            v-for="(fragment, i) in text
-              .toString()
-              .split(new RegExp(`(?<=${searchText})|(?=${searchText})`, 'i'))"
-          >
-            <mark
-              v-if="fragment.toLowerCase() === searchText.toLowerCase()"
-              :key="i"
-              class="highlight"
-              >{{ fragment }}</mark
-            >
-            <template v-else>{{ fragment }}</template>
-          </template>
-        </span>
-         <a-select
-            v-if="record.editable"
-            style="margin: -5px 0;width: 100%"
-            :default-value="record.type_name"
-            @change="(e) => handleChange(e, record.key, 'type', index)"
-            v-decorator="[`type_name`]"
-          >
-            <a-select-option
-              v-for="(value, productIndex) in productType"
-              :key="productIndex"
-              :value="value.id"
-              >{{ value.name }}</a-select-option
-            >
-          </a-select>
-        <template v-else>
-          {{ text }}
-        </template>
-      </template>
+
       <template
         v-for="col in priceType"
         :slot="col"
@@ -190,11 +157,11 @@
 </template>
 <script>
 export default {
-  name: 'ProductList',
+  name: 'PriceTemplateList',
   async beforeCreate() {
-    const response = await this.$store.dispatch('chachang/fetchProduct')
+    const response = await this.$store.dispatch('chachang/fetchPriceTemplate')
     if (response) {
-      this.data = this.$store.getters['chachang/getProductList']
+      this.data = this.$store.getters['chachang/getPriceTemplate']
       this.cacheData = this.data
       this.loadings = false
     }
@@ -218,32 +185,6 @@ export default {
           sortDirections: ['descend', 'ascend'],
           onFilter: (value, record) =>
             record.name.toString().toLowerCase().includes(value.toLowerCase()),
-          onFilterDropdownVisibleChange: (visible) => {
-            if (visible) {
-              setTimeout(() => {
-                this.searchInput.focus()
-              }, 0)
-            }
-          },
-        },
-        {
-          title: 'Type',
-          width: 100,
-          dataIndex: 'type_name',
-          key: 'type_name',
-          fixed: 'left',
-          scopedSlots: {
-            filterDropdown: 'filterDropdown',
-            filterIcon: 'filterIcon',
-            customRender: 'type_name',
-          },
-          sorter: (a, b) => a.type_name.length - b.type_name.length,
-          sortDirections: ['descend', 'ascend'],
-          onFilter: (value, record) =>
-            record.type_name
-              .toString()
-              .toLowerCase()
-              .includes(value.toLowerCase()),
           onFilterDropdownVisibleChange: (visible) => {
             if (visible) {
               setTimeout(() => {
@@ -281,7 +222,6 @@ export default {
         showQuickJumper: true,
       },
       priceType: [],
-      productType: [],
     }
   },
   watch:{
@@ -306,25 +246,19 @@ export default {
       }
       this.priceType = cachePriceType
     },
-    getProductList: function (value) {
+    getPriceTemplateList: function (value) {
       this.data = value
       this.cacheData = value
       console.log(this.data);
-    },
-    getProductTypeList: function (value) {
-      this.productType = value
     },
   },
   computed: {
     getPriceTypeList(){
       return this.$store.getters['chachang/getPriceTypeList']
     },
-    getProductList(){
-      return this.$store.getters['chachang/getProductList']
-    },
-    getProductTypeList(){
-      return this.$store.getters['chachang/getProductTypeList']
-    },
+    getPriceTemplateList(){
+      return this.$store.getters['chachang/getPriceTemplateList']
+    }
   },
   methods: {
     handleChange(value, key, column, index) {

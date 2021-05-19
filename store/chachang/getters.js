@@ -7,7 +7,7 @@ export default {
   },
   getSelectedKey: (state) => {
     return state.setSelectedKey
-  },  
+  },
   getLanguageCode: (state) => {
     return state.languageCode
   },
@@ -25,7 +25,7 @@ export default {
       data.push({
         key: key,
         id: state.productList[key]._id,
-        name: state.productList[key].title,
+        name: state.productList[key].language.en,
         ...price,
         type: state.productList[key].type ? state.productList[key].type._id : '',
         type_name: state.productList[key].type ? state.productList[key].type.name : '',
@@ -51,6 +51,17 @@ export default {
         key: key,
         name: state.priceType[key].name,
         id: state.priceType[key]._id,
+      });
+    }
+    return data
+  },
+  getPriceTemplateList: (state) => {
+    const data = [];
+    for (const key in state.priceTemplate) {
+      data.push({
+        key: key,
+        name: state.priceTemplate[key].name,
+        id: state.priceTemplate[key]._id,
       });
     }
     return data

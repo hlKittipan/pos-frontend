@@ -6,17 +6,22 @@
       :wrapper-col="{ span: 12 }"
       @submit="handleSubmit"
     >
+    <h3 :style="{ marginBottom: '16px',textAlign: 'center' }">
+      Name
+    </h3>
       <a-form-item v-bind="formItemLayout" label="Name" has-feedback>
         <a-input
           v-decorator="[
             'name',
-            { rules: [{ required: true, message: 'Please input your name!' }] },
+            {
+              rules: [{ required: true, message: 'Please input your name!' }],
+            },
           ]"
           placeholder="Please input your name"
           @change="handleChange"
         />
       </a-form-item>
-       <a-form-item
+      <a-form-item
         v-for="(k, index) in form.getFieldValue('keys')"
         :key="k"
         v-bind="index === 0 ? formItemLayout : formItemLayoutWithOutLabel"
@@ -66,7 +71,6 @@
                 validateTrigger: ['change', 'blur'],
                 rules: [
                   {
-                    required: true,
                     whitespace: true,
                   },
                 ],
@@ -83,63 +87,57 @@
           />
         </a-input-group>
       </a-form-item>
-       <a-form-item v-bind="formItemLayoutWithOutLabel">
+      <a-form-item v-bind="formItemLayoutWithOutLabel" :style="{ borderBottom: '1px solid #E9E9E9',paddingBottom: '5px' }">
         <a-button type="dashed" style="width: 60%" @click="add">
           <a-icon type="plus" /> Add Language
         </a-button>
       </a-form-item>
-      <a-form-item v-bind="formItemLayout" label="Category" has-feedback>        
+      <a-form-item v-bind="formItemLayout" label="Type" has-feedback>
         <a-select
-            v-decorator="[
-              `category`,
-              {
-                validateTrigger: ['change', 'blur'],
-                rules: [
-                  {
-                    required: true,
-                    whitespace: true,
-                    message: 'Please input !',
-                  },
-                ],
-              },
-            ]"
-          >
-            <div slot="dropdownRender" slot-scope="product">
-              <v-nodes :vnodes="product" />
-              <a-divider style="margin: 4px 0" />
-              <div
-                style="padding: 4px 8px; cursor: pointer"
-                @mousedown="(e) => e.preventDefault()"
-                @click="addItem('addProductType')"
-              >
-                <a-icon type="plus" /> Add item
-              </div>
-            </div>
-            <a-select-option
-              v-for="(value, productIndex) in productType"
-              :key="productIndex"
-              :value="value.id"
-              >{{ value.name }}</a-select-option
+          v-decorator="[
+            `type`,
+            {
+              validateTrigger: ['change', 'blur'],
+              rules: [
+                {
+                  required: true,
+                  whitespace: true,
+                  message: 'Please input !',
+                },
+              ],
+            },
+          ]"
+        >
+          <div slot="dropdownRender" slot-scope="product">
+            <v-nodes :vnodes="product" />
+            <a-divider style="margin: 4px 0" />
+            <div
+              style="padding: 4px 8px; cursor: pointer"
+              @mousedown="(e) => e.preventDefault()"
+              @click="addItem('addProductType')"
             >
-          </a-select>
+              <a-icon type="plus" /> Add item
+            </div>
+          </div>
+          <a-select-option
+            v-for="(value, productIndex) in productType"
+            :key="productIndex"
+            :value="value.id"
+            >{{ value.name }}</a-select-option
+          >
+        </a-select>
       </a-form-item>
       <a-form-item
-        v-for="(k, index) in priceType"
-        :key="index"
-        v-bind=" formItemLayout "
+        v-for="k in priceType"
+        :key="k.id"
+        v-bind="formItemLayout"
         :label="k.name"
         :required="false"
       >
-        <input type="hidden" :name="'priceType['+index+']'" :value="k.id" />
-         <a-input-number
-          v-decorator="[
-            `prices[${index}]`,
-            { initialValue: 0 },
-          ]"
+        <a-input-number
+          v-decorator="[`prices[${k.id}]`, { initialValue: 0 }]"
         />
       </a-form-item>
-     
-     
 
       <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
         <a-button type="primary" html-type="submit"> Submit </a-button>
@@ -190,7 +188,7 @@ export default {
       formItemLayoutWithOutLabel: {
         wrapperCol: {
           xs: { span: 24, offset: 0 },
-          sm: { span: 20, offset: 4 },
+          sm: { span: 16, offset: 8 },
         },
       },
       visible: false,
@@ -229,20 +227,23 @@ export default {
   methods: {
     async handleSubmit(e) {
       e.preventDefault()
-      this.form.validateFields( async (err, values) => {
+      this.form.validateFields(async (err, values) => {
         if (!err) {
-          // console.log('Received values of form: ', values)
-          const response = await this.$store.dispatch('chachang/addProduct',values)
-          // this.loading = false
-          // this.form.resetFields();
-          // this.id = 0
-          // if( response.status == 200) {
-          //   this.$notification.open({
-          //     message: 'Insert '+response.statusText,
-          //     description: response.statusText,
-          //     icon: <a-icon type="smile" style="color: #108ee9" />,
-          //   });
-          // }
+          console.log('Received values of form: ', values)
+          const response = await this.$store.dispatch(
+            'chachang/addProduct',
+            values
+          )
+          this.loading = false
+          this.form.resetFields()
+          this.id = 0
+          if (response.status == 200) {
+            this.$notification.open({
+              message: 'Insert ' + response.statusText,
+              description: response.statusText,
+              icon: <a-icon type="smile" style="color: #108ee9" />,
+            })
+          }
         }
       })
     },
@@ -282,12 +283,14 @@ export default {
     },
     async handleOk(e) {
       this.loading = true
-      const response = await this.$store.dispatch('chachang/'+this.addType,{name : this.title})
+      const response = await this.$store.dispatch('chachang/' + this.addType, {
+        name: this.title,
+      })
       console.log(response)
       if (response) {
-        if (this.addType == 'addLanguage'){
+        if (this.addType == 'addLanguage') {
           this.LanguageCode = this.$store.getters['chachang/getLanguageCode']
-        }else {
+        } else {
           this.productType = this.$store.getters['chachang/getProductTypeList']
         }
         this.visible = false
