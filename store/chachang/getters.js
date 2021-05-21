@@ -9,7 +9,16 @@ export default {
     return state.setSelectedKey
   },
   getLanguageCode: (state) => {
-    return state.languageCode
+    const data = [];
+    for (const key in state.languageCode) {
+      data.push({
+        key: key,
+        id: state.languageCode[key]._id,
+        name: state.languageCode[key].name,
+        code: state.languageCode[key].code,
+      });
+    }
+    return data
   },
   getProductList: (state) => {
     const data = [];

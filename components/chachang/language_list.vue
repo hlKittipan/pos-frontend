@@ -85,6 +85,34 @@
           {{ text }}
         </template>
       </template>
+      <template slot="code" slot-scope="text, record, index, column">
+        <span v-if="searchText && searchedColumn === column.dataIndex">
+          <template
+            v-for="(fragment, i) in text
+              .toString()
+              .split(new RegExp(`(?<=${searchText})|(?=${searchText})`, 'i'))"
+          >
+            <mark
+              v-if="fragment.toLowerCase() === searchText.toLowerCase()"
+              :key="i"
+              class="highlight"
+              >{{ fragment }}</mark
+            >
+            <template v-else>{{ fragment }}</template>
+          </template>
+        </span>
+        <a-input
+          v-else-if="record.editable"
+          style="margin: -5px 0"
+          :value="text"
+          @change="
+            (e) => handleChange(e.target.value, record.key, 'code', index)
+          "
+        />
+        <template v-else>
+          {{ text }}
+        </template>
+      </template>
       <template slot="action" slot-scope="text, record, index">
         <div class="editable-row-action">
           <span v-if="record.editable">
@@ -152,6 +180,28 @@ export default {
           sortDirections: ['descend', 'ascend'],
           onFilter: (value, record) =>
             record.name.toString().toLowerCase().includes(value.toLowerCase()),
+          onFilterDropdownVisibleChange: (visible) => {
+            if (visible) {
+              setTimeout(() => {
+                this.searchInput.focus()
+              }, 0)
+            }
+          },
+        },
+        {
+          title: 'Code',
+          width: 120,
+          dataIndex: 'code',
+          key: 'code',
+          scopedSlots: {
+            filterDropdown: 'filterDropdown',
+            filterIcon: 'filterIcon',
+            customRender: 'code',
+          },
+          sorter: (a, b) => a.code.length - b.code.length,
+          sortDirections: ['descend', 'ascend'],
+          onFilter: (value, record) =>
+            record.code.toString().toLowerCase().includes(value.toLowerCase()),
           onFilterDropdownVisibleChange: (visible) => {
             if (visible) {
               setTimeout(() => {

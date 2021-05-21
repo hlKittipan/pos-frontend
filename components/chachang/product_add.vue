@@ -10,7 +10,7 @@
       Name
     </h3>
       <a-form-item v-bind="formItemLayout" label="Name" has-feedback>
-        <a-input
+        <!-- <a-input
           v-decorator="[
             'name',
             {
@@ -19,7 +19,46 @@
           ]"
           placeholder="Please input your name"
           @change="handleChange"
-        />
+        /> -->
+        <a-input-group compact>
+          <a-select disabled
+            style="width: 40%"
+            v-decorator="[
+              `languages[0]`,
+              {
+                validateTrigger: ['change', 'blur'],
+                rules: [
+                  {
+                    required: true,
+                    whitespace: true,
+                    message: 'Please input !',
+                  },
+                ],
+              },
+            ]"
+          >        
+            <a-select-option 
+              v-for="(value, lang) in LanguageCode"
+              :key="lang"
+              :value="value.code"
+              >{{ value.name }}</a-select-option
+            >
+          </a-select>
+          <a-input
+            style="width: 50%"
+            v-decorator="[
+              `languages_value[0]`,
+              {
+                validateTrigger: ['change', 'blur'],
+                rules: [
+                  {
+                    whitespace: true,
+                  },
+                ],
+              },
+            ]"
+          />          
+        </a-input-group>
       </a-form-item>
       <a-form-item
         v-for="(k, index) in form.getFieldValue('keys')"
@@ -184,7 +223,7 @@ export default {
           sm: { span: 16 },
         },
       },
-      id: 0,
+      id: 1,
       formItemLayoutWithOutLabel: {
         wrapperCol: {
           xs: { span: 24, offset: 0 },

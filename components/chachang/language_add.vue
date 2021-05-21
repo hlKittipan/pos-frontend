@@ -16,6 +16,16 @@
           @change="handleChange"
         />
       </a-form-item>
+      <a-form-item label="Code" has-feedback>
+        <a-input
+          v-decorator="[
+            'code',
+            { rules: [{ required: true, message: 'Please input your code!' }] },
+          ]"
+          placeholder="Please input your code"
+          @change="handleChange"
+        />
+      </a-form-item>
       <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
         <a-button type="primary" html-type="submit" :loading="loading"> Submit </a-button>
       </a-form-item>
@@ -75,6 +85,19 @@ export default {
               message: 'Insert '+response.statusText,
               description: response.statusText,
               icon: <a-icon type="smile" style="color: #108ee9" />,
+            });
+          }else{
+            this.loading = false
+            let statusText = null
+            if(Array.isArray(response.data.errors.errors)){
+              statusText = response.data.errors.errors[0].param + ' ' + response.data.errors.errors[0].msg
+            }else{
+              statusText = response.data.errors.errors
+            }
+            this.$notification.open({
+              message: 'Something wrong !!! ',
+              description: statusText,
+              icon: <a-icon type="frown" style="color: #e94d10" />,
             });
           }
         }
