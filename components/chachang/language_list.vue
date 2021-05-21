@@ -5,7 +5,6 @@
       :data-source="data"
       bordered
       size="small"
-      :scroll="{ x: 'calc(700px + 50%)', y: '600px' }"
       :loading="loadings"
       :pagination="pagination"
     >
@@ -55,6 +54,9 @@
         type="search"
         :style="{ color: filtered ? '#108ee9' : undefined }"
       />
+      <template slot="id" slot-scope="text">
+        {{ text }}
+      </template>
       <template slot="name" slot-scope="text, record, index, column">
         <span v-if="searchText && searchedColumn === column.dataIndex">
           <template
@@ -72,84 +74,44 @@
           </template>
         </span>
         <a-input
-            v-else-if="record.editable"
-            style="margin: -5px 0"
-            :value="text"
-            @change="
-              (e) => handleChange(e.target.value, record.key, 'name', index)
-            "
-          />
+          v-else-if="record.editable"
+          style="margin: -5px 0"
+          :value="text"
+          @change="
+            (e) => handleChange(e.target.value, record.key, 'name', index)
+          "
+        />
         <template v-else>
           {{ text }}
         </template>
       </template>
-
-      <template
-        v-for="col in priceType"
-        :slot="col"
-        slot-scope="text, record, index"
-      >
-        <div :key="col">
-          <a-input
-            v-if="record.editable"
-            style="margin: -5px 0"
-            :value="text"
-            @change="
-              (e) => handleChange(e.target.value, record.key, col, index)
-            "
-          />
-          <template v-else>
-            {{ text }}
-          </template>
-        </div>
-      </template>
       <template slot="action" slot-scope="text, record, index">
         <div class="editable-row-action">
-
           <span v-if="record.editable">
-            <a @click="() => save(record.id)"><a-icon type="save" /></a>
+            <a @click="() => save(record.id)">Save</a>
             <a-popconfirm
               title="Sure to cancel?"
               @confirm="() => cancel(record.key, index)"
             >
               <a-divider type="vertical" />
-              <a><a-icon type="stop" /></a>
+              <a>Cancel</a>
             </a-popconfirm>
           </span>
           <span v-else>
             <a
               :disabled="editingKey !== ''"
               @click="() => edit(record.key, index)"
-              ><a-icon type="edit" /></a
+              >Edit</a
             >
           </span>
           <a-divider type="vertical" />
-          <a-dropdown :trigger="['click']">
-            <a class="ant-dropdown-link" @click="e => e.preventDefault()">
-              <a-icon type="down-circle" />
-            </a>
-            <a-menu slot="overlay">
-              <a-menu-item>
-                <span>
-                <a-popconfirm
-                  v-if="data.length"
-                  title="Sure to delete?"
-                  @confirm="() => onDelete(record.id)"
-                >
-                  <a ><a-icon type="delete" /> Delete</a>
-                </a-popconfirm>
-                </span>
-              </a-menu-item>
-              <a-menu-item>
-                <span>
-                  <a
-                    @click="() => view(record.key, index)"
-                    ><a-icon type="eye" /> View</a
-                  >
-                </span>
-              </a-menu-item>
-            </a-menu>
-          </a-dropdown>
+          <a-popconfirm
+            v-if="data.length"
+            title="Sure to delete?"
+            @confirm="() => onDelete(record.id)"
+          >
+            <a href="javascript:;">Delete</a>
+          </a-popconfirm>
         </div>
       </template>
     </a-table>
@@ -157,11 +119,11 @@
 </template>
 <script>
 export default {
-  name: 'PriceTemplateList',
+  name: 'LanguageList',
   async beforeCreate() {
-    const response = await this.$store.dispatch('chachang/fetchPriceTemplate')
-    if (response) {
-      this.data = this.$store.getters['chachang/getPriceTemplateList']
+    const pricetype = await this.$store.dispatch('chachang/fetchLanguage')
+    if(pricetype) {
+      this.data = this.$store.getters['chachang/getLanguageCode']
       this.cacheData = this.data
       this.loadings = false
     }
@@ -171,11 +133,16 @@ export default {
       data: [],
       columns: [
         {
+          title: 'ID',
+          width: 120,
+          dataIndex: 'id',
+          key: 'id',
+        },
+        {
           title: 'Name',
           width: 120,
           dataIndex: 'name',
           key: 'name',
-          fixed: 'left',
           scopedSlots: {
             filterDropdown: 'filterDropdown',
             filterIcon: 'filterIcon',
@@ -194,15 +161,10 @@ export default {
           },
         },
         {
-          title: 'Price',
-          children: [],
-        },
-        {
           title: 'Action',
-          width: 100,
+          width: 150,
           dataIndex: 'action',
           key: 'action',
-          fixed: 'right',
           scopedSlots: { customRender: 'action' },
         },
       ],
@@ -221,53 +183,24 @@ export default {
         showSizeChange: (current, pageSize) => (this.pageSize = pageSize),
         showQuickJumper: true,
       },
-      priceType: [],
     }
   },
   watch:{
-    getPriceTypeList: function (value) {
-      const tmp = value.map(b => {
-        return {
-          title: this._.upperFirst(b.name),
-          dataIndex: b.name,
-          key: b.name,
-          sorter: (a, b) => a[b.name] - b[b.name],
-          scopedSlots: { customRender: b.name },
-        }
-      })
-      this._.findIndex(this.columns,(o) => {
-        if(o.title === 'Price'){
-          o.children = tmp
-        }
-      })
-      const cachePriceType = []
-      for (const key in value){
-        cachePriceType.push(value[key].name)
-      }
-      this.priceType = cachePriceType
-    },
-    getPriceTemplateList: function (value) {
+    getLanguageCode: function (value) {
       this.data = value
-      this.cacheData = value
     },
   },
   computed: {
-    getPriceTypeList(){
-      return this.$store.getters['chachang/getPriceTypeList']
-    },
-    getPriceTemplateList(){
-      return this.$store.getters['chachang/getPriceTemplateList']
+    getLanguageCode(){
+      return this.$store.getters['chachang/getLanguageCode']
     }
   },
   methods: {
-    handleChange(value, key, column, index) {
+    handleChange(value, key, column) {
       const newData = [...this.data]
       const target = newData.filter((item) => key === item.key)[0]
       if (target) {
         target[column] = value
-        if (column === 'type'){
-          target['type_name'] = this._.find(this.productType, { 'id': value }).name;
-        }
         this.data = newData
       }
     },
@@ -280,11 +213,6 @@ export default {
     handleReset(clearFilters) {
       clearFilters()
       this.searchText = ''
-    },
-    view(key) {
-      const newData = [...this.data]
-      const target = newData.filter((item) => key === item.key)[0]
-      console.log(target)
     },
     edit(key) {
       const newData = [...this.data]
@@ -301,16 +229,7 @@ export default {
       const target = newData.filter((item) => id === item.id)[0]
       const targetCache = newCacheData.filter((item) => id === item.id)[0]
       console.log(target)
-      const price = []
-      this._.forIn(target,(value, key)=>{
-        const index = key.indexOf('_id');
-        if(index>-1){
-          price.push({_id:value,price:target[key.replace('_id','')]})
-        }
-      })
-      target.price = price
-      target.type_name = this.productType[this._.findIndex(this.productType, { 'id': target.type })].name;
-      const response = await this.$store.dispatch('chachang/updateProduct',target)
+      const response = await this.$store.dispatch('chachang/updateLanguage',target)
       if (response) {
         this.$notification.open({
           message: 'Updated '+response.statusText,
@@ -340,14 +259,15 @@ export default {
       }
     },
     async onDelete(id) {
-      id = 'fdsfdsf'
-      const response = await this.$store.dispatch('chachang/deleteProduct',id)
+      const newData = [...this.data]
+      const response = await this.$store.dispatch('chachang/deleteLanguage',id)
       if (response) {
         this.$notification.open({
           message: 'Deleted '+response.statusText,
           description: response.statusText,
-          icon: response.status === 200 ? <a-icon type="smile" style="color: #108ee9" /> : <a-icon type="frown" style="color: #e91058" />,
+          icon: <a-icon type="smile" style="color: #108ee9" />,
         });
+        this.data = newData.filter((item) => item.id !== id)
       }
     },
     onShowSizeChange(current, pageSize) {

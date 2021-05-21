@@ -5,11 +5,29 @@ export default {
   async setLoadingChaChang ({ commit }, value = null) {
     commit('SET_LOADING_CHA_CHANG', value)
   },
+  // Start Language
   async fetchLanguage ({ commit }) {
     const response = await this.$axios.get(this.$config.axios.BASE_API_URL+'chachang/language-code')
     if(response.status == 200){commit('SET_LANGUAGE', response.data)}
     return response
   },
+  async addLanguage ({ commit }, value) {
+    const response = await this.$axios.post(this.$config.axios.BASE_API_URL+'chachang/language-code',value)
+    console.log(response)
+    if(response.status == 200){commit('ADD_LANGUAGE',response.data)}
+    return response
+  },
+  async updateLanguage ({ commit }, value) {
+    const response = await this.$axios.put(this.$config.axios.BASE_API_URL+'chachang/language-code/'+value.id,value)
+    if(response.status == 200){commit('UPDATE_LANGUAGE',response.data)}
+    return response
+  },
+  async deleteLanguage ({ commit }, id) {
+    const response = await this.$axios.delete(this.$config.axios.BASE_API_URL+'chachang/language-code/'+id)
+    if(response.status == 200){commit('DELETE_LANGUAGE',id)}
+    return response
+  },
+  // End Language
 
   // Start price type
   async fetchPriceType ({ commit }) {
@@ -41,6 +59,13 @@ export default {
     return response
   },
   async addPriceTemplate ({ commit }, value) {
+    if(value.prices){
+      const price = []
+      for(const key in value.prices){
+        price.push({_id:key,price:value.prices[key]})
+      }
+      value.price= price
+    }
     const response = await this.$axios.post(this.$config.axios.BASE_API_URL+'chachang/price-template',value)
     if(response.status == 200){commit('ADD_PRICE_TEMPLATE',response.data)}
     return response
@@ -89,6 +114,7 @@ export default {
   },
   async addProduct ({ commit }, value) {
     value.title = value.name
+    value.language.en = value.name
     if(value.prices){
       const price = []
       for(const key in value.prices){

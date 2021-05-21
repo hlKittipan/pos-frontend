@@ -8,9 +8,22 @@ export default {
   SET_SELECTED_KEY(state, key) {
     state.selectedKeys = key
   },
+  // Start Language
   SET_LANGUAGE(state, value) {
     state.languageCode = value
   },
+  ADD_LANGUAGE(state, title){
+    state.languageCode.push(title)
+  },
+  UPDATE_LANGUAGE(state, value){
+    const index = state.languageCode.findIndex(item => item._id == value._id)
+    state.languageCode[index].name = value.name
+  },
+  DELETE_LANGUAGE(state, id){
+    const index = state.languageCode.findIndex(item => item.id == id)
+    state.languageCode.splice(index, 1)
+  },
+  // End Language
 
   // Start price type
   SET_PRICE_TYPE(state, priceType) {

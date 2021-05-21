@@ -58,12 +58,22 @@ export default {
   getPriceTemplateList: (state) => {
     const data = [];
     for (const key in state.priceTemplate) {
+      const item = state.priceTemplate[key].price
+      let price = {}
+      for (const keyItem in item){
+        price[item[keyItem].name] = item[keyItem].price
+      }
+      for (const keyItem in item){
+        price[item[keyItem].name+'_id'] = item[keyItem]._id
+      }
       data.push({
         key: key,
-        name: state.priceTemplate[key].name,
         id: state.priceTemplate[key]._id,
+        name: state.priceTemplate[key].name,
+        ...price,
       });
     }
+    console.log(data)
     return data
   },
   getProductTypeList: (state) => {
