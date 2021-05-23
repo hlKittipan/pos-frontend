@@ -6,9 +6,7 @@
       :wrapper-col="{ span: 12 }"
       @submit="handleSubmit"
     >
-    <h3 :style="{ marginBottom: '16px',textAlign: 'center' }">
-      Name
-    </h3>
+      <h3 :style="{ marginBottom: '16px', textAlign: 'center' }">Name</h3>
       <a-form-item v-bind="formItemLayout" label="Name" has-feedback>
         <!-- <a-input
           v-decorator="[
@@ -21,10 +19,11 @@
           @change="handleChange"
         /> -->
         <a-input-group compact>
-          <a-select disabled
+          <a-select
+            disabled
             style="width: 40%"
             v-decorator="[
-              `languages[0]`,
+              `languages_main`,
               {
                 validateTrigger: ['change', 'blur'],
                 rules: [
@@ -36,8 +35,8 @@
                 ],
               },
             ]"
-          >        
-            <a-select-option 
+          >
+            <a-select-option
               v-for="(value, lang) in LanguageCode"
               :key="lang"
               :value="value.code"
@@ -47,7 +46,7 @@
           <a-input
             style="width: 50%"
             v-decorator="[
-              `languages_value[0]`,
+              `languages_main_value`,
               {
                 validateTrigger: ['change', 'blur'],
                 rules: [
@@ -57,7 +56,7 @@
                 ],
               },
             ]"
-          />          
+          />
         </a-input-group>
       </a-form-item>
       <a-form-item
@@ -95,8 +94,10 @@
                 <a-icon type="plus" /> Add item
               </div>
             </div> -->
+            <!-- eslint-disable vue/no-use-v-if-with-v-for,vue/no-confusing-v-for-v-if -->
             <a-select-option
               v-for="(value, lang) in LanguageCode"
+              v-if="lang > 0"
               :key="lang"
               :value="value.code"
               >{{ value.name }}</a-select-option
@@ -126,7 +127,10 @@
           />
         </a-input-group>
       </a-form-item>
-      <a-form-item v-bind="formItemLayoutWithOutLabel" :style="{ borderBottom: '1px solid #E9E9E9',paddingBottom: '5px' }">
+      <a-form-item
+        v-bind="formItemLayoutWithOutLabel"
+        :style="{ borderBottom: '1px solid #E9E9E9', paddingBottom: '5px' }"
+      >
         <a-button type="dashed" style="width: 60%" @click="add">
           <a-icon type="plus" /> Add Language
         </a-button>
@@ -161,6 +165,16 @@
           <a-select-option
             v-for="(value, productIndex) in productType"
             :key="productIndex"
+            :value="value.id"
+            >{{ value.name }}</a-select-option
+          >
+        </a-select>
+      </a-form-item>
+      <a-form-item v-bind="formItemLayout" label="Price template" has-feedback>
+        <a-select @change="handlePriceTemplateChange">
+          <a-select-option
+            v-for="(value, priceIndex) in priceTemplate"
+            :key="priceIndex"
             :value="value.id"
             >{{ value.name }}</a-select-option
           >
@@ -213,6 +227,7 @@ export default {
       LanguageCode: [],
       priceType: [],
       productType: [],
+      priceTemplate: [],
       formItemLayout: {
         labelCol: {
           xs: { span: 24 },
@@ -234,6 +249,7 @@ export default {
       loading: false,
       title: '',
       addType: '',
+      defaultValue: '',
     }
   },
   async beforeCreate() {
@@ -242,10 +258,19 @@ export default {
     const LanguageCode = await this.$store.dispatch('chachang/fetchLanguage')
     if (LanguageCode) {
       this.LanguageCode = this.$store.getters['chachang/getLanguageCode']
+      this.form.setFieldsValue({
+        languages_main: this.LanguageCode[0].code,
+      })
     }
     const PriceType = await this.$store.dispatch('chachang/fetchPriceType')
     if (PriceType) {
       this.priceType = this.$store.getters['chachang/getPriceTypeList']
+    }
+    const priceTemplate = await this.$store.dispatch(
+      'chachang/fetchPriceTemplate'
+    )
+    if (priceTemplate) {
+      this.priceTemplate = this.$store.getters['chachang/getPriceTemplateList']
     }
     const productType = await this.$store.dispatch('chachang/fetchProductType')
     if (productType) {
@@ -259,6 +284,9 @@ export default {
     priceType: function () {
       this.priceType = this.$store.getters['chachang/getPriceTypeList']
     },
+    priceTemplate: function () {
+      this.priceTemplate = this.$store.getters['chachang/getPriceTemplateList']
+    },
     productType: function () {
       this.productType = this.$store.getters['chachang/getProductTypeList']
     },
@@ -269,25 +297,38 @@ export default {
       this.form.validateFields(async (err, values) => {
         if (!err) {
           console.log('Received values of form: ', values)
-          const response = await this.$store.dispatch(
-            'chachang/addProduct',
-            values
-          )
-          this.loading = false
-          this.form.resetFields()
-          this.id = 0
-          if (response.status == 200) {
-            this.$notification.open({
-              message: 'Insert ' + response.statusText,
-              description: response.statusText,
-              icon: <a-icon type="smile" style="color: #108ee9" />,
-            })
-          }
+          // const response = await this.$store.dispatch(
+          //   'chachang/addProduct',
+          //   values
+          // )
+          // this.loading = false
+          // this.form.resetFields()
+          // this.id = 0
+          // if (response.status == 200) {
+          //   this.$notification.open({
+          //     message: 'Insert ' + response.statusText,
+          //     description: response.statusText,
+          //     icon: <a-icon type="smile" style="color: #108ee9" />,
+          //   })
+          // }
         }
       })
     },
     handleChange(e) {
       e.preventDefault()
+    },
+    handlePriceTemplateChange(e) {
+      const { form } = this
+      const priceTemplateIndex = this._.findIndex(this.priceTemplate, ['id', e]);
+      let pricesValue = {}
+      this._.forEach(this.priceTemplate[priceTemplateIndex].price, function(value, key) {
+        pricesValue[key] = value
+        form.getFieldDecorator(`prices[${pricesValue[key]}]`,{initialValue:value,valuePropName:value})
+      })
+      form.setFieldsValue({     
+        prices : pricesValue
+      })
+      console.log(pricesValue)
     },
     remove(k) {
       const { form } = this

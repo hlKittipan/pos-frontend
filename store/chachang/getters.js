@@ -70,16 +70,13 @@ export default {
       const item = state.priceTemplate[key].price
       let price = {}
       for (const keyItem in item){
-        price[item[keyItem].name] = item[keyItem].price
-      }
-      for (const keyItem in item){
-        price[item[keyItem].name+'_id'] = item[keyItem]._id
-      }
+        price[item[keyItem]._id] = item[keyItem].price
+      }      
       data.push({
         key: key,
         id: state.priceTemplate[key]._id,
         name: state.priceTemplate[key].name,
-        ...price,
+        price: price,
       });
     }
     console.log(data)
