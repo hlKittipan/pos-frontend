@@ -190,8 +190,9 @@ export default {
     return response
   },
   async addProduct({ commit }, value) {
-    value.title = value.name
-    value.language.en = value.name
+    value.title = value.languages_main_value
+    value.language = {}
+    value.language[value.languages_main] = value.languages_main_value
     if (value.prices) {
       const price = []
       for (const key in value.prices) {
@@ -199,7 +200,7 @@ export default {
       }
       value.price = price
     }
-    value.language = {}
+    
     if (value.languages && value.languages_value) {
       for (const key in value.languages) {
         value.language[value.languages[key]] = value.languages_value[key]

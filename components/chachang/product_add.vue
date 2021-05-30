@@ -303,20 +303,20 @@ export default {
       this.form.validateFields(async (err, values) => {
         if (!err) {
           console.log('Received values of form: ', values)
-          // const response = await this.$store.dispatch(
-          //   'chachang/addProduct',
-          //   values
-          // )
-          // this.loading = false
-          // this.form.resetFields()
-          // this.id = 0
-          // if (response.status == 200) {
-          //   this.$notification.open({
-          //     message: 'Insert ' + response.statusText,
-          //     description: response.statusText,
-          //     icon: <a-icon type="smile" style="color: #108ee9" />,
-          //   })
-          // }
+          const response = await this.$store.dispatch(
+            'chachang/addProduct',
+            values
+          )
+          this.loading = false
+          this.form.resetFields()
+          this.id = 0
+          if (response.status == 200) {
+            this.$notification.open({
+              message: 'Insert ' + response.statusText,
+              description: response.statusText,
+              icon: <a-icon type="smile" style="color: #108ee9" />,
+            })
+          }
         }
       })
     },
