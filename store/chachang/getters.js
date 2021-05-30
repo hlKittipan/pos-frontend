@@ -71,15 +71,19 @@ export default {
       let price = {}
       for (const keyItem in item){
         price[item[keyItem]._id] = item[keyItem].price
-      }      
+      }
+      let price_name = {}
+      for (const keyItem in item){
+        price_name[item[keyItem].name] = item[keyItem].price
+      }
       data.push({
         key: key,
         id: state.priceTemplate[key]._id,
         name: state.priceTemplate[key].name,
         price: price,
+        ...price_name,
       });
     }
-    console.log(data)
     return data
   },
   getProductTypeList: (state) => {

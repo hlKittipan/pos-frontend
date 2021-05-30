@@ -6,7 +6,7 @@
       :wrapper-col="{ span: 12 }"
       @submit="handleSubmit"
     >
-      <h3 :style="{ marginBottom: '16px', textAlign: 'center' }">Name</h3>
+      <h3 :style="{ marginBottom: '16px'}" class="text-center">Name</h3>
       <a-form-item v-bind="formItemLayout" label="Name" has-feedback>
         <!-- <a-input
           v-decorator="[
@@ -119,7 +119,6 @@
           />
           <a-icon
             style="width: 10%"
-            v-if="form.getFieldValue('keys').length > 1"
             class="dynamic-delete-button"
             type="minus-circle-o"
             :disabled="form.getFieldValue('keys').length === 1"
@@ -180,17 +179,21 @@
           >
         </a-select>
       </a-form-item>
-      <a-form-item
-        v-for="k in priceType"
-        :key="k.id"
-        v-bind="formItemLayout"
-        :label="k.name"
-        :required="false"
-      >
-        <a-input-number
-          v-decorator="[`prices[${k.id}]`, { initialValue: 0 }]"
-        />
-      </a-form-item>
+      <a-card size="small" title="Price zone" justify="center">
+        <a-form-item
+          v-for="k in priceType"
+          :key="k.id"
+          v-bind="formItemLayout"
+          :label="k.name"
+          :required="false"
+        >
+          <a-input-number
+            v-decorator="[`prices[${k.id}]`,{initialValue:0}]"
+          />
+        </a-form-item>
+      </a-card>
+
+
 
       <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
         <a-button type="primary" html-type="submit"> Submit </a-button>
@@ -255,12 +258,15 @@ export default {
   async beforeCreate() {
     this.form = this.$form.createForm(this, { name: 'product_add' })
     this.form.getFieldDecorator('keys', { initialValue: [], preserve: true })
+    console.log(this.form)
     const LanguageCode = await this.$store.dispatch('chachang/fetchLanguage')
     if (LanguageCode) {
       this.LanguageCode = this.$store.getters['chachang/getLanguageCode']
-      this.form.setFieldsValue({
-        languages_main: this.LanguageCode[0].code,
-      })
+      if (this.LanguageCode.length > 0) {
+        this.form.setFieldsValue({
+          languages_main: this.LanguageCode[0].code,
+        })
+      }
     }
     const PriceType = await this.$store.dispatch('chachang/fetchPriceType')
     if (PriceType) {
@@ -320,15 +326,12 @@ export default {
     handlePriceTemplateChange(e) {
       const { form } = this
       const priceTemplateIndex = this._.findIndex(this.priceTemplate, ['id', e]);
-      let pricesValue = {}
+
       this._.forEach(this.priceTemplate[priceTemplateIndex].price, function(value, key) {
-        pricesValue[key] = value
-        form.getFieldDecorator(`prices[${pricesValue[key]}]`,{initialValue:value,valuePropName:value})
+        const fieldKey = `prices[${key}]`
+        form.setFieldsValue({ [fieldKey] : value })
+
       })
-      form.setFieldsValue({     
-        prices : pricesValue
-      })
-      console.log(pricesValue)
     },
     remove(k) {
       const { form } = this
@@ -391,4 +394,5 @@ export default {
   width: 10%;
   margin-top: 2%;
 }
+
 </style>

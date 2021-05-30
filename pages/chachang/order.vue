@@ -1,19 +1,24 @@
 <template>
   <a-row>
     <a-col :xs="{ span: 24 }" :lg="{ span: 14}">
-      <ChachangAddOrder />
+      <ChachangOrderAdd />
+    </a-col>
+    <a-col :xs="{ span: 24 }" :lg="{ span: 10}">
+      <ChachangOrderList />
     </a-col>
   </a-row>
 </template>
 
 <script>
-import ChachangAddOrder from '@/components/chachang/add_order'
+import ChachangOrderAdd from '@/components/chachang/order_add'
+import ChachangOrderList from '@/components/chachang/order_list'
 
 export default {
   layout: 'chachang',
   name: 'Order',
   components: {
-    ChachangAddOrder,
+    ChachangOrderAdd,
+    ChachangOrderList,
   }
 }
 </script>

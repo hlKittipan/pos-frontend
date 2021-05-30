@@ -66,7 +66,7 @@ export default {
   },
 
   env: {
-    baseUrl: process.env.NODE_ENV === 'dev' ? 'http://localhost:3000/' : 'https://my-domain.com/',
+    baseUrl: process.env.NODE_ENV === 'dev' ? 'http://localhost:3000' : 'https://my-domain.com',
   },
 
   i18n: {
