@@ -19,7 +19,8 @@ export default {
   components: {
     PaymentTypeList,
     PaymentTypeAdd,
-  }
+  },
+  middleware: 'auth'
 }
 </script>
 

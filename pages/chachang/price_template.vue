@@ -19,7 +19,8 @@ export default {
   components: {
     PriceTemplateList,
     PriceTemplateAdd,
-  }
+  },
+  middleware: 'auth'
 }
 </script>
 

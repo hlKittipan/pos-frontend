@@ -19,7 +19,8 @@ export default {
   components: {
     ProductTypeList,
     ProductTypeAdd,
-  }
+  },
+  middleware: 'auth'
 }
 </script>
 

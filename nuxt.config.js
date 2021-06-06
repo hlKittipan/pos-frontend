@@ -43,6 +43,7 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
+    '@nuxtjs/auth-next',
     'nuxt-i18n',
   ],
 
@@ -69,6 +70,54 @@ export default {
     baseUrl: process.env.NODE_ENV === 'dev' ? 'http://localhost:3000' : 'https://my-domain.com',
   },
 
+  auth: {
+    localStorage: true,
+    strategies: {
+      local: {
+        token: {
+          property: 'token.accessToken',
+          global: true,
+          required: true,
+          type: 'Bearer'
+        },
+        user: {
+          property: 'user',
+          // autoFetch: true
+        },
+        endpoints: {
+          login: {
+            url: process.env.BASE_API_URL+'/auth/login',
+            method: 'post',
+          },
+          logout: false,
+          user: {
+            url: process.env.BASE_API_URL+'/auth/user',
+            method: 'get',
+          },
+        },
+      },
+      localRefresh: {
+        scheme: 'refresh',
+        token: {
+          property: 'token.accessToken',
+          maxAge: 15
+        },
+        refreshToken: {
+          property: 'token.refreshToken',
+          data: 'refreshToken',
+          maxAge: false
+        }
+      },
+    },
+    redirect: {
+      logout: '/',
+      callback: '/login',
+      home: '/'
+    },
+  },
+  // router: {
+  //   middleware: ['auth']
+  // },
   i18n: {
     locales: ['en', 'th', 'fr', 'es'],
     defaultLocale: 'en',

@@ -19,7 +19,8 @@ export default {
   components: {
     ChachangOrderAdd,
     ChachangOrderList,
-  }
+  },
+  middleware: 'auth'
 }
 </script>
 

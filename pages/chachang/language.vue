@@ -19,7 +19,8 @@ export default {
   components: {
     LanguageList,
     LanguageAdd,
-  }
+  },
+  middleware: 'auth'
 }
 </script>
 
