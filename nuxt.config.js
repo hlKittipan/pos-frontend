@@ -1,4 +1,8 @@
 export default {
+  server: {
+    port: 3000, // default: 3000
+    host: '10.10.10.103', // default: localhost,
+  },
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: 'nuxt-ant',
@@ -45,6 +49,7 @@ export default {
     '@nuxtjs/axios',
     '@nuxtjs/auth-next',
     'nuxt-i18n',
+    ['cookie-universal-nuxt', { alias: 'cookiz' }],
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
@@ -96,6 +101,7 @@ export default {
           },
         },
       },
+      // custom: { scheme: '~/schemes/customStrategy', /* ... */ },
       localRefresh: {
         scheme: 'refresh',
         token: {

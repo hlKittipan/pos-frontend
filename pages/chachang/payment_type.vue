@@ -20,7 +20,6 @@ export default {
     PaymentTypeList,
     PaymentTypeAdd,
   },
-  middleware: 'auth'
 }
 </script>
 

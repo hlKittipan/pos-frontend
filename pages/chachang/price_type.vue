@@ -20,7 +20,6 @@ export default {
     PriceTypeList,
     PriceTypeAdd,
   },
-  middleware: 'auth'
 }
 </script>
 

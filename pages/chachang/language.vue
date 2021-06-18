@@ -20,7 +20,6 @@ export default {
     LanguageList,
     LanguageAdd,
   },
-  middleware: 'auth'
 }
 </script>
 

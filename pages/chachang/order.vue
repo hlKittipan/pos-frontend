@@ -1,10 +1,11 @@
 <template>
   <a-row>
     <a-col :xs="{ span: 24 }" :lg="{ span: 14}">
-      <ChachangOrderAdd />
+
+      <ChachangOrderList />
     </a-col>
     <a-col :xs="{ span: 24 }" :lg="{ span: 10}">
-      <ChachangOrderList />
+      <ChachangOrderAdd />
     </a-col>
   </a-row>
 </template>
@@ -20,7 +21,6 @@ export default {
     ChachangOrderAdd,
     ChachangOrderList,
   },
-  middleware: 'auth'
 }
 </script>
 

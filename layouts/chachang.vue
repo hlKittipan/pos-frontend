@@ -28,6 +28,7 @@ import Footer from '@/layouts/footer/chachang'
 
 export default {
   name: 'ChaChangLayout',
+  middleware: ['redirectIfNotAuth'],
   components: {
     Header,
     Slider,

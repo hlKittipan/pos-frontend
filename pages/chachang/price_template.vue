@@ -20,7 +20,6 @@ export default {
     PriceTemplateList,
     PriceTemplateAdd,
   },
-  middleware: 'auth'
 }
 </script>
 

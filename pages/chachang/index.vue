@@ -25,12 +25,12 @@
           <a-card title="Card" style="width: 300px">
             <p><pre>{{ state }}</pre></p>
             <p>
-              User: <label>{{ $auth.hasScope('user') }}</label> 
-              Test: <label>{{ $auth.hasScope('test') }}</label> 
+              User: <label>{{ $auth.hasScope('user') }}</label>
+              Test: <label>{{ $auth.hasScope('test') }}</label>
               Admin: <label>{{ $auth.hasScope('admin') }}</label>
             </p>
             <p>
-              Token 
+              Token
               <div style="white-space: nowrap; overflow: auto" v-if="$auth.strategy.token">
                 {{ $auth.strategy.token.get() || '-' }}
               </div>
@@ -47,7 +47,7 @@
             </a-button>
             <a-button @click="refreshTokens" >Refresh Tokens</a-button>
             <a-button type="danger" @click="$auth.logout()" >Logout</a-button>
-            
+
           </a-card>
         </a-space>
       </a-col>
@@ -86,7 +86,6 @@ export default {
       return JSON.stringify(this.$auth.$state, undefined, 2)
     },
   },
-  middleware: 'auth',
 }
 </script>
 

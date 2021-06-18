@@ -60,7 +60,6 @@ export default {
       this.visible = false;
     },
   },
-  middleware: 'auth'
 }
 </script>
 

@@ -85,6 +85,17 @@ export default {
                 password: values.password,
               },
             })
+            // this.$auth.loginWith('localRefresh', {
+            //       data: {
+            //         username: this.username,
+            //         password: this.password
+            //       }
+            //     })
+            //     .catch((err) => {
+            //       // eslint-disable-next-line no-console
+            //       console.error(err)
+            //       this.error = err.response?.data
+            //     })
             if (response){
               await this.$router.push('/chachang')
             }
