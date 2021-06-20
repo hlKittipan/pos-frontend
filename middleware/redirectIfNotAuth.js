@@ -4,22 +4,17 @@ export default function ({ app, redirect, route, req }) {
   let token = null
   if (process.server) {
     if (req.headers.cookie) {
-      const parsed = cookieparser.parse(req.headers.cookie)
+      const parsed = cookie.parse(req.headers.cookie || '')
       try {
-        token = parsed.authToken
+        token = parsed['auth._token.local']
       } catch (e) {
         console.log(e)
       }
     }
   } else if (process.client) {
-    token = Cookie.get('authToken')
+    token = app.$cookiz.get('auth._token.local')
   }
-  if (token === null || token === false) {
-    return redirect({
-      name: 'login',
-      query: {
-        redirect: route.fullPath
-      }
-    })
+  if (token === null || token === false || token === undefined) {
+    return redirect('/login')
   }
 }

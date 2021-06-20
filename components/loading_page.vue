@@ -1,5 +1,5 @@
 <template>
-  <div v-if="loadingChaChang" class="loading-page">
+  <div v-if="loadingPage" class="loading-page">
     <a-spin>
       <a-icon slot="indicator" type="loading" style="font-size: 100px" spin />
     </a-spin>
@@ -12,13 +12,13 @@ export default {
     percent: 0,
   }),
   computed: {
-    loadingChaChang() {
-      return this.$store.getters['chachang/getLoadingChaChang']
+    loadingPage() {
+      return this.$store.getters['pos/getLoadingPage']
     },
   },
   watch: {
-    loadingChaChang() {
-      return this.$store.getters['chachang/getLoadingChaChang']
+    loadingPage() {
+      return this.$store.getters['pos/getLoadingPage']
     },
   },
   methods: {
@@ -30,7 +30,7 @@ export default {
       this.percent = percent
     },
     start() {
-      this.$store.dispatch('chachang/setLoadingChaChang', true)
+      this.$store.dispatch('pos/setLoadingPage', true)
       console.log('start')
       window.setInterval(() => {
         if (this.percent === 100) {
@@ -43,7 +43,7 @@ export default {
     finish() {
       this.percent = 100
       setTimeout(
-        () => this.$store.dispatch('chachang/setLoadingChaChang', false),
+        () => this.$store.dispatch('pos/setLoadingPage', false),
         500
       )
     },

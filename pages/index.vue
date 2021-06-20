@@ -21,7 +21,7 @@
           GitHub
         </a>
         <a-button type="primary ">
-          <nuxt-link to="/chachang">Cha Change</nuxt-link>
+          <nuxt-link to="/pos">POS</nuxt-link>
         </a-button>
       </div>
     </div>

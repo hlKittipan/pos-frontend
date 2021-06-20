@@ -97,7 +97,7 @@ export default {
             //       this.error = err.response?.data
             //     })
             if (response){
-              await this.$router.push('/chachang')
+              await this.$router.push('/pos')
             }
             console.log(response)
           } catch (error) {
