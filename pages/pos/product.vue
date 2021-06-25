@@ -44,9 +44,6 @@ export default {
       confirmLoading: false,
     };
   },
-  async beforeCreate() {
-    await this.$store.dispatch('pos/fetchPriceType')
-  },
   methods: {
     showModal() {
       this.visible = true;

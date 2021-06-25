@@ -268,9 +268,10 @@ export default {
         })
       }
     }
-    
-    this.priceType = this.$store.getters['pos/getPriceTypeList']
-    
+    const PriceType = await this.$store.dispatch('pos/fetchPriceType')
+    if (PriceType) {
+      this.priceType = this.$store.getters['pos/getPriceTypeList']
+    }
     const priceTemplate = await this.$store.dispatch(
       'pos/fetchPriceTemplate'
     )

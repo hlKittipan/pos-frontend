@@ -1,21 +1,9 @@
 <template>
-  <a-form :form="form" @submit="handleSubmit">
-    <a-table :columns="columns" :data-source="data" size="small">
-      <template slot="qty" slot-scope="text, record, index">
-        <a-input
-          v-decorator="[`qty[${index}]`]"
-          type="number"
-          size="small"
-          :min="1"
-          style="margin: -5px 0"
-          :value="text"
-        />
-      </template>
-      <template slot="footer">
-        <span></span>
-      </template>
-    </a-table>
-  </a-form>
+  <a-table :columns="columns" :data-source="data"  size="small">
+     <template slot="footer">
+      <span></span>
+    </template>
+  </a-table>
 </template>
 <script>
 const columns = [
@@ -35,7 +23,6 @@ const columns = [
     dataIndex: 'qty',
     key: 'qty',
     className: 'text-center',
-    scopedSlots: { customRender: 'qty' },
   },
   {
     title: 'Tax',
@@ -94,16 +81,6 @@ export default {
       data,
       columns,
     }
-  },
-  methods: {
-    handleSubmit(e) {
-      e.preventDefault()
-      this.form.validateFields((err, fieldsValue) => {
-        if (err) {
-          return
-        }
-      })
-    },
   },
 }
 </script>
