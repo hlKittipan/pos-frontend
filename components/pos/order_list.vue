@@ -20,7 +20,7 @@
               :span="24 / colCounts[colCountKey]"
             >
               <a-card
-                @click="addOrder(index)"
+                @click="addOrder(index,item)"
                 class="m-md-2 pointer"
                 size="small"
                 :key="index"
@@ -71,11 +71,13 @@
 <script>
 export default {
   name: 'OrderAdd',
-  async beforeCreate() {
-    const response = await this.$store.dispatch('pos/fetchProduct')
-    if (response) {
-      this.product = this.$store.getters['pos/getProductListToOrder']
-    }
+  methods: {
+    callback(val) {
+      console.log(val)
+    },
+    addOrder(index, item) {
+      console.log(item)
+    },
   },
   data() {
     const gutters = {}
@@ -98,18 +100,10 @@ export default {
       colCounts,
       gutters,
       vgutters,
-      fakeData:20,
-      product:[],
+      fakeData: 20,
     }
   },
-  methods: {
-    callback(val) {
-      console.log(val)
-    },
-    addOrder(id, index) {
-      console.log(id)
-    },
-  },
+  props: ['product'],
   computed: {
     rowColHtml() {
       const colCount = this.colCounts[this.colCountKey]
