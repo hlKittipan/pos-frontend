@@ -28,7 +28,7 @@ import Footer from '@/layouts/footer/pos'
 
 export default {
   name: 'POSLayout',
-  middleware: ['auth','default_setting'],
+  middleware: ['auth'],
   components: {
     Header,
     Slider,

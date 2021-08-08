@@ -28,7 +28,7 @@
             >{{ value.name }}</a-select-option
           >
         </a-select>
-       
+
       </a-form-item>
 
       <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
@@ -73,13 +73,13 @@ export default {
     }
   },
   async beforeCreate() {
-    this.form = this.$form.createForm(this, { name: 'form_setting' })   
+    this.form = this.$form.createForm(this, { name: 'form_setting' })
     const LanguageCode = await this.$store.dispatch('pos/fetchLanguage')
     if (LanguageCode) {
       this.LanguageCode = this.$store.getters['pos/getLanguageCode']
-      if (this.LanguageCode.length > 0) {
+      if (this.LanguageCode.length > 0 && this.$auth.$state.user.settings.default_language) {
         this.form.setFieldsValue({
-          languages_main: this.$auth.$state.user.settings[0].default_language
+          languages_main: this.$auth.$state.user.settings.default_language
         })
       }
     }
