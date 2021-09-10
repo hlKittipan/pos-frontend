@@ -6,18 +6,8 @@
       :wrapper-col="{ span: 12 }"
       @submit="handleSubmit"
     >
-      <h3 :style="{ marginBottom: '16px'}" class="text-center">Name</h3>
+      <h3 :style="{ marginBottom: '16px' }" class="text-center">Name</h3>
       <a-form-item v-bind="formItemLayout" label="Name" has-feedback>
-        <!-- <a-input
-          v-decorator="[
-            'name',
-            {
-              rules: [{ required: true, message: 'Please input your name!' }],
-            },
-          ]"
-          placeholder="Please input your name"
-          @change="handleChange"
-        /> -->
         <a-input-group compact>
           <a-select
             disabled
@@ -30,7 +20,7 @@
                   {
                     required: true,
                     whitespace: true,
-                    message: 'Please input !',
+                    message: 'Please select !',
                   },
                 ],
               },
@@ -51,7 +41,8 @@
                 validateTrigger: ['change', 'blur'],
                 rules: [
                   {
-                    whitespace: true,
+                    required: true,
+                    message: 'Please input !',
                   },
                 ],
               },
@@ -188,12 +179,10 @@
           :required="false"
         >
           <a-input-number
-            v-decorator="[`prices[${k.id}]`,{initialValue:0}]"
+            v-decorator="[`prices[${k.id}]`, { initialValue: 0 }]"
           />
         </a-form-item>
       </a-card>
-
-
 
       <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
         <a-button type="primary" html-type="submit"> Submit </a-button>
@@ -258,30 +247,15 @@ export default {
   async beforeCreate() {
     this.form = this.$form.createForm(this, { name: 'product_add' })
     this.form.getFieldDecorator('keys', { initialValue: [], preserve: true })
-    console.log(this.form)
-    const LanguageCode = await this.$store.dispatch('pos/fetchLanguage')
-    if (LanguageCode) {
-      this.LanguageCode = this.$store.getters['pos/getLanguageCode']
-      if (this.LanguageCode.length > 0) {
-        this.form.setFieldsValue({
-          languages_main: this.LanguageCode[0].code,
-        })
-      }
-    }
-    const PriceType = await this.$store.dispatch('pos/fetchPriceType')
-    if (PriceType) {
-      this.priceType = this.$store.getters['pos/getPriceTypeList']
-    }
-    const priceTemplate = await this.$store.dispatch(
-      'pos/fetchPriceTemplate'
-    )
-    if (priceTemplate) {
-      this.priceTemplate = this.$store.getters['pos/getPriceTemplateList']
-    }
-    const productType = await this.$store.dispatch('pos/fetchProductType')
-    if (productType) {
-      this.productType = this.$store.getters['pos/getProductTypeList']
-    }
+  },
+  created() {
+    this.priceType = this.$store.getters['pos/getPriceTypeList']
+
+    this.LanguageCode = this.$store.getters['pos/getLanguageCode']
+
+    this.priceTemplate = this.$store.getters['pos/getPriceTemplateList']
+
+    this.productType = this.$store.getters['pos/getProductTypeList']
   },
   watch: {
     LanguageCode: function () {
@@ -297,16 +271,20 @@ export default {
       this.productType = this.$store.getters['pos/getProductTypeList']
     },
   },
+  mounted() {
+    if (this.LanguageCode.length > 0) {
+      this.form.setFieldsValue({
+        languages_main: this.LanguageCode[0].code,
+      })
+    }
+  },
   methods: {
     async handleSubmit(e) {
       e.preventDefault()
       this.form.validateFields(async (err, values) => {
         if (!err) {
           console.log('Received values of form: ', values)
-          const response = await this.$store.dispatch(
-            'pos/addProduct',
-            values
-          )
+          const response = await this.$store.dispatch('pos/addProduct', values)
           this.loading = false
           this.form.setFieldsValue({
             languages_main_value: '',
@@ -327,13 +305,15 @@ export default {
     },
     handlePriceTemplateChange(e) {
       const { form } = this
-      const priceTemplateIndex = this._.findIndex(this.priceTemplate, ['id', e]);
+      const priceTemplateIndex = this._.findIndex(this.priceTemplate, ['id', e])
 
-      this._.forEach(this.priceTemplate[priceTemplateIndex].price, function(value, key) {
-        const fieldKey = `prices[${key}]`
-        form.setFieldsValue({ [fieldKey] : value })
-
-      })
+      this._.forEach(
+        this.priceTemplate[priceTemplateIndex].price,
+        function (value, key) {
+          const fieldKey = `prices[${key}]`
+          form.setFieldsValue({ [fieldKey]: value })
+        }
+      )
     },
     remove(k) {
       const { form } = this
@@ -396,5 +376,4 @@ export default {
   width: 10%;
   margin-top: 2%;
 }
-
 </style>

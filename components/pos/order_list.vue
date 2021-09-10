@@ -1,6 +1,5 @@
 <template>
   <div class="px-2" id="components-grid-demo-playground">
-
     <a-radio-group v-model="mode" :style="{ marginBottom: '8px' }">
       <a-radio-button value="top"> Horizontal </a-radio-button>
       <a-radio-button value="left"> Vertical </a-radio-button>
@@ -11,22 +10,54 @@
       @prevClick="callback"
       @nextClick="callback"
     >
-      <a-tab-pane v-for="(v,k) in product" :key="k" :tab="v.productType">
+      <a-tab-pane v-for="(v, k) in product" :key="k" :tab="v.productType">
         <div class="sc-y sc-x-h">
           <a-row :gutter="[gutters[gutterKey], vgutters[vgutterKey]]">
             <a-col
-              v-for="(item,index) in v.product"
+              v-for="(item, index) in v.product"
               :key="index"
               :span="24 / colCounts[colCountKey]"
             >
               <a-card
-                @click="addOrder(index,item)"
-                class="m-md-2 pointer"
+                class="m-md-2"
                 size="small"
                 :key="index"
-                :title="item.title"
+                :title="item.language[$i18n.locale]"
+                @mousedown="showFullOrderPanel(item)"
+                @mouseup="clearCountDownTime()"
+                @touchstart="showFullOrderPanel(item)"
+                @touchstop="clearCountDownTime()"
               >
-              {{ item.price[0].price}}
+                <div>
+                  <a-row>
+                    <a-col :span="12">
+                      <div class="p-1">
+                        <img
+                          slot="cover"
+                          alt="example"
+                          class="responsive"
+                          :src="require('@/assets/images/4-5.jpg')"
+                        />
+                      </div>
+                    </a-col>
+                    <a-col :span="12">
+                      <div
+                        @click="addOrder(index, item, items)"
+                        v-for="(items, index) in item.price"
+                        :key="index"
+                      >
+                        <a-button
+                          class="m-1 width-100"
+                          type="primary"
+                          v-if="items.price != 0"
+                          size="small"
+                        >
+                          {{ items.name }} : {{ items.price }}
+                        </a-button>
+                      </div>
+                    </a-col>
+                  </a-row>
+                </div>
               </a-card>
             </a-col>
           </a-row>
@@ -66,17 +97,49 @@
       </div>
     </div>
     <pre v-text="rowColHtml" />
+
+    <a-modal
+      :visible="visible"
+      :dialog-style="{ top: '5%' }"
+      :confirm-loading="confirmLoading"
+      @ok="handleOk"
+      @cancel="handleCancel"
+    >
+      <PosFormOrderAdd :selectProduct="selectProduct" />
+    </a-modal>
   </div>
 </template>
 <script>
+import PosFormOrderAdd from '@/components/pos/forms/order_add'
+
 export default {
-  name: 'OrderAdd',
+  name: 'OrderList',
+  components: { PosFormOrderAdd },
   methods: {
     callback(val) {
       console.log(val)
     },
-    addOrder(index, item) {
-      console.log(item)
+    showFullOrderPanel(item) {
+      this.isInterval = setInterval(() => {
+        this.visible = true
+        this.selectProduct = item
+        clearTimeout(this.isInterval)
+      }, 500)
+    },
+    clearCountDownTime() {
+      console.log('Clear')
+      clearTimeout(this.isInterval)
+    },
+    handleOk(e) {
+      this.confirmLoading = true
+      setTimeout(() => {
+        this.visible = false
+        this.confirmLoading = false
+      }, 2000)
+    },
+    handleCancel(e) {
+      console.log('Clicked cancel button')
+      this.visible = false
     },
   },
   data() {
@@ -101,9 +164,13 @@ export default {
       gutters,
       vgutters,
       fakeData: 20,
+      selectProduct: {},
+      isInterval: null,
+      visible: false,
+      confirmLoading: false,
     }
   },
-  props: ['product'],
+  props: ['product', 'addOrder'],
   computed: {
     rowColHtml() {
       const colCount = this.colCounts[this.colCountKey]
@@ -117,10 +184,6 @@ export default {
         colCode += '  <a-col :span="' + spanNum + '"/>\n'
       }
       colCode += '</a-row>'
-
-      console.log(colCount)
-      console.log(getter)
-      console.log(colCode)
       return colCode
     },
   },

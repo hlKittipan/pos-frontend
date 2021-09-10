@@ -1,9 +1,14 @@
 <template>
-  <a-table :columns="columns" :data-source="data"  size="small">
-     <template slot="footer">
-      <span></span>
-    </template>
-  </a-table>
+  <div>
+    <a-table :columns="columns" :data-source="orderList" size="small">
+      <template slot="footer">
+        <span></span>
+      </template>
+    </a-table>
+    <div>
+      <a-button type="primary" @click="execute()"> Primary </a-button>
+    </div>
+  </div>
 </template>
 <script>
 const columns = [
@@ -44,43 +49,19 @@ const columns = [
   },
 ]
 
-const data = [
-  {
-    key: '1',
-    item: 'John Brown',
-    price: 20,
-    qty: 1,
-    tax: 0,
-    discount: 0,
-    total: 20,
-  },
-  {
-    key: '2',
-    item: 'Jim Green',
-    price: 20,
-    qty: 3,
-    tax: 10,
-    discount: 0,
-    total: 70,
-  },
-  {
-    key: '3',
-    item: 'Joe Black',
-    price: 20,
-    qty: 1,
-    tax: 0,
-    discount: 5,
-    total: 15,
-  },
-]
 
 export default {
-  name: 'OrderList',
+  name: 'OrderAdd',
   data() {
     return {
-      data,
       columns,
     }
+  },
+  props: ['orderList','parentMethod'],
+  methods: {
+    execute() {
+        this.parentMethod()
+    },
   },
 }
 </script>

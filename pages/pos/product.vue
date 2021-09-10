@@ -44,6 +44,16 @@ export default {
       confirmLoading: false,
     };
   },
+  async beforeCreate() {
+    await this.$store.dispatch('pos/fetchLanguage')
+
+    await this.$store.dispatch('pos/fetchPriceType')
+
+    await this.$store.dispatch('pos/fetchPriceTemplate')
+
+    await this.$store.dispatch('pos/fetchProductType')
+
+  },
   methods: {
     showModal() {
       this.visible = true;
