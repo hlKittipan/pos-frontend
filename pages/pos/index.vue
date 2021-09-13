@@ -4,10 +4,10 @@
       <a-col :span="12">
         <a-space>
           <a-button type="primary">
-            <nuxt-link to="/pos/product">Product</nuxt-link>
+            <nuxt-link to="/pos/product/product">Product</nuxt-link>
           </a-button>
           <a-button type="primary">
-            <nuxt-link to="/pos/order">Order</nuxt-link>
+            <nuxt-link to="/pos/product/order">Order</nuxt-link>
           </a-button>
         </a-space>
       </a-col>

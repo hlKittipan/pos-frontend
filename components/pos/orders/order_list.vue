@@ -110,7 +110,7 @@
   </div>
 </template>
 <script>
-import PosFormOrderAdd from '@/components/pos/forms/order_add'
+import PosFormOrderAdd from '@/components/pos/orders/forms/order_add'
 
 export default {
   name: 'OrderList',

@@ -28,8 +28,8 @@
 </template>
 
 <script>
-import PosProductList from '@/components/pos/product_list'
-import PosAddProduct from '@/components/pos/product_add'
+import PosProductList from '@/components/pos/products/product_list'
+import PosAddProduct from '@/components/pos/products/product_add'
 
 export default {
   layout: 'pos',

@@ -1,24 +1,24 @@
 <template>
   <a-row>
     <a-col :xs="{ span: 24 }" :lg="{ span: 14}">
-      <PaymentTypeList />
+      <ProductTypeList />
     </a-col>
     <a-col :xs="{ span: 24 }" :lg="{ span: 10}">
-      <PaymentTypeAdd />
+      <ProductTypeAdd />
     </a-col>
   </a-row>
 </template>
 
 <script>
-import PaymentTypeList from '@/components/pos/payment_type_list'
-import PaymentTypeAdd from '@/components/pos/payment_type_add'
+import ProductTypeList from '@/components/pos/products/product_type_list'
+import ProductTypeAdd from '@/components/pos/products/product_type_add'
 
 export default {
   layout: 'pos',
-  name: 'PaymentType',
+  name: 'ProductType',
   components: {
-    PaymentTypeList,
-    PaymentTypeAdd,
+    ProductTypeList,
+    ProductTypeAdd,
   },
 }
 </script>

@@ -11,8 +11,8 @@
 
 <script>
 
-import PosOrderAdd from '@/components/pos/order_add'
-import PosOrderList from '@/components/pos/order_list'
+import PosOrderAdd from '@/components/pos/orders/order_add'
+import PosOrderList from '@/components/pos/orders/order_list'
 
 export default {
   layout: 'pos',

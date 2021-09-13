@@ -10,8 +10,8 @@
 </template>
 
 <script>
-import PriceTemplateList from '@/components/pos/price_template_list'
-import PriceTemplateAdd from '@/components/pos/price_template_add'
+import PriceTemplateList from '@/components/pos/prices/price_template_list'
+import PriceTemplateAdd from '@/components/pos/prices/price_template_add'
 
 export default {
   layout: 'pos',
