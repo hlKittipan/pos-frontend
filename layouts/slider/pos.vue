@@ -22,38 +22,48 @@
         </nuxt-link>
       </a-menu-item>
       <a-menu-item key="2">
+        <nuxt-link to="/pos/products/add_on">
+          <a-icon type="appstore" /> <span>Add on</span>
+        </nuxt-link>
+      </a-menu-item>
+      <a-menu-item key="3">
         <nuxt-link to="/pos/orders/order">
           <a-icon type="container" /> <span>Order</span>
         </nuxt-link>
       </a-menu-item>
       <a-sub-menu key="sub1">
         <span slot="title"><a-icon type="database" /><span>Menagement</span></span>
-        <a-menu-item key="3">
+        <a-menu-item key="4">
           <nuxt-link to="/pos/products/product_type">
             <a-icon type="experiment" /> <span>Product type</span>
           </nuxt-link>
         </a-menu-item>
-        <a-menu-item key="4">
+        <a-menu-item key="5">
           <nuxt-link to="/pos/prices/price_type">
             <a-icon type="dollar" /> <span>Price type</span>
           </nuxt-link>
         </a-menu-item>
-        <a-menu-item key="5">
+        <a-menu-item key="6">
           <nuxt-link to="/pos/prices/price_template">
             <a-icon type="dollar" /> <span>Price template</span>
           </nuxt-link>
         </a-menu-item>
-        <a-menu-item key="6">
+        <a-menu-item key="7">
           <nuxt-link to="/pos/payments/payment_type">
             <a-icon type="wallet" /> <span>Payment type</span>
           </nuxt-link>
         </a-menu-item>
-        <a-menu-item key="7">
+        <a-menu-item key="8">
+          <nuxt-link to="/pos/products/add_on_type">
+            <a-icon type="appstore" /> <span>Add on type</span>
+          </nuxt-link>
+        </a-menu-item>
+        <a-menu-item key="9">
           <nuxt-link to="/pos/setings/language">
             <a-icon type="global" /> <span>Language</span>
           </nuxt-link>
         </a-menu-item>
-        <a-menu-item key="8">
+        <a-menu-item key="10">
           <nuxt-link to="/pos/settings/setting">
             <a-icon type="setting" /> <span>Setting</span>
           </nuxt-link>

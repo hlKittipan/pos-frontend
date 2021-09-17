@@ -29,18 +29,18 @@
               Test: <label>{{ $auth.hasScope('test') }}</label>
               Admin: <label>{{ $auth.hasScope('admin') }}</label>
             </p>
-            <p>
+            <div>
               Token
               <div style="white-space: nowrap; overflow: auto" v-if="$auth.strategy.token">
                 {{ $auth.strategy.token.get() || '-' }}
               </div>
-            </p>
-            <p>
+            </div>
+            <div>
               refresh token
               <div style="white-space: nowrap; overflow: auto"  v-if="$auth.strategy.refreshToken">
                 {{ $auth.strategy.refreshToken.get() || '-' }}
               </div>
-            </p>
+            </div>
             <hr />
             <a-button type="primary" @click="$auth.fetchUser()">
               Fetch User

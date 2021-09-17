@@ -128,4 +128,35 @@ export default {
     }
     return data
   },
+
+  getAddOnList: (state) => {
+    const data = []
+    for (const key in state.addOn) {
+      data.push({
+        key: key,
+        title: state.addOn[key].title,
+        price: state.addOn[key].price,
+        type: state.addOn[key].type
+          ? state.addOn[key].type._id
+          : '',
+        type_name: state.addOn[key].type
+          ? state.addOn[key].type.name
+          : '',
+        id: state.addOn[key]._id,
+      })
+    }
+    return data
+  },
+
+  getAddOnTypeList: (state) => {
+    const data = []
+    for (const key in state.addOnType) {
+      data.push({
+        key: key,
+        title: state.addOnType[key].title,
+        id: state.addOnType[key]._id,
+      })
+    }
+    return data
+  },
 }

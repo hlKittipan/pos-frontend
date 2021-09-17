@@ -110,4 +110,38 @@ export default {
     state.productType.splice(index, 1)
   },
   // End product type
+
+  // Start add on
+  SET_ADD_ON(state, addOn) {
+    state.addOn = addOn
+  },
+  ADD_ADD_ON(state, title) {
+    state.addOn.push(title)
+  },
+  UPDATE_ADD_ON(state, value) {
+    const index = state.addOn.findIndex(item => item._id == value._id)
+    state.addOn[index].name = value.name
+  },
+  DELETE_ADD_ON(state, id) {
+    const index = state.addOn.findIndex(item => item.id == id)
+    state.addOn.splice(index, 1)
+  },
+  // End add on
+
+  // Start add on type
+  SET_ADD_ON_TYPE(state, addOnType) {
+    state.addOnType = addOnType
+  },
+  ADD_ADD_ON_TYPE(state, title) {
+    state.addOnType.push(title)
+  },
+  UPDATE_ADD_ON_TYPE(state, value) {
+    const index = state.addOnType.findIndex(item => item._id == value._id)
+    state.addOnType[index].title = value.title
+  },
+  DELETE_ADD_ON_TYPE(state, id) {
+    const index = state.addOnType.findIndex(item => item.id == id)
+    state.addOnType.splice(index, 1)
+  },
+  // End add on type
 }

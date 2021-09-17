@@ -5,6 +5,8 @@ export default () => ({
   priceType: [],
   priceTemplate: [],
   languageCode: [],
+  addOn: [],
+  addOnType: [],
   sliderPage: false,
   loadingPage: true,
   selectedKeys: "1",

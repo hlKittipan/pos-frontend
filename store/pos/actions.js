@@ -200,7 +200,7 @@ export default {
       }
       value.price = price
     }
-    
+
     if (value.languages && value.languages_value) {
       for (const key in value.languages) {
         value.language[value.languages[key]] = value.languages_value[key]
@@ -280,4 +280,86 @@ export default {
     return response
   },
   // End product type
+
+  // Start add on
+  async fetchAddOn({ commit }) {
+    const response = await this.$axios.get(
+      this.$config.axios.BASE_API_URL + '/pos/add-on'
+    )
+    if (response.status == 200) {
+      commit('SET_ADD_ON', response.data)
+    }
+    return response
+  },
+  async addAddOn({ commit }, value) {
+    const response = await this.$axios.post(
+      this.$config.axios.BASE_API_URL + '/pos/add-on',
+      value
+    )
+    if (response.status == 200) {
+      commit('ADD_ADD_ON', response.data)
+    }
+    return response
+  },
+  async updateAddOn({ commit }, value) {
+    const response = await this.$axios.put(
+      this.$config.axios.BASE_API_URL + '/pos/add-on/' + value.id,
+      value
+    )
+    if (response.status == 200) {
+      commit('UPDATE_ADD_ON', response.data)
+    }
+    return response
+  },
+  async deleteAddOn({ commit }, id) {
+    const response = await this.$axios.delete(
+      this.$config.axios.BASE_API_URL + '/pos/add-on/' + id
+    )
+    if (response.status == 200) {
+      commit('DELETE_ADD_ON', id)
+    }
+    return response
+  },
+  // End add on
+
+  // Start add on type
+  async fetchAddOnType({ commit }) {
+    const response = await this.$axios.get(
+      this.$config.axios.BASE_API_URL + '/pos/add-on-type'
+    )
+    if (response.status == 200) {
+      commit('SET_ADD_ON_TYPE', response.data)
+    }
+    return response
+  },
+  async addAddOnType({ commit }, value) {
+    const response = await this.$axios.post(
+      this.$config.axios.BASE_API_URL + '/pos/add-on-type',
+      value
+    )
+    if (response.status == 200) {
+      commit('ADD_ADD_ON_TYPE', response.data)
+    }
+    return response
+  },
+  async updateAddOnType({ commit }, value) {
+    const response = await this.$axios.put(
+      this.$config.axios.BASE_API_URL + '/pos/add-on-type/' + value.id,
+      value
+    )
+    if (response.status == 200) {
+      commit('UPDATE_ADD_ON_TYPE', response.data)
+    }
+    return response
+  },
+  async deleteAddOnType({ commit }, id) {
+    const response = await this.$axios.delete(
+      this.$config.axios.BASE_API_URL + '/pos/add-on-type/' + id
+    )
+    if (response.status == 200) {
+      commit('DELETE_ADD_ON_TYPE', id)
+    }
+    return response
+  },
+  // End add on type
 }
