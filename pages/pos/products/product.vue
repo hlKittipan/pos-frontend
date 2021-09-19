@@ -9,9 +9,13 @@
           :visible="visible"
           :dialog-style="{ top: '5%' }"
           :confirm-loading="confirmLoading"
-          @ok="handleOk"
           @cancel="handleCancel"
         >
+          <template slot="footer">
+            <a-button key="close" @click="handleCancel">
+              Close
+            </a-button>
+          </template>
           <PosAddProduct />
         </a-modal>
       </a-col>
@@ -43,16 +47,13 @@ export default {
       visible: false,
       confirmLoading: false,
     };
-  },
-  async beforeCreate() {
-    await this.$store.dispatch('pos/fetchLanguage')
-
-    await this.$store.dispatch('pos/fetchPriceType')
-
-    await this.$store.dispatch('pos/fetchPriceTemplate')
-
-    await this.$store.dispatch('pos/fetchProductType')
-
+  },  
+  async asyncData(context) {
+    const { app } = context
+    await app.store.dispatch('pos/fetchProductType')
+    await app.store.dispatch('pos/fetchProduct')
+    await app.store.dispatch('pos/fetchPriceType')
+    await app.store.dispatch('pos/fetchPriceTemplate')
   },
   methods: {
     showModal() {
