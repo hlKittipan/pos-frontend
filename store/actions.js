@@ -1,9 +1,10 @@
 const cookie =  process.server ? require('cookie') : undefined
 
-export async function nuxtServerInit ({ commit }, { req, res }) {
+export async function nuxtServerInit ({ commit,dispatch }, { req, res }) {
 
   // If we have any axios requests we need to add async/await
   // And since this works on server mode, we don't need to check is it server
+  await dispatch('pos/fetchLanguage')
   let token = null
   if (req.headers.cookie) {
     const parsed = cookie.parse(req.headers.cookie || '')

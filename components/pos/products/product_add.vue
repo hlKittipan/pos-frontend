@@ -184,9 +184,11 @@
         </a-form-item>
       </a-card>
 
-      <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
-        <a-button type="primary" html-type="submit"> Submit </a-button>
-      </a-form-item>
+      <a-row>
+        <a-col :span="24" class="text-center pt-3">
+          <a-button type="primary" html-type="submit"> Add product </a-button>
+        </a-col>
+      </a-row>
     </a-form>
     <a-modal v-model="visible" title="Title" on-ok="handleOk">
       <a-input v-decorator="[`price_type`]" v-model="title" />

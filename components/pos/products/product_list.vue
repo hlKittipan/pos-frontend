@@ -195,6 +195,7 @@ export default {
     const response = await this.$store.dispatch('pos/fetchProduct')
     if (response) {
       this.data = this.$store.getters['pos/getProductList']
+      this.createColumnPrice(this.$store.getters['pos/getPriceTypeList'])
       this.cacheData = this.data
       this.loadings = false
     }
@@ -285,31 +286,12 @@ export default {
     }
   },
   watch:{
-    getPriceTypeList: function (value) {
-      const tmp = value.map(b => {
-        return {
-          title: this._.upperFirst(b.name),
-          dataIndex: b.name,
-          key: b.name,
-          sorter: (a, b) => a[b.name] - b[b.name],
-          scopedSlots: { customRender: b.name },
-        }
-      })
-      this._.findIndex(this.columns,(o) => {
-        if(o.title === 'Price'){
-          o.children = tmp
-        }
-      })
-      const cachePriceType = []
-      for (const key in value){
-        cachePriceType.push(value[key].name)
-      }
-      this.priceType = cachePriceType
+    getPriceTypeList: function (value) {      
+      this.createColumnPrice(value)
     },
     getProductList: function (value) {
       this.data = value
       this.cacheData = value
-      console.log(this.data);
     },
     getProductTypeList: function (value) {
       this.productType = value
@@ -317,6 +299,7 @@ export default {
   },
   computed: {
     getPriceTypeList(){
+      console.log('computed')
       return this.$store.getters['pos/getPriceTypeList']
     },
     getProductList(){
@@ -343,7 +326,6 @@ export default {
       this.searchText = selectedKeys[0]
       this.searchedColumn = dataIndex
     },
-
     handleReset(clearFilters) {
       clearFilters()
       this.searchText = ''
@@ -376,7 +358,7 @@ export default {
         }
       })
       target.price = price
-      target.type_name = this.productType[this._.findIndex(this.productType, { 'id': target.type })].name;
+      // target.type_name = this.productType[this._.findIndex(this.productType, { 'id': target.type })].name;
       const response = await this.$store.dispatch('pos/updateProduct',target)
       if (response) {
         this.$notification.open({
@@ -419,6 +401,27 @@ export default {
     },
     onShowSizeChange(current, pageSize) {
       console.log(current, pageSize)
+    },
+    createColumnPrice(value){
+      const tmp = this._.map(value,b => {
+        return {
+          title: this._.upperFirst(b.name),
+          dataIndex: b.name,
+          key: b.name,
+          sorter: (a, b) => a[b.name] - b[b.name],
+          scopedSlots: { customRender: b.name },
+        }
+      })
+      this._.findIndex(this.columns,(o) => {
+        if(o.title === 'Price'){
+          o.children = tmp
+        }
+      })
+      const cachePriceType = []
+      for (const key in value){
+        cachePriceType.push(value[key].name)
+      }
+      this.priceType = cachePriceType
     }
   },
 }

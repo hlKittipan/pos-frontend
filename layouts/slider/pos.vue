@@ -10,7 +10,7 @@
     :style="{ left: 0 }"
   >
     <div class="logo" />
-    <a-menu mode="inline" :default-selected-keys="['0']" @click="handleClick" :theme="theme" :selected-keys="[current]">
+    <a-menu mode="inline" @click="handleClick" :theme="theme" :selected-keys="[current]">
       <a-menu-item key="0">
         <nuxt-link to="/pos">
           <a-icon type="dashboard" /> <span>Dashboard</span>
@@ -79,7 +79,32 @@ export default {
     return {
       current: '0',
       theme: 'dark',
+      menuList: [
+        {
+          to:'/pos',
+          icon:'dashboard',
+          title:'Dashboard'
+        },
+        {
+          to:'/pos/products/product',
+          icon:'experiment',
+          title:'Product'
+        },
+        {
+          subMenu: {
+            to:'/pos/products/product_type',
+            icon:'experiment',
+            title:'Product type'
+          },
+          icon:'database',
+          title:'Menagement'
+        }
+      ]
     };
+  },
+  mounted() {
+    console.log(this.$route.path)
+
   },
   computed: {
     sliderPage() {

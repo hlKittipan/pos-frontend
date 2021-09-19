@@ -1,8 +1,8 @@
 export default {
-  async setSliderPage({ commit }, value = null) {
+  setSliderPage({ commit }, value = null) {
     commit('SET_SLIDER_PAGE', value)
   },
-  async setLoadingPage({ commit }, value = null) {
+  setLoadingPage({ commit }, value = null) {
     commit('SET_LOADING_PAGE', value)
   },
   // Start Language
@@ -19,7 +19,6 @@ export default {
     const response = await this.$axios
       .post(this.$config.axios.BASE_API_URL + '/pos/language-code', value)
       .catch(({ response }) => {
-        console.log('fail')
         return response
       })
     if (response.status == 200) {
@@ -180,7 +179,6 @@ export default {
 
   // Start Product
   async fetchProduct({ commit }) {
-    console.log(this.$config.axios.BASE_API_URL)
     const response = await this.$axios.get(
       this.$config.axios.BASE_API_URL + '/pos/product'
     )
@@ -206,7 +204,6 @@ export default {
         value.language[value.languages[key]] = value.languages_value[key]
       }
     }
-    // console.log(value)
     const response = await this.$axios.post(
       this.$config.axios.BASE_API_URL + '/pos/product',
       value
@@ -232,7 +229,6 @@ export default {
       .catch(({ response: err }) => {
         return err
       })
-    console.log(response)
     if (response.status == 200) {
       commit('DELETE_PRODUCT', id)
     }
