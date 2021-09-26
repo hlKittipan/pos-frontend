@@ -1,9 +1,13 @@
 export default {
   SET_SLIDER_PAGE(state, sliderPage) {
-    sliderPage === null ? state.sliderPage = !state.sliderPage : state.sliderPage = sliderPage
+    sliderPage === null
+      ? (state.sliderPage = !state.sliderPage)
+      : (state.sliderPage = sliderPage)
   },
   SET_LOADING_PAGE(state, loadingPage) {
-    loadingPage === null ? state.loadingPage = !state.loadingPage : state.loadingPage = loadingPage
+    loadingPage === null
+      ? (state.loadingPage = !state.loadingPage)
+      : (state.loadingPage = loadingPage)
   },
   SET_SELECTED_KEY(state, key) {
     state.selectedKeys = key
@@ -16,11 +20,11 @@ export default {
     state.languageCode.push(title)
   },
   UPDATE_LANGUAGE(state, value) {
-    const index = state.languageCode.findIndex(item => item._id == value._id)
+    const index = state.languageCode.findIndex((item) => item._id == value._id)
     state.languageCode[index].name = value.name
   },
   DELETE_LANGUAGE(state, id) {
-    const index = state.languageCode.findIndex(item => item.id == id)
+    const index = state.languageCode.findIndex((item) => item.id == id)
     state.languageCode.splice(index, 1)
   },
   // End Language
@@ -33,11 +37,11 @@ export default {
     state.priceType.push(title)
   },
   UPDATE_PRICE_TYPE(state, value) {
-    const index = state.priceType.findIndex(item => item._id == value._id)
+    const index = state.priceType.findIndex((item) => item._id == value._id)
     state.priceType[index].name = value.name
   },
   DELETE_PRICE_TYPE(state, id) {
-    const index = state.priceType.findIndex(item => item.id == id)
+    const index = state.priceType.findIndex((item) => item.id == id)
     state.priceType.splice(index, 1)
   },
   // End price type
@@ -50,11 +54,11 @@ export default {
     state.priceTemplate.push(title)
   },
   UPDATE_PRICE_TEMPLATE(state, value) {
-    const index = state.priceTemplate.findIndex(item => item._id == value._id)
+    const index = state.priceTemplate.findIndex((item) => item._id == value._id)
     state.priceTemplate[index].name = value.name
   },
   DELETE_PRICE_TEMPLATE(state, id) {
-    const index = state.priceTemplate.findIndex(item => item.id == id)
+    const index = state.priceTemplate.findIndex((item) => item.id == id)
     state.priceTemplate.splice(index, 1)
   },
   // End price template
@@ -67,11 +71,11 @@ export default {
     state.paymentType.push(title)
   },
   UPDATE_PAYMENT_TYPE(state, value) {
-    const index = state.paymentType.findIndex(item => item._id == value._id)
+    const index = state.paymentType.findIndex((item) => item._id == value._id)
     state.paymentType[index].name = value.name
   },
   DELETE_PAYMENT_TYPE(state, id) {
-    const index = state.paymentType.findIndex(item => item.id == id)
+    const index = state.paymentType.findIndex((item) => item.id == id)
     state.paymentType.splice(index, 1)
   },
   // End payment type
@@ -85,11 +89,11 @@ export default {
     state.productList.push(product)
   },
   UPDATE_PRODUCT(state, value) {
-    const index = state.productList.findIndex(item => item._id == value._id)
+    const index = state.productList.findIndex((item) => item._id == value._id)
     state.productList[index] = value
   },
   DELETE_PRODUCT(state, id) {
-    const index = state.productList.findIndex(item => item._id == id)
+    const index = state.productList.findIndex((item) => item._id == id)
     state.productList.splice(index, 1)
   },
   // End product
@@ -102,11 +106,11 @@ export default {
     state.productType.push(title)
   },
   UPDATE_PRODUCT_TYPE(state, value) {
-    const index = state.productType.findIndex(item => item._id == value._id)
+    const index = state.productType.findIndex((item) => item._id == value._id)
     state.productType[index].name = value.name
   },
   DELETE_PRODUCT_TYPE(state, id) {
-    const index = state.productType.findIndex(item => item.id == id)
+    const index = state.productType.findIndex((item) => item.id == id)
     state.productType.splice(index, 1)
   },
   // End product type
@@ -119,11 +123,11 @@ export default {
     state.addOn.push(title)
   },
   UPDATE_ADD_ON(state, value) {
-    const index = state.addOn.findIndex(item => item._id == value._id)
+    const index = state.addOn.findIndex((item) => item._id == value._id)
     state.addOn[index].name = value.name
   },
   DELETE_ADD_ON(state, id) {
-    const index = state.addOn.findIndex(item => item.id == id)
+    const index = state.addOn.findIndex((item) => item.id == id)
     state.addOn.splice(index, 1)
   },
   // End add on
@@ -136,12 +140,78 @@ export default {
     state.addOnType.push(title)
   },
   UPDATE_ADD_ON_TYPE(state, value) {
-    const index = state.addOnType.findIndex(item => item._id == value._id)
+    const index = state.addOnType.findIndex((item) => item._id == value._id)
     state.addOnType[index].title = value.title
   },
   DELETE_ADD_ON_TYPE(state, id) {
-    const index = state.addOnType.findIndex(item => item.id == id)
+    const index = state.addOnType.findIndex((item) => item.id == id)
     state.addOnType.splice(index, 1)
   },
   // End add on type
+
+  //Start order
+  SELECT_PRODUCT(state, item) {
+    let price = _.map(item.price, function (value, key) {
+      return { ...value, qty: 0, total: 0, discount: 0 }
+    })
+    item.price = price
+    state.selectProduct = item
+  },
+  CANCEL_SELECT_PRODUCT(state) {
+    state.selectProduct = undefined
+  },
+  CALCULATE_PRICE(state, item) {
+    const cacheProduct = state.selectProduct
+    const value = item[0]
+    const index = item[1]
+    const type = item[2]
+    const cachePrice = cacheProduct.price[index]
+    cachePrice[type] = value
+    cachePrice.total = cachePrice.qty * cachePrice.price
+    cachePrice.total = cachePrice.total - cachePrice.discount
+    cacheProduct.price[index] = cachePrice
+  },
+  ADD_ORDER(state, { item, priceType }) {
+    const total = priceType.total ? priceType.total : priceType.price
+    const price = priceType.price
+    const price_name = priceType.name
+    const qty = priceType.qty ? priceType.qty : 1
+    const discount = priceType.discount ? priceType.discount : 0
+    const cacheDate = state.orderList
+    const newData = {
+      key: state.orderCount,
+      item: item.language[this.$i18n.locale],
+      price,
+      price_name,
+      qty,
+      discount,
+      total,
+      index: priceType._id,
+    }
+    state.orderList = [...cacheDate, newData]
+    state.orderCount++
+  },
+  ADD_MULTI_ORDER(state) {
+    const data = state.selectProduct
+    console.log(data)
+    const dataPrice = data.price
+    let price = _.map(dataPrice, function (value, key) {
+      if (value.qty > 0) {
+        let count = state.orderCount
+        state.orderCount++
+        return {
+          key: count,
+          item: data.language[this.$i18n.locale],
+          price: value.price,
+          price_name: value.name,
+          qty: value.qty,
+          discount: value.discount,
+          total: value.total,
+          index: priceType._id,
+        }
+      }
+    })
+    console.log(price)
+  },
+  //End order
 }

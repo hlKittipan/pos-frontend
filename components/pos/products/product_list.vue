@@ -299,7 +299,6 @@ export default {
   },
   computed: {
     getPriceTypeList(){
-      console.log('computed')
       return this.$store.getters['pos/getPriceTypeList']
     },
     getProductList(){

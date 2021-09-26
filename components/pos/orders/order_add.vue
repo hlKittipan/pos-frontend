@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-table :columns="columns" :data-source="orderList" size="small">
+    <a-table :columns="columns" :data-source="orderList" size="small" :pagination="pagination" bordered>
       <template slot="footer">
         <span></span>
       </template>
@@ -16,36 +16,45 @@ const columns = [
     title: 'Item',
     dataIndex: 'item',
     key: 'item',
+    // customRender: (value, row, index) => {
+    //   console.log('value :' + value)
+    //   console.log(row)
+    //   console.log('index :' + index)
+    //   const obj = {
+    //     children: value,
+    //     attrs: {},
+    //   };
+    //   if (index > 0) {
+    //     obj.attrs.rowSpan = index+1;
+    //   }
+        
+    //   return obj;
+    // },
+  },
+  {
+    title: 'Price type',
+    dataIndex: 'price_name',
+    key: 'price_name',
   },
   {
     title: 'Price',
     dataIndex: 'price',
     key: 'price',
-    className: 'text-right',
   },
   {
     title: 'Qty',
     dataIndex: 'qty',
     key: 'qty',
-    className: 'text-center',
-  },
-  {
-    title: 'Tax',
-    dataIndex: 'tax',
-    key: 'tax',
-    className: 'text-right',
   },
   {
     title: 'Discount',
     key: 'discount',
     dataIndex: 'discount',
-    className: 'text-right',
   },
   {
     title: 'Total',
     key: 'total',
     dataIndex: 'total',
-    className: 'text-right',
   },
 ]
 
@@ -55,6 +64,15 @@ export default {
   data() {
     return {
       columns,
+      pagination: {
+        pageSize: 15,
+        showSizeChange: 'onShowSizeChange',
+        size: 'small',
+        showSizeChanger: true,
+        showTotal: (total) => `Total ${total} items`,
+        showSizeChange: (current, pageSize) => (this.pageSize = pageSize),
+        showQuickJumper: true,
+      },
     }
   },
   props: ['orderList','parentMethod'],

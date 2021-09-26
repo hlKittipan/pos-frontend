@@ -358,4 +358,22 @@ export default {
     return response
   },
   // End add on type
+
+  //Start order
+  selectProduct({ commit,state }, item) {    
+    commit('SELECT_PRODUCT',item)
+  },  
+  cancelSelectProduct({commit}){
+    commit('CANCEL_SELECT_PRODUCT')
+  },
+  calculatePrice({ commit }, item) {
+    commit('CALCULATE_PRICE', item)
+  },
+  addOrder({ commit }, {item,priceType}){
+    commit('ADD_ORDER', {item,priceType})
+  },
+  addMultiOrder({ commit }){
+    commit('ADD_MULTI_ORDER')
+  },
+  // End order
 }

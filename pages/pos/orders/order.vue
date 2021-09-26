@@ -25,7 +25,7 @@ export default {
     return {
       product: [],
       orderList: [],
-      count: 1,
+      orderCount: undefined,
     }
   },
   async asyncData(context) {
@@ -33,9 +33,10 @@ export default {
     await app.store.dispatch('pos/fetchProduct')
     await app.store.dispatch('pos/fetchProductType')
   },
-  async beforeCreate() {
-    this.product = await this.$store.getters['pos/getProductListToOrder']
-    console.log(this.product)
+  mounted() {
+    this.product = this.$store.getters['pos/getProductListToOrder']
+    this.orderList = this.$store.getters['pos/getOrderList']
+    this.orderCount = this.$store.getters['pos/getOrderCount']
   },
   methods: {
     parentMethod() {
@@ -44,20 +45,29 @@ export default {
     addMenu() {
       console.log('Add menu')
     },
-    addOrder(index, item, items) {
-      const { count, orderList } = this;
-      const newData = {
-        key: count,
-        item: item.language[this.$i18n.locale],
-        price: items.price,
-        qty: 1,
-        tax: 0,
-        discount: 0,
-        total: items.price,
-        index: items._id
-      };
-      this.orderList = [...orderList,newData]
-      this.count++;
+    addOrder(index, item, priceType) {
+      console.log(item)
+      const result = this.$store.dispatch('pos/addOrder',{
+        item,
+        priceType
+      })
+    },
+  },
+  
+  watch: {
+    getOrderList: function (value) {
+      this.orderList = value
+    },
+    getOrderCount: function (value) {
+      this.orderCount = value
+    },
+  },
+  computed: {
+    getOrderList() {
+      return this.$store.getters['pos/getOrderList']
+    },
+    getOrderCount() {
+      return this.$store.getters['pos/getOrderCount']
     },
   },
 }

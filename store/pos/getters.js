@@ -140,7 +140,7 @@ export default {
           ? state.addOn[key].type._id
           : '',
         type_name: state.addOn[key].type
-          ? state.addOn[key].type.name
+          ? state.addOn[key].type.title
           : '',
         id: state.addOn[key]._id,
       })
@@ -159,4 +159,15 @@ export default {
     }
     return data
   },
+
+  getSelectProduct: (state) => {    
+    return state.selectProduct
+  },
+
+  getOrderList: (state) => {
+    return state.orderList
+  },
+  getOrderCount: (state) => {
+    return state.orderCount
+  }
 }

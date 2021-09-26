@@ -64,7 +64,7 @@
         </div>
       </a-tab-pane>
     </a-tabs>
-    <div style="margin-bottom: 16px">
+    <div style="margin-bottom: 16px" v-if="false">
       <span style="margin-right: 6px">Horizontal Gutter (px): </span>
       <div style="width: 50%">
         <a-slider
@@ -96,33 +96,59 @@
         />
       </div>
     </div>
-    <pre v-text="rowColHtml" />
+    <pre v-text="rowColHtml" v-if="false"/>
 
     <a-modal
       :visible="visible"
       :dialog-style="{ top: '5%' }"
       :confirm-loading="confirmLoading"
+      :width="'70%'"
       @ok="handleOk"
       @cancel="handleCancel"
     >
-      <PosFormOrderAdd :selectProduct="selectProduct" />
+      <PosFormOrderAdd/>
     </a-modal>
   </div>
 </template>
 <script>
-import PosFormOrderAdd from '@/components/pos/orders/forms/order_add'
+import PosFormOrderAdd from '@/components/pos/orders//order_multi_add'
 
 export default {
   name: 'OrderList',
   components: { PosFormOrderAdd },
+  beforeUpdate() {
+    const clientWidth = this.$el.clientWidth
+    if (clientWidth < 540) {
+      this.gutterKey = 0
+      this.vgutterKey = 0
+      this.colCountKey = 0
+    } else if (clientWidth < 768) {
+      this.colCountKey = 1
+    } else if (clientWidth < 992) {
+      this.colCountKey = 2
+    } else if (clientWidth < 1200) {
+      this.colCountKey = 3
+    }
+  },
+  mounted() {
+    this.$nextTick(() => {
+      window.addEventListener('resize', this.onResize)
+    })
+  },
+  beforeDestroy() {
+    window.removeEventListener('resize', this.onResize)
+  },
   methods: {
+    onResize() {
+      this.windowHeight = window.innerHeight
+    },
     callback(val) {
       console.log(val)
     },
     showFullOrderPanel(item) {
       this.isInterval = setInterval(() => {
+        this.$store.dispatch("pos/selectProduct",item)
         this.visible = true
-        this.selectProduct = item
         clearTimeout(this.isInterval)
       }, 500)
     },
@@ -132,13 +158,14 @@ export default {
     },
     handleOk(e) {
       this.confirmLoading = true
+      this.$store.dispatch('pos/addMultiOrder')
       setTimeout(() => {
         this.visible = false
         this.confirmLoading = false
       }, 2000)
     },
     handleCancel(e) {
-      console.log('Clicked cancel button')
+      this.$store.dispatch("pos/cancelSelectProduct")
       this.visible = false
     },
   },
@@ -146,13 +173,13 @@ export default {
     const gutters = {}
     const colCounts = {}
     const vgutters = {}
-    ;[8, 16, 24, 32, 40, 48].forEach((value, i) => {
+    ;[4, 8, 16, 24, 32, 40, 48].forEach((value, i) => {
       gutters[i] = value
     })
-    ;[8, 16, 24, 32, 40, 48].forEach((value, i) => {
+    ;[4, 8, 16, 24, 32, 40, 48].forEach((value, i) => {
       vgutters[i] = value
     })
-    ;[2, 3, 4, 6, 8, 12].forEach((value, i) => {
+    ;[1, 2, 3, 4, 6, 8, 12].forEach((value, i) => {
       colCounts[i] = value
     })
     return {
@@ -168,9 +195,16 @@ export default {
       isInterval: null,
       visible: false,
       confirmLoading: false,
+      windowHeight:undefined,
+      txt: '',      
     }
   },
   props: ['product', 'addOrder'],
+  watch: {
+    windowHeight(newHeight, oldHeight) {
+      this.txt = `it changed to ${newHeight} from ${oldHeight}`
+    },
+  },
   computed: {
     rowColHtml() {
       const colCount = this.colCounts[this.colCountKey]
