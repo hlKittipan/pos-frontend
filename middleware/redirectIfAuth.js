@@ -8,13 +8,13 @@ export default function ({ app, redirect, req }) {
       try {
         token = parsed['auth._token.local']
       } catch (e) {
-        console.log(e)
+        // console.log(e)
       }
     }
   } else if (process.client) {
      token = app.$cookiz.get('auth._token.local')
   }
-  console.log(token)
+  // console.log(token)
   if (token && token !== false && token !== undefined && token !== null) {
     app.store.commit('setToken', token)
     app.store.commit('setHeaders', token)

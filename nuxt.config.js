@@ -133,7 +133,7 @@ export default {
         en: {
           welcome: 'Welcome'
         },
-        fr: {
+        th: {
           welcome: 'ยินดีต้อนรับ'
         },
         fr: {

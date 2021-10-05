@@ -1,3 +1,5 @@
+import { _ } from 'core-js'
+
 export default {
   getSliderPage: (state) => {
     return state.sliderPage
@@ -27,10 +29,9 @@ export default {
       let price = {}
       for (const keyItem in item) {
         price[item[keyItem].name] = item[keyItem].price
-      }
-      for (const keyItem in item) {
         price[item[keyItem].name + '_id'] = item[keyItem]._id
       }
+
       data.push({
         key: key,
         id: state.productList[key]._id,
@@ -136,12 +137,8 @@ export default {
         key: key,
         title: state.addOn[key].title,
         price: state.addOn[key].price,
-        type: state.addOn[key].type
-          ? state.addOn[key].type._id
-          : '',
-        type_name: state.addOn[key].type
-          ? state.addOn[key].type.title
-          : '',
+        type: state.addOn[key].type ? state.addOn[key].type._id : '',
+        type_name: state.addOn[key].type ? state.addOn[key].type.title : '',
         id: state.addOn[key]._id,
       })
     }
@@ -160,7 +157,7 @@ export default {
     return data
   },
 
-  getSelectProduct: (state) => {    
+  getSelectProduct: (state) => {
     return state.selectProduct
   },
 
@@ -169,5 +166,66 @@ export default {
   },
   getOrderCount: (state) => {
     return state.orderCount
-  }
+  },
+  getGroupProductInOrderList: (state) => {
+    const product = []
+    const orderList = state.orderList
+    if (orderList) {
+      for (const key in orderList) {
+        let isProduct = _.findIndex(product, {
+          product_name: orderList[key].product_name,
+        })
+        if (isProduct > -1) {
+          let isProductType = _.findIndex(product[isProduct].prices, {
+            price_name: orderList[key].price_name,
+          })
+
+          if (isProductType > -1) {
+            let newQty = orderList[key].qty
+            let newDiscount = orderList[key].discount
+            let productPrice = product[isProduct].prices[isProductType].price
+            let productQty = product[isProduct].prices[isProductType].qty
+            let productDiscount =
+              product[isProduct].prices[isProductType].discount
+            let productTotal = product[isProduct].prices[isProductType].total
+
+            productQty += newQty
+            productDiscount += newDiscount
+            productTotal = productQty * productPrice - productDiscount
+
+            product[isProduct].prices[isProductType].qty = productQty
+            product[isProduct].prices[isProductType].discount = productDiscount
+            product[isProduct].prices[isProductType].total = productTotal
+          } else {
+            product[isProduct].prices.push({
+              price: orderList[key].price,
+              price_name: orderList[key].price_name,
+              qty: orderList[key].qty,
+              total: orderList[key].total,
+              discount: orderList[key].discount,
+            })
+            product[isProduct].rowspan += 1
+          }
+        } else {
+          product.push({
+            index: orderList[key].index,
+            rowspan: 1,
+            product_name: orderList[key].product_name,
+            key: orderList[key].key,
+            prices: [
+              {
+                price: orderList[key].price,
+                price_name: orderList[key].price_name,
+                qty: orderList[key].qty,
+                total: orderList[key].total,
+                discount: orderList[key].discount,
+              },
+            ],
+          })
+        }
+      }
+      console.log(product)
+    }
+    return product
+  },
 }

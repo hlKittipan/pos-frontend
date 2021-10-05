@@ -204,6 +204,7 @@ export default {
     windowHeight(newHeight, oldHeight) {
       this.txt = `it changed to ${newHeight} from ${oldHeight}`
     },
+    
   },
   computed: {
     rowColHtml() {
@@ -220,6 +221,7 @@ export default {
       colCode += '</a-row>'
       return colCode
     },
+    
   },
 }
 </script>

@@ -13,4 +13,5 @@ export default () => ({
   sliderPage: false,
   loadingPage: true,
   selectedKeys: '1',
+  currentLanguage: undefined
 })

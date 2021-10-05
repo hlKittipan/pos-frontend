@@ -8,7 +8,7 @@ export default function ({ app, redirect, route, req }) {
       try {
         token = parsed['auth._token.local']
       } catch (e) {
-        console.log(e)
+        // console.log(e)
       }
     }
   } else if (process.client) {

@@ -178,9 +178,10 @@ export default {
     const qty = priceType.qty ? priceType.qty : 1
     const discount = priceType.discount ? priceType.discount : 0
     const cacheDate = state.orderList
+    const currentLocale = this.$i18n.locale ? this.$i18n.locale : 'en'
     const newData = {
       key: state.orderCount,
-      item: item.language[this.$i18n.locale],
+      product_name: item.language[currentLocale],
       price,
       price_name,
       qty,
@@ -195,23 +196,24 @@ export default {
     const data = state.selectProduct
     console.log(data)
     const dataPrice = data.price
-    let price = _.map(dataPrice, function (value, key) {
-      if (value.qty > 0) {
+    const currentLocale = this.$i18n.locale ? this.$i18n.locale : 'en'
+    const price = []
+    for (const key in dataPrice) {
+      if (dataPrice[key].qty > 0) {
         let count = state.orderCount
         state.orderCount++
-        return {
+        state.orderList.push({
           key: count,
-          item: data.language[this.$i18n.locale],
-          price: value.price,
-          price_name: value.name,
-          qty: value.qty,
-          discount: value.discount,
-          total: value.total,
-          index: priceType._id,
-        }
+          product_name: data.language[currentLocale],
+          price: dataPrice[key].price,
+          price_name: dataPrice[key].name,
+          qty: dataPrice[key].qty,
+          discount: dataPrice[key].discount,
+          total: dataPrice[key].total,
+          price_id: dataPrice[key]._id,
+        })
       }
-    })
-    console.log(price)
+    }
   },
   //End order
 }

@@ -4,7 +4,7 @@
       <PosOrderList :product="product" :addOrder="addOrder"/>
     </a-col>
     <a-col :xs="{ span: 24 }" :lg="{ span: 10 }">
-      <PosOrderAdd :orderList="orderList" :parentMethod="parentMethod"/>
+      <PosOrderAdd :orderList="orderList" :parentMethod="parentMethod" :groupProduct="groupProduct"/>
     </a-col>
   </a-row>
 </template>
@@ -26,6 +26,7 @@ export default {
       product: [],
       orderList: [],
       orderCount: undefined,
+      groupProduct: []
     }
   },
   async asyncData(context) {
@@ -37,6 +38,7 @@ export default {
     this.product = this.$store.getters['pos/getProductListToOrder']
     this.orderList = this.$store.getters['pos/getOrderList']
     this.orderCount = this.$store.getters['pos/getOrderCount']
+    this.groupProduct = this.$store.getters['pos/groupProductInOrderList']
   },
   methods: {
     parentMethod() {
@@ -61,6 +63,9 @@ export default {
     getOrderCount: function (value) {
       this.orderCount = value
     },
+    groupProductInOrderList: function (value) {
+      this.groupProduct = value
+    },
   },
   computed: {
     getOrderList() {
@@ -68,6 +73,9 @@ export default {
     },
     getOrderCount() {
       return this.$store.getters['pos/getOrderCount']
+    },
+    groupProductInOrderList() {
+      return this.$store.getters['pos/getGroupProductInOrderList']
     },
   },
 }

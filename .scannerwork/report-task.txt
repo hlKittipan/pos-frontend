@@ -1,0 +1,5 @@
+projectKey=nuxt-ant
+serverUrl=http://localhost:9000
+dashboardUrl=http://localhost:9000/dashboard/index/nuxt-ant
+ceTaskId=AXxE0VAf_SOSwCsjbgiz
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AXxE0VAf_SOSwCsjbgiz
