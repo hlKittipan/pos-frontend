@@ -33,6 +33,7 @@ export default {
     const { app } = context
     await app.store.dispatch('pos/fetchProduct')
     await app.store.dispatch('pos/fetchProductType')
+    await app.store.dispatch('pos/fetchPaymentType')
   },
   mounted() {
     this.product = this.$store.getters['pos/getProductListToOrder']

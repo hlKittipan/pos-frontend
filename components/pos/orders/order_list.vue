@@ -111,7 +111,7 @@
   </div>
 </template>
 <script>
-import PosFormOrderAdd from '@/components/pos/orders//order_multi_add'
+import PosFormOrderAdd from '@/components/pos/orders/order_multi_add'
 
 export default {
   name: 'OrderList',
