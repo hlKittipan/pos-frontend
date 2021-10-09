@@ -12,12 +12,12 @@ const renderContent = (value, row, index) => {
   const obj = {
     children: value,
     attrs: {},
-  };
-  if (index === 4) {
-    obj.attrs.colSpan = 0;
   }
-  return obj;
-};
+  if (index === 4) {
+    obj.attrs.colSpan = 0
+  }
+  return obj
+}
 
 const data = [
   {
@@ -60,7 +60,7 @@ const data = [
     phone: 18900010002,
     address: 'Dublin No. 2 Lake Park',
   },
-];
+]
 
 export default {
   data() {
@@ -70,14 +70,14 @@ export default {
         dataIndex: 'name',
         customRender: (text, row, index) => {
           if (index < 4) {
-            return <a href="javascript:;">{text}</a>;
+            return <a href="javascript:;">{text}</a>
           }
           return {
             children: <a href="javascript:;">{text}</a>,
             attrs: {
               colSpan: 5,
             },
-          };
+          }
         },
       },
       {
@@ -91,23 +91,23 @@ export default {
         dataIndex: 'tel',
         customRender: (value, row, index) => {
           console.log('value :' + value)
-      console.log(row)
-      console.log('index :' + index)
+          console.log(row)
+          console.log('index :' + index)
           const obj = {
             children: value,
             attrs: {},
-          };
+          }
           if (index === 2) {
-            obj.attrs.rowSpan = 3;
+            obj.attrs.rowSpan = 3
           }
           // These two are merged into above cell
           if (index === 3) {
-            obj.attrs.rowSpan = 0;
+            obj.attrs.rowSpan = 0
           }
           if (index === 4) {
-            obj.attrs.rowSpan = 0;
+            obj.attrs.rowSpan = 0
           }
-          return obj;
+          return obj
         },
       },
       {
@@ -121,11 +121,11 @@ export default {
         dataIndex: 'address',
         customRender: renderContent,
       },
-    ];
+    ]
     return {
       data,
       columns,
-    };
+    }
   },
-};
+}
 </script>

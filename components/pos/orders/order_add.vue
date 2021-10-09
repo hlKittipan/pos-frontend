@@ -1,14 +1,14 @@
 <template>
   <div>
-    <div class="p-2 text-right">
-      List
-      <a-switch
-        v-decorator="['switch', { valuePropName: 'checked' }]"
-        @change="handleTableChange"
-      />
-      Group
-    </div>
-    <template v-if="isGroupProduct">
+    <template v-if="groupProduct">
+      <div class="p-2 text-right">
+        List
+        <a-switch
+          v-decorator="['switch', { valuePropName: 'checked' }]"
+          @change="handleTableChange"
+        />
+        Group
+      </div>
       <a-row>
         <a-col :span="24">
           <div class="table-responsive">
@@ -23,11 +23,27 @@
                   <th class="p-2">Total</th>
                 </tr>
               </thead>
-              <tbody>
-                <template v-for="item in groupProduct">
-                  <tr v-for="(v, k) in item.prices" :key="k">
-                    <td class="p-2" v-if="k == 0" :rowspan="item.rowspan">
-                      {{ item.product_name }}
+              <template v-if="isGroupProduct">
+                <tbody>
+                  <template v-for="item in groupProduct">
+                    <tr v-for="(v, k) in item.prices" :key="k">
+                      <td class="p-2" v-if="k == 0" :rowspan="item.rowspan">
+                        {{ item.product_name }}
+                      </td>
+                      <td class="p-2">{{ v.price_name }}</td>
+                      <td class="p-2">{{ v.price }}</td>
+                      <td class="p-2">{{ v.qty }}</td>
+                      <td class="p-2">{{ v.discount }}</td>
+                      <td class="p-2">{{ v.total }}</td>
+                    </tr>
+                  </template>
+                </tbody>
+              </template>
+              <template v-else>
+                <tbody>
+                  <tr v-for="(v, k) in orderList" :key="k">
+                    <td class="p-2">
+                      {{ v.product_name }}
                     </td>
                     <td class="p-2">{{ v.price_name }}</td>
                     <td class="p-2">{{ v.price }}</td>
@@ -35,53 +51,20 @@
                     <td class="p-2">{{ v.discount }}</td>
                     <td class="p-2">{{ v.total }}</td>
                   </tr>
-                </template>
-              </tbody>
+                </tbody>
+              </template>
             </table>
           </div>
         </a-col>
       </a-row>
-    </template>
-    <template v-else>
-      <a-row>
-        <a-col :span="24">
-          <div class="table-responsive">
-            <table class="table table-bordered table-hover table-sm">
-              <thead>
-                <tr>
-                  <th class="p-2">Product</th>
-                  <th class="p-2">Price type</th>
-                  <th class="p-2">Price</th>
-                  <th class="p-2">Qty</th>
-                  <th class="p-2">Discount</th>
-                  <th class="p-2">Total</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="(v, k) in orderList" :key="k">
-                  <td class="p-2">
-                    {{ v.product_name }}
-                  </td>
-                  <td class="p-2">{{ v.price_name }}</td>
-                  <td class="p-2">{{ v.price }}</td>
-                  <td class="p-2">{{ v.qty }}</td>
-                  <td class="p-2">{{ v.discount }}</td>
-                  <td class="p-2">{{ v.total }}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </a-col>
+      <a-row type="flex" justify="end">
+        <a-col :span="4"> Total </a-col>
+        <a-col :span="4"> {{ summaryOrderList }} </a-col>
       </a-row>
+      <div>
+        <a-button type="primary" @click="execute()"> Payment </a-button>
+      </div>
     </template>
-    <a-row type="flex" justify="end">
-      <a-col :span="4"> Total </a-col>
-      <a-col :span="4"> {{ summaryOrderList }} </a-col>
-    </a-row>
-    <div>
-      <a-button type="primary" @click="execute()"> Payment </a-button>
-    </div>
-
     <a-modal
       :visible="visible"
       :dialog-style="{ top: '5%' }"

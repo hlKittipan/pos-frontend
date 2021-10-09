@@ -52,7 +52,7 @@
                           v-if="items.price != 0"
                           size="small"
                         >
-                          {{ items.name }} : {{ items.price }}
+                          {{ convertPriceTypeName(items.name) }} : {{ items.price }}
                         </a-button>
                       </div>
                     </a-col>
@@ -129,14 +129,13 @@ export default {
     } else if (clientWidth < 1200) {
       this.colCountKey = 3
     }
+    this.clientWidth = clientWidth
   },
   mounted() {
     this.$nextTick(() => {
       window.addEventListener('resize', this.onResize)
     })
-  },
-  beforeDestroy() {
-    window.removeEventListener('resize', this.onResize)
+    this.clientWidth = this.$el.clientWidth
   },
   methods: {
     onResize() {
@@ -168,6 +167,13 @@ export default {
       this.$store.dispatch("pos/cancelSelectProduct")
       this.visible = false
     },
+    convertPriceTypeName(value) {
+      if (this.clientWidth < 540){
+        return value.substring(0, 1)
+      }else {
+        return value
+      }
+    }
   },
   data() {
     const gutters = {}
@@ -196,7 +202,8 @@ export default {
       visible: false,
       confirmLoading: false,
       windowHeight:undefined,
-      txt: '',      
+      txt: '',
+      clientWidth: 0,
     }
   },
   props: ['product', 'addOrder'],
@@ -204,7 +211,6 @@ export default {
     windowHeight(newHeight, oldHeight) {
       this.txt = `it changed to ${newHeight} from ${oldHeight}`
     },
-    
   },
   computed: {
     rowColHtml() {
@@ -221,7 +227,9 @@ export default {
       colCode += '</a-row>'
       return colCode
     },
-    
+  },
+  beforeDestroy() {
+    window.removeEventListener('resize', this.onResize)
   },
 }
 </script>
