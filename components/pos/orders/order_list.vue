@@ -149,7 +149,7 @@ export default {
         this.$store.dispatch("pos/selectProduct",item)
         this.visible = true
         clearTimeout(this.isInterval)
-      }, 500)
+      }, 400)
     },
     clearCountDownTime() {
       console.log('Clear')

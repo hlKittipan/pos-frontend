@@ -69,7 +69,6 @@
       :visible="visible"
       :dialog-style="{ top: '5%' }"
       :confirm-loading="confirmLoading"
-      width="300px"
       okText="Payment"
       @ok="handleOk"
       @cancel="handleCancel"
