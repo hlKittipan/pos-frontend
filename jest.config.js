@@ -1,3 +1,9 @@
+const config = {
+  verbose: true,
+};
+
+module.exports = config;
+
 module.exports = {
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/$1',
