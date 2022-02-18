@@ -17,7 +17,9 @@
         />
       </a-form-item>
       <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
-        <a-button type="primary" html-type="submit" :loading="loading"> Submit </a-button>
+        <a-button type="primary" html-type="submit" :loading="loading">
+          Submit</a-button
+        >
       </a-form-item>
     </a-form>
   </div>
@@ -66,16 +68,19 @@ export default {
       this.form.validateFields(async (err, values) => {
         if (!err) {
           console.log('Received values of form: ', values)
-          const response = await this.$store.dispatch('pos/addPaymentType',values)
+          const response = await this.$store.dispatch(
+            'pos/addPaymentType',
+            values
+          )
           console.log(response)
           this.loading = false
-          this.form.resetFields();
-          if( response.status == 200) {
+          this.form.resetFields()
+          if (response.status == 200) {
             this.$notification.open({
-              message: 'Insert '+response.statusText,
+              message: 'Insert ' + response.statusText,
               description: response.statusText,
               icon: <a-icon type="smile" style="color: #108ee9" />,
-            });
+            })
           }
         }
       })
