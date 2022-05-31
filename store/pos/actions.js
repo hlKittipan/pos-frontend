@@ -10,7 +10,7 @@ export default {
     const response = await this.$axios.get(
       this.$config.axios.BASE_API_URL + '/pos/language-code'
     )
-    if (response.status == 200) {
+    if (response.status === 200) {
       commit('SET_LANGUAGE', response.data)
     }
     return response
@@ -21,7 +21,7 @@ export default {
       .catch(({ response }) => {
         return response
       })
-    if (response.status == 200) {
+    if (response.status === 200) {
       commit('ADD_LANGUAGE', response.data)
     }
     return response
@@ -31,7 +31,7 @@ export default {
       this.$config.axios.BASE_API_URL + '/pos/language-code/' + value.id,
       value
     )
-    if (response.status == 200) {
+    if (response.status === 200) {
       commit('UPDATE_LANGUAGE', response.data)
     }
     return response
@@ -40,7 +40,7 @@ export default {
     const response = await this.$axios.delete(
       this.$config.axios.BASE_API_URL + '/pos/language-code/' + id
     )
-    if (response.status == 200) {
+    if (response.status === 200) {
       commit('DELETE_LANGUAGE', id)
     }
     return response
@@ -52,7 +52,7 @@ export default {
     const response = await this.$axios.get(
       this.$config.axios.BASE_API_URL + '/pos/price-type'
     )
-    if (response.status == 200) {
+    if (response.status === 200) {
       commit('SET_PRICE_TYPE', response.data)
     }
     return response
@@ -62,7 +62,7 @@ export default {
       this.$config.axios.BASE_API_URL + '/pos/price-type',
       value
     )
-    if (response.status == 200) {
+    if (response.status === 200) {
       commit('ADD_PRICE_TYPE', response.data)
     }
     return response
@@ -72,7 +72,7 @@ export default {
       this.$config.axios.BASE_API_URL + '/pos/price-type/' + value.id,
       value
     )
-    if (response.status == 200) {
+    if (response.status === 200) {
       commit('UPDATE_PRICE_TYPE', response.data)
     }
     return response
@@ -81,7 +81,7 @@ export default {
     const response = await this.$axios.delete(
       this.$config.axios.BASE_API_URL + '/pos/price-type/' + id
     )
-    if (response.status == 200) {
+    if (response.status === 200) {
       commit('DELETE_PRICE_TYPE', id)
     }
     return response
@@ -93,7 +93,7 @@ export default {
     const response = await this.$axios.get(
       this.$config.axios.BASE_API_URL + '/pos/price-template'
     )
-    if (response.status == 200) {
+    if (response.status === 200) {
       commit('SET_PRICE_TEMPLATE', response.data)
     }
     return response
@@ -110,7 +110,7 @@ export default {
       this.$config.axios.BASE_API_URL + '/pos/price-template',
       value
     )
-    if (response.status == 200) {
+    if (response.status === 200) {
       commit('ADD_PRICE_TEMPLATE', response.data)
     }
     return response
@@ -120,7 +120,7 @@ export default {
       this.$config.axios.BASE_API_URL + '/pos/price-template/' + value.id,
       value
     )
-    if (response.status == 200) {
+    if (response.status === 200) {
       commit('UPDATE_PRICE_TEMPLATE', response.data)
     }
     return response
@@ -129,7 +129,7 @@ export default {
     const response = await this.$axios.delete(
       this.$config.axios.BASE_API_URL + '/pos/price-template/' + id
     )
-    if (response.status == 200) {
+    if (response.status === 200) {
       commit('DELETE_PRICE_TEMPLATE', id)
     }
     return response
@@ -141,7 +141,7 @@ export default {
     const response = await this.$axios.get(
       this.$config.axios.BASE_API_URL + '/pos/payment-type'
     )
-    if (response.status == 200) {
+    if (response.status === 200) {
       commit('SET_PAYMENT_TYPE', response.data)
     }
     return response
@@ -151,7 +151,7 @@ export default {
       this.$config.axios.BASE_API_URL + '/pos/payment-type',
       value
     )
-    if (response.status == 200) {
+    if (response.status === 200) {
       commit('ADD_PAYMENT_TYPE', response.data)
     }
     return response
@@ -161,7 +161,7 @@ export default {
       this.$config.axios.BASE_API_URL + '/pos/payment-type/' + value.id,
       value
     )
-    if (response.status == 200) {
+    if (response.status === 200) {
       commit('UPDATE_PAYMENT_TYPE', response.data)
     }
     return response
@@ -170,7 +170,7 @@ export default {
     const response = await this.$axios.delete(
       this.$config.axios.BASE_API_URL + '/pos/payment-type/' + id
     )
-    if (response.status == 200) {
+    if (response.status === 200) {
       commit('DELETE_PAYMENT_TYPE', id)
     }
     return response
@@ -182,7 +182,7 @@ export default {
     const response = await this.$axios.get(
       this.$config.axios.BASE_API_URL + '/pos/product'
     )
-    if (response.status == 200) {
+    if (response.status === 200) {
       commit('SET_PRODUCT', response.data)
     }
     return response
@@ -208,7 +208,7 @@ export default {
       this.$config.axios.BASE_API_URL + '/pos/product',
       value
     )
-    if (response.status == 200) {
+    if (response.status === 200) {
       commit('ADD_PRODUCT', response.data)
     }
     return response
@@ -218,7 +218,7 @@ export default {
       this.$config.axios.BASE_API_URL + '/pos/product/' + value.id,
       value
     )
-    if (response.status == 200) {
+    if (response.status === 200) {
       commit('UPDATE_PRODUCT', response.data)
     }
     return response
@@ -229,7 +229,7 @@ export default {
       .catch(({ response: err }) => {
         return err
       })
-    if (response.status == 200) {
+    if (response.status === 200) {
       commit('DELETE_PRODUCT', id)
     }
     return response
@@ -241,7 +241,7 @@ export default {
     const response = await this.$axios.get(
       this.$config.axios.BASE_API_URL + '/pos/product-type'
     )
-    if (response.status == 200) {
+    if (response.status === 200) {
       commit('SET_PRODUCT_TYPE', response.data)
     }
     return response
@@ -251,7 +251,7 @@ export default {
       this.$config.axios.BASE_API_URL + '/pos/product-type',
       value
     )
-    if (response.status == 200) {
+    if (response.status === 200) {
       commit('ADD_PRODUCT_TYPE', response.data)
     }
     return response
@@ -261,7 +261,7 @@ export default {
       this.$config.axios.BASE_API_URL + '/pos/product-type/' + value.id,
       value
     )
-    if (response.status == 200) {
+    if (response.status === 200) {
       commit('UPDATE_PRODUCT_TYPE', response.data)
     }
     return response
@@ -270,7 +270,7 @@ export default {
     const response = await this.$axios.delete(
       this.$config.axios.BASE_API_URL + '/pos/product-type/' + id
     )
-    if (response.status == 200) {
+    if (response.status === 200) {
       commit('DELETE_PRODUCT_TYPE', id)
     }
     return response
@@ -282,7 +282,7 @@ export default {
     const response = await this.$axios.get(
       this.$config.axios.BASE_API_URL + '/pos/add-on'
     )
-    if (response.status == 200) {
+    if (response.status === 200) {
       commit('SET_ADD_ON', response.data)
     }
     return response
@@ -292,7 +292,7 @@ export default {
       this.$config.axios.BASE_API_URL + '/pos/add-on',
       value
     )
-    if (response.status == 200) {
+    if (response.status === 200) {
       commit('ADD_ADD_ON', response.data)
     }
     return response
@@ -302,7 +302,7 @@ export default {
       this.$config.axios.BASE_API_URL + '/pos/add-on/' + value.id,
       value
     )
-    if (response.status == 200) {
+    if (response.status === 200) {
       commit('UPDATE_ADD_ON', response.data)
     }
     return response
@@ -311,7 +311,7 @@ export default {
     const response = await this.$axios.delete(
       this.$config.axios.BASE_API_URL + '/pos/add-on/' + id
     )
-    if (response.status == 200) {
+    if (response.status === 200) {
       commit('DELETE_ADD_ON', id)
     }
     return response
@@ -323,7 +323,7 @@ export default {
     const response = await this.$axios.get(
       this.$config.axios.BASE_API_URL + '/pos/add-on-type'
     )
-    if (response.status == 200) {
+    if (response.status === 200) {
       commit('SET_ADD_ON_TYPE', response.data)
     }
     return response
@@ -333,7 +333,7 @@ export default {
       this.$config.axios.BASE_API_URL + '/pos/add-on-type',
       value
     )
-    if (response.status == 200) {
+    if (response.status === 200) {
       commit('ADD_ADD_ON_TYPE', response.data)
     }
     return response
@@ -343,7 +343,7 @@ export default {
       this.$config.axios.BASE_API_URL + '/pos/add-on-type/' + value.id,
       value
     )
-    if (response.status == 200) {
+    if (response.status === 200) {
       commit('UPDATE_ADD_ON_TYPE', response.data)
     }
     return response
@@ -352,7 +352,7 @@ export default {
     const response = await this.$axios.delete(
       this.$config.axios.BASE_API_URL + '/pos/add-on-type/' + id
     )
-    if (response.status == 200) {
+    if (response.status === 200) {
       commit('DELETE_ADD_ON_TYPE', id)
     }
     return response
@@ -360,9 +360,9 @@ export default {
   // End add on type
 
   //Start order
-  selectProduct({ commit,state }, item) {    
+  selectProduct({ commit,state }, item) {
     commit('SELECT_PRODUCT',item)
-  },  
+  },
   cancelSelectProduct({commit}){
     commit('CANCEL_SELECT_PRODUCT')
   },
