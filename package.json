@@ -16,13 +16,13 @@
     "cookie": "^0.4.1",
     "cookie-universal-nuxt": "^2.1.5",
     "core-js": "^3.9.1",
-    "gulp": "^4.0.2",
+    "gulp": "^3.9.1",
+    "less-loader": "^6.1.0",
     "lodash": "^4.17.21",
     "nuxt": "^2.2.0",
     "nuxt-i18n": "^6.26.0",
     "sonarqube-scanner": "^2.8.1",
-    "vue-lodash": "^2.1.2",
-    "less-loader": "^6.1.0"
+    "vue-lodash": "^2.1.2"
   },
   "devDependencies": {
     "@vue/test-utils": "^1.1.3",

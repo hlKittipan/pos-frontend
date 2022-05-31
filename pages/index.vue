@@ -20,9 +20,9 @@
         >
           GitHub
         </a>
-        <a-button type="primary ">
-          <nuxt-link to="/pos">POS</nuxt-link>
-        </a-button>
+<!--        <a-button type="primary ">-->
+<!--          <nuxt-link to="/pos">POS</nuxt-link>-->
+<!--        </a-button>-->
       </div>
     </div>
   </div>
