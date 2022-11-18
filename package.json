@@ -21,7 +21,7 @@
     "lodash": "^4.17.21",
     "nuxt": "^2.2.0",
     "nuxt-i18n": "^6.26.0",
-    "sonarqube-scanner": "^2.8.1",
+    "sonarqube-scanner": "^2.8.2",
     "vue-lodash": "^2.1.2"
   },
   "devDependencies": {
