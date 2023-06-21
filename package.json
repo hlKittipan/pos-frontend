@@ -19,7 +19,7 @@
     "gulp": "^4.0.2",
     "less-loader": "^6.1.0",
     "lodash": "^4.17.21",
-    "nuxt": "^2.15.8",
+    "nuxt": "^3.4.3",
     "nuxt-i18n": "^6.26.0",
     "sonarqube-scanner": "^2.8.2",
     "vue-lodash": "^2.1.2"
